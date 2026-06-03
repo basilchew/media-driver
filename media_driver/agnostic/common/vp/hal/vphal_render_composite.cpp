@@ -1630,6 +1630,12 @@ bool CompositeState::PreparePhases(
 
         pIntermediate = m_Intermediate2;
 
+        if (pIntermediate == nullptr)
+        {
+            VPHAL_RENDER_ASSERTMESSAGE("Null m_Intermediate2.");
+            goto finish;
+        }
+
         // Allocate/Reallocate temporary output
         if (dwTempWidth  > pIntermediate->dwWidth ||
             dwTempHeight > pIntermediate->dwHeight)

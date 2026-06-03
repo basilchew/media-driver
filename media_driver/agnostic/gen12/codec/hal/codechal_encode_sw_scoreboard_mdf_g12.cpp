@@ -123,6 +123,7 @@ MOS_STATUS CodechalEncodeSwScoreboardMdfG12::Execute(KernelParams *params)
 
         if (m_groupIdSelectSupported)
         {
+            CODECHAL_ENCODE_CHK_NULL_RETURN(m_threadSpace);
             m_threadSpace->SetMediaWalkerGroupSelect((CM_MW_GROUP_SELECT)m_groupId);
         }
     }

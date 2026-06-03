@@ -1878,7 +1878,11 @@ MOS_STATUS VpHal_HdrInitCoeff_g9 (
             PVPHAL_SURFACE  pTargetSurf  = (PVPHAL_SURFACE)pHdrState->pTargetSurf[0];
 
             *pTMType      = 1; // TMtype
-            *pOETFNeqType = 2 | (((uint32_t)(pTargetSurf->pHDRParams->max_display_mastering_luminance)) << 16); // OETFNEQ
+            *pOETFNeqType = 2; // OETFNEQ
+            if (pTargetSurf->pHDRParams != nullptr)
+            {
+                *pOETFNeqType |= ((uint32_t)(pTargetSurf->pHDRParams->max_display_mastering_luminance)) << 16;
+            }
             *pCoeffR = 0.25f;
             *pCoeffG = 0.625f;
             *pCoeffB = 0.125f;

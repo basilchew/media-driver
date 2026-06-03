@@ -533,6 +533,7 @@ MOS_STATUS VpVeboxCmdPacketLegacy::UpdateCscParams(FeatureParamCsc &params)
     // Scaing only can be apply to SFC path
     if (m_PacketCaps.bSfcCsc)
     {
+        VP_PUBLIC_CHK_NULL_RETURN(m_sfcRender);
         VP_PUBLIC_CHK_STATUS_RETURN(m_sfcRender->UpdateCscParams(params));
     }
 

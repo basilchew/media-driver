@@ -926,6 +926,7 @@ bool CmThreadSpaceRT::IntegrityCheck(CmTaskRT* task)
             kernelInScoreboard[i] = 0;
         }
 
+        CM_CHK_NULL_GOTOFINISH_CMERROR(m_threadSpaceUnit);
         for (i = 0; i < m_width * m_height; i ++ )
         {
             kernelRT = static_cast<CmKernelRT *> (m_threadSpaceUnit[i].kernel);
@@ -2067,6 +2068,7 @@ int32_t CmThreadSpaceRT::InitSwScoreBoard()
     int SB_BufLen = m_height * m_width;
     int bufIdx = 0;
     int temp_x = 0, temp_y = 0;
+    CM_CHK_NULL_RETURN_CMERROR(m_swBoard);
     for (int i = 0; i < SB_BufLen; i++)
     {
         int x = i % m_width;

@@ -638,6 +638,7 @@ MOS_STATUS VphalState::Render(
     VPHAL_RENDER_PARAMS RenderParams;
 
     VPHAL_PUBLIC_CHK_NULL(pcRenderParams);
+    VPHAL_PUBLIC_CHK_NULL(m_renderer);
     RenderParams    = *pcRenderParams;
 
     // Explicitly initialize the maxSrcRect of VphalRenderer
@@ -669,6 +670,10 @@ VphalFeatureReport* VphalState::GetRenderFeatureReport()
 {
     VPHAL_PUBLIC_ASSERT(m_renderer);
 
+    if (m_renderer == nullptr)
+    {
+        return nullptr;
+    }
     return m_renderer->GetReport();
 }
 

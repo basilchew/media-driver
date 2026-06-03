@@ -1825,6 +1825,7 @@ int32_t CmTaskInternal::UpdateSurfaceStateOnTaskCreation()
 
     if (!m_isSurfaceUpdateDone)
     {
+        CM_CHK_NULL_GOTOFINISH_CMERROR(m_surfaceArray);
         for (uint32_t i = 0; i < poolSize; i++)
         {
             if (m_surfaceArray[i])

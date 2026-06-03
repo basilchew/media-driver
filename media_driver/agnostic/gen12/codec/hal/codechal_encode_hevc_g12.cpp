@@ -7305,6 +7305,7 @@ MOS_STATUS CodechalEncHevcStateG12::EncodeIntraDistKernel()
         surfaceParam.input4xDsVmeSurface    = m_trackedBuf->Get4xDsSurface(CODEC_CURR_TRACKED_BUFFER);
     surfaceParam.intraDistSurface           = m_brcDistortion;
     surfaceParam.intraDistBottomFieldOffset = m_brcBuffers.dwMeBrcDistortionBottomFieldOffset;
+    CODECHAL_ENCODE_CHK_NULL_RETURN(m_intraDistKernel);
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_intraDistKernel->Execute(curbeParam, surfaceParam));
 
     return MOS_STATUS_SUCCESS;

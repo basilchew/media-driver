@@ -828,6 +828,7 @@ MOS_STATUS MhwVeboxInterfaceG8::AddVeboxDndiState(
     MHW_CHK_NULL(m_veboxHeap);
 
     pVeboxHeap      = m_veboxHeap;
+    MHW_CHK_NULL(pVeboxHeap->pLockedDriverResourceMem);
     uiOffset        = pVeboxHeap->uiCurState * pVeboxHeap->uiInstanceSize;
     pVeboxDndiState = (mhw_vebox_g8_X::VEBOX_DNDI_STATE_CMD *)(pVeboxHeap->pLockedDriverResourceMem +
                                                                pVeboxHeap->uiDndiStateOffset +

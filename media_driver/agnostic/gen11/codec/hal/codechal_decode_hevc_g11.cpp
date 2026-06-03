@@ -497,6 +497,7 @@ MOS_STATUS CodechalDecodeHevcG11::SetFrameStates ()
             CODECHAL_DECODE_CHK_STATUS_RETURN(CodechalDecodeScalability_ChkGpuCtxReCreation(
                     m_scalabilityState,
                     (PMOS_GPUCTX_CREATOPTIONS_ENHANCED)m_gpuCtxCreatOpt));
+            CODECHAL_DECODE_CHK_NULL_RETURN(m_scalabilityState);
             SetVideoContext(m_scalabilityState->VideoContext);
         }
     }

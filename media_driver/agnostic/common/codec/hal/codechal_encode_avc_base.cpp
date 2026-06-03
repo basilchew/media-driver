@@ -2061,6 +2061,7 @@ MOS_STATUS CodechalEncodeAvcBase::Initialize()
 
 void CodechalEncodeAvcBase::ScalingListFlat()
 {
+    CODECHAL_ENCODE_CHK_NULL_NO_STATUS_RETURN(m_avcIQWeightScaleLists);
     // 4x4 block
     for (uint8_t idx2 = 0; idx2 < 6; idx2++)
     {
@@ -2081,6 +2082,7 @@ void CodechalEncodeAvcBase::ScalingListFlat()
 
 void CodechalEncodeAvcBase::ScalingListFallbackRuleA()
 {
+    CODECHAL_ENCODE_CHK_NULL_NO_STATUS_RETURN(m_avcIQWeightScaleLists);
     for (uint8_t idx1 = 0; idx1 < 16; idx1++)
     {
         for (uint8_t idx2 = 0; idx2 < 3; idx2++)

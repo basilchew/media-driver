@@ -216,6 +216,7 @@ MOS_STATUS SfcRenderXe_Xpm_Base::SetInterlacedScalingParams(PSFC_SCALING_PARAMS 
     VP_RENDER_CHK_NULL_RETURN(scalingParams);
 
     pSfcStateParam = (PMHW_SFC_STATE_PARAMS_XE_XPM)m_sfcStateParamsLegacy;
+    VP_RENDER_CHK_NULL_RETURN(pSfcStateParam);
     // Set interlaced scaling parameters
     if (scalingParams->interlacedScalingType != ISCALING_NONE)
     {

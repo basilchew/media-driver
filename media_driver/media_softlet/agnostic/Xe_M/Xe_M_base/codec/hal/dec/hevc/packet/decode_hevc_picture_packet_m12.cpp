@@ -233,9 +233,12 @@ MOS_STATUS HevcDecodePicPktM12::CalculateCommandSize(uint32_t &commandBufferSize
     }
 
 #ifdef _DECODE_PROCESSING_SUPPORTED
-    DecodeDownSamplingFeature *decodeDownSampling =
-        dynamic_cast<DecodeDownSamplingFeature*>(m_featureManager->GetFeature(DecodeFeatureIDs::decodeDownSampling));
-    stateCmdSizeParams.bSfcInUse = (decodeDownSampling != nullptr);
+    if (m_featureManager != nullptr)
+    {
+        DecodeDownSamplingFeature *decodeDownSampling =
+            dynamic_cast<DecodeDownSamplingFeature*>(m_featureManager->GetFeature(DecodeFeatureIDs::decodeDownSampling));
+        stateCmdSizeParams.bSfcInUse = (decodeDownSampling != nullptr);
+    }
 #endif
 
     // Picture Level Commands

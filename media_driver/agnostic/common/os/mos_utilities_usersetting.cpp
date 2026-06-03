@@ -276,7 +276,7 @@ MOS_STATUS MosUtilities::MosUserFeatureSetMultiStringValue(
     uiNumStrings = 0;
 
     MOS_OS_ASSERT(pStrings);
-    MOS_OS_ASSERT(pData);
+    MOS_OS_CHK_NULL_RETURN(pData);
 
     // Find number of strings in the multi string array
     do

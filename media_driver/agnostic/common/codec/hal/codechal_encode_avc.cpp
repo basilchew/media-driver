@@ -1278,6 +1278,12 @@ uint32_t CodechalEncodeAvcEnc::GetRefPicFieldFlag(
     CODECHAL_ENCODE_ASSERT(list == LIST_0 || list == LIST_1);
     CODECHAL_ENCODE_ASSERT(index < 32);
 
+    if (params->pSlcParams == nullptr || params->pPicParams == nullptr)
+    {
+        CODECHAL_ENCODE_ASSERTMESSAGE("Invalid (NULL) Pointer.");
+        return refPicFieldFlag;
+    }
+
     refPic = params->pSlcParams->RefPicList[list][index];
     if (!CodecHal_PictureIsInvalid(refPic))
     {
@@ -1306,6 +1312,12 @@ uint8_t CodechalEncodeAvcEnc::AVCGetQPValueFromRefList(
 
     CODECHAL_ENCODE_ASSERT(list == LIST_0 || list == LIST_1);
     CODECHAL_ENCODE_ASSERT(index < CODEC_AVC_MAX_NUM_REF_FRAME * 2);
+
+    if (params->pSlcParams == nullptr)
+    {
+        CODECHAL_ENCODE_ASSERTMESSAGE("Invalid (NULL) Pointer.");
+        return 0;
+    }
 
     picture = params->pSlcParams->RefPicList[list][index];
 

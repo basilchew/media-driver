@@ -590,7 +590,10 @@ PVPHAL_SURFACE VPHAL_VEBOX_STATE::VeboxSetReference(
         {
             // Force DI when there is no ref sample
             // Update Surfaces DI params
-            pSrcSurface->pDeinterlaceParams->bSingleField = true;
+            if (pSrcSurface->pDeinterlaceParams != nullptr)
+            {
+                pSrcSurface->pDeinterlaceParams->bSingleField = true;
+            }
             pRenderData->bSingleField = true;
 
             VPHAL_RENDER_NORMALMESSAGE("BOB using VEBOX h/w (no ref sample).");
@@ -2531,12 +2534,13 @@ void VPHAL_VEBOX_STATE::VeboxSetRenderingFlags(
         VeboxSetFieldRenderingFlags(pSrc);
 
         pRenderData->bSingleField   = (pRenderData->bRefValid                           &&
+                                        pSrc->pDeinterlaceParams != nullptr             &&
                                         pSrc->pDeinterlaceParams->DIMode != DI_MODE_BOB) ?
                                         pSrc->pDeinterlaceParams->bSingleField            :
                                         true;
 
         // Detect ADI mode (30i->30fps or 30i->60fps) according to DDI
-        pRenderData->b60fpsDi       = !pSrc->pDeinterlaceParams->bSingleField;
+        pRenderData->b60fpsDi       = (pSrc->pDeinterlaceParams != nullptr) && !pSrc->pDeinterlaceParams->bSingleField;
     }
 
     pRenderData->b2PassesCSC = VeboxIs2PassesCSCNeeded(pSrc, pRenderTarget);

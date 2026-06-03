@@ -942,7 +942,7 @@ MOS_STATUS XRenderHal_Interface_G12_Base::IsOvrdNeeded(
     if (pOsInterface->VEEnable)
     {
 #if !EMUL
-        if (pGenericPrologParamsG12)
+        if (pGenericPrologParamsG12 && pAttriVe != nullptr)
 #else
         if (pGenericPrologParamsG12 && pAttriVe != nullptr)
 #endif
@@ -957,7 +957,7 @@ MOS_STATUS XRenderHal_Interface_G12_Base::IsOvrdNeeded(
 
 #if (_DEBUG || _RELEASE_INTERNAL)
 #if !EMUL
-        if (pOsInterface->bEnableDbgOvrdInVE)
+        if (pOsInterface->bEnableDbgOvrdInVE && pAttriVe != nullptr)
 #else
         if (pOsInterface->bEnableDbgOvrdInVE && pAttriVe != nullptr)
 #endif

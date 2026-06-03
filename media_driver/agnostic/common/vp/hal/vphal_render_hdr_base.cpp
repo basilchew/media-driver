@@ -521,6 +521,7 @@ MOS_STATUS VpHal_HdrIsNeeded(
 
     // Check whether Hdr is supported by platform
     if (!MEDIA_IS_SKU(pRenderer->GetSkuTable(), FtrHDR) ||
+        pRenderer->pHdrState == nullptr ||
          pRenderer->pHdrState->bDisableRender)
     {
         *pBeNeeded = false;

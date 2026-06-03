@@ -277,6 +277,7 @@ MOS_STATUS CodechalKernelHmeMdfG12::Execute(CurbeParam &curbeParam, SurfaceParam
 
     if (m_groupIdSelectSupported)
     {
+        CODECHAL_ENCODE_CHK_NULL_RETURN(threadSpace);
         threadSpace->SetMediaWalkerGroupSelect((CM_MW_GROUP_SELECT)m_groupId);
     }
 

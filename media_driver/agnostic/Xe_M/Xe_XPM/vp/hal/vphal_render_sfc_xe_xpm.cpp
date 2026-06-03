@@ -576,7 +576,11 @@ MOS_STATUS VphalSfcStateXe_Xpm::SetSfcIndex(
     MhwSfcInterfaceXe_Xpm *pSfcInterfaceExt = (MhwSfcInterfaceXe_Xpm *)m_sfcInterface;
 
     MHW_ASSERT(dwSfcIndex < dwSfcCount);
-
+    if (pSfcInterfaceExt == nullptr)
+    {
+        VPHAL_RENDER_ASSERTMESSAGE("Null m_sfcInterface.");
+        return MOS_STATUS_NULL_POINTER;
+    }
     pSfcInterfaceExt->SetSfcIndex(dwSfcIndex, dwSfcCount);
 
     return eStatus;

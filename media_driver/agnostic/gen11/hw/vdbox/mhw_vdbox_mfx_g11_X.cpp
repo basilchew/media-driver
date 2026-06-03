@@ -1962,6 +1962,7 @@ MOS_STATUS MhwVdboxMfxInterfaceG11::AddMfxPakInsertObject(
         MHW_MI_CHK_STATUS(Mhw_AddCommandCmdOrBB(m_osInterface, cmdBuffer, batchBuffer, &cmd, sizeof(cmd)));
 
         // Add actual data 
+        MHW_MI_CHK_NULL(params->pBsBuffer);
         uint8_t* data = (uint8_t*)(params->pBsBuffer->pBase + params->dwOffset);
         MHW_MI_CHK_STATUS(Mhw_AddCommandCmdOrBB(m_osInterface, cmdBuffer, batchBuffer, data, byteSize));
     }

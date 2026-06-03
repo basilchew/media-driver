@@ -764,6 +764,7 @@ CM_RT_API  int32_t CmEventRT::GetProfilingInfo(CM_EVENT_PROFILING_INFO infoType,
         case CM_EVENT_PROFILING_KERNELNAMES:
              {
                  CM_CHK_NULL_GOTOFINISH_CMERROR(inputValue);
+                 CM_CHK_NULL_GOTOFINISH_CMERROR(m_kernelNames);
                  uint32_t kernelIndex = *(uint32_t *)inputValue;
                  if( kernelIndex >= m_kernelCount)
                  {

@@ -81,6 +81,7 @@ MOS_STATUS VpVeboxCmdPacketXe_Hpm::AddVeboxDndiState()
     VP_FUNC_CALL();
 
     PMHW_VEBOX_INTERFACE  pVeboxInterface = m_hwInterface->m_veboxInterface;
+    VP_RENDER_CHK_NULL_RETURN(pVeboxInterface);
     VpVeboxRenderData    *renderData     = GetLastExecRenderData();
 
     if (renderData->DN.bDnEnabled || renderData->DI.bDeinterlace || renderData->DI.bQueryVariance)

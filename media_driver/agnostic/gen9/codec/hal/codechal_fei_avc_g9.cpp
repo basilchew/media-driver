@@ -6481,6 +6481,7 @@ MOS_STATUS CodechalEncodeAvcEncFeiG9::SendAvcMfeMbEncSurfaces(PMOS_COMMAND_BUFFE
 
     bool currFieldPicture = CodecHal_PictureIsField(*(params->pCurrOriginalPic)) ? 1 : 0;
     bool currBottomField = CodecHal_PictureIsBottomField(*(params->pCurrOriginalPic)) ? 1 : 0;
+    CODECHAL_ENCODE_CHK_NULL_RETURN(params->pCurrReconstructedPic);
     auto currPicRefListEntry = params->ppRefList[params->pCurrReconstructedPic->FrameIdx];
     auto mbCodeBuffer = &currPicRefListEntry->resRefMbCodeBuffer;
     auto mvDataBuffer = &currPicRefListEntry->resRefMvDataBuffer;
@@ -6845,6 +6846,7 @@ MOS_STATUS CodechalEncodeAvcEncFeiG9::EncodeMbEncKernelFunctions()
     }
 
     auto kernelRes = m_resMbencKernel;
+    CODECHAL_ENCODE_CHK_NULL_RETURN(kernelRes);
 
     uint8_t ppsidx = m_avcSliceParams->pic_parameter_set_id;
     CODECHAL_ENCODE_CHK_COND_RETURN((ppsidx >= CODEC_AVC_MAX_PPS_NUM), "ERROR - Invalid pic parameter set id");

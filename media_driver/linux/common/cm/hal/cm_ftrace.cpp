@@ -89,17 +89,24 @@ void CmFtrace::WriteTaskProfilingInfo(CM_PROFILING_INFO *taskInfo)
     for(uint i=0 ; i< taskInfo->kernelCount; i++)
     {
         //Kernel name.
-        char *kernelname = taskInfo->kernelNames + kernelNameOffset;
-        PRINT_TO_STRING("kernelname=%s|", kernelname);
-        kernelNameOffset += strlen(kernelname) + 1;
+        if (taskInfo->kernelNames != nullptr)
+        {
+            char *kernelname = taskInfo->kernelNames + kernelNameOffset;
+            PRINT_TO_STRING("kernelname=%s|", kernelname);
+            kernelNameOffset += strlen(kernelname) + 1;
+        }
 
         //Local work width&height
-        PRINT_TO_STRING("localwidth=%d|", taskInfo->localWorkWidth[i]);
-        PRINT_TO_STRING("localheight=%d|", taskInfo->localWorkHeight[i]);
+        if (taskInfo->localWorkWidth != nullptr)
+            PRINT_TO_STRING("localwidth=%d|", taskInfo->localWorkWidth[i]);
+        if (taskInfo->localWorkHeight != nullptr)
+            PRINT_TO_STRING("localheight=%d|", taskInfo->localWorkHeight[i]);
 
         //Global work width&height
-        PRINT_TO_STRING("globalwidth=%d|",  taskInfo->globalWorkWidth[i]);
-        PRINT_TO_STRING("globalheight=%d|", taskInfo->globalWorkHeight[i]);
+        if (taskInfo->globalWorkWidth != nullptr)
+            PRINT_TO_STRING("globalwidth=%d|",  taskInfo->globalWorkWidth[i]);
+        if (taskInfo->globalWorkHeight != nullptr)
+            PRINT_TO_STRING("globalheight=%d|", taskInfo->globalWorkHeight[i]);
     }
 
     //Note: enqueuetime/flushtime/completetime are measured in performance counter

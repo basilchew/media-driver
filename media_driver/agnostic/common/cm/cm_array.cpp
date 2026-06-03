@@ -401,6 +401,10 @@ Output:
 uint32_t CmDynamicArray::GetFirstFreeIndex()
 {
     uint32_t index = 0;
+    if( m_arrayBuffer == nullptr )
+    {
+        return index;
+    }
     for(  index = 0; index < GetMaxSize(); index++ )
     {
         if( m_arrayBuffer[ index ] == nullptr)

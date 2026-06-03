@@ -199,9 +199,12 @@ namespace decode
 
         stateCmdSizeParams.bHucDummyStream = false;
 #ifdef _DECODE_PROCESSING_SUPPORTED
-        DecodeDownSamplingFeature *decodeDownSampling =
-            dynamic_cast<DecodeDownSamplingFeature *>(m_featureManager->GetFeature(DecodeFeatureIDs::decodeDownSampling));
-        stateCmdSizeParams.bSfcInUse = (decodeDownSampling != nullptr);
+        if (m_featureManager != nullptr)
+        {
+            DecodeDownSamplingFeature *decodeDownSampling =
+                dynamic_cast<DecodeDownSamplingFeature *>(m_featureManager->GetFeature(DecodeFeatureIDs::decodeDownSampling));
+            stateCmdSizeParams.bSfcInUse = (decodeDownSampling != nullptr);
+        }
 #endif
         stateCmdSizeParams.bScalableMode = (m_vp9Pipeline->GetDecodeMode() == Vp9Pipeline::virtualTileDecodeMode);
 

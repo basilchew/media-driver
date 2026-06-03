@@ -1007,6 +1007,7 @@ DdiVp_SetProcPipelineParams(
     pMediaSrcSurf       = DdiMedia_GetSurfaceFromVASurfaceID(pMediaCtx, pPipelineParam->surface);
     pVpHalRenderParams  = pVpCtx->pVpHalRenderParams;
     DDI_CHK_NULL(pVpHalRenderParams, "Null pVpHalRenderParams.", VA_STATUS_ERROR_INVALID_PARAMETER);
+    DDI_CHK_NULL(pVpCtx->pVpHal, "Null pVpCtx->pVpHal.", VA_STATUS_ERROR_INVALID_PARAMETER);
     pFilterBuf          = nullptr;
     pData               = nullptr;
     uSurfIndex          = 0;

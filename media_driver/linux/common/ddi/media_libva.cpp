@@ -2147,6 +2147,11 @@ VAStatus DdiMedia_InitMediaContext (
             DDI_ASSERTMESSAGE("Softlet initialize failed");
             return VA_STATUS_ERROR_ALLOCATION_FAILED;
         }
+        if (mediaCtx->m_capsNext == nullptr)
+        {
+            DDI_ASSERTMESSAGE("m_capsNext is null after softlet init.");
+            return VA_STATUS_ERROR_ALLOCATION_FAILED;
+        }
         ctx->max_image_formats = mediaCtx->m_capsNext->GetImageFormatsMaxNum();
     }
     else
@@ -3556,7 +3561,7 @@ VAStatus DdiMedia_MapBufferInternal (
                         *pbuf = (void *)((uint8_t*)(bufMgr->Codec_Param.Codec_Param_HEVC.pVASliceParaBufBaseHEVC) + buf->uiOffset);
                     else
                     {
-                        if(!decCtx->m_ddiDecode->IsRextProfile())
+                        if(decCtx->m_ddiDecode != nullptr && !decCtx->m_ddiDecode->IsRextProfile())
                            *pbuf = (void *)((uint8_t*)(bufMgr->Codec_Param.Codec_Param_HEVC.pVASliceParaBufHEVC) + buf->uiOffset);
                         else
                            *pbuf = (void *)((uint8_t*)(bufMgr->Codec_Param.Codec_Param_HEVC.pVASliceParaBufHEVCRext) + buf->uiOffset);

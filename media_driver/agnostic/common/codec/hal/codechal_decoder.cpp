@@ -2196,6 +2196,7 @@ MOS_STATUS CodechalDecode::SetCencBatchBuffer(
     PMOS_COMMAND_BUFFER cmdBuffer)
 {
     CODECHAL_DECODE_CHK_NULL_RETURN(cmdBuffer);
+    CODECHAL_DECODE_CHK_NULL_RETURN(m_cencBuf);
 
     MHW_BATCH_BUFFER        batchBuffer;
     MOS_ZeroMemory(&batchBuffer, sizeof(MHW_BATCH_BUFFER));

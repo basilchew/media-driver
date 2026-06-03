@@ -62,7 +62,7 @@ MOS_STATUS HevcVdencPipelineXe_Xpm_Base::GetSystemVdboxNumber()
         outValue,
         "Disable Media Encode Scalability",
         MediaUserSetting::Group::Sequence);
-    bool disableScalability = m_hwInterface->IsDisableScalability();
+    bool disableScalability = (m_hwInterface != nullptr) ? m_hwInterface->IsDisableScalability() : false;
     if (statusKey == MOS_STATUS_SUCCESS)
     {
         disableScalability = outValue.Get<bool>();
