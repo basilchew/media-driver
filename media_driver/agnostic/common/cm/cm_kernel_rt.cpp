@@ -1977,7 +1977,7 @@ finish:
                 CmSafeMemCopy((void *)arg.surfIndex, surfIndexValue, size / sizeof(int32_t) * sizeof(uint16_t));
             }
 
-            if (m_args[index].unitKind == ARG_KIND_SAMPLER)
+            if (m_args[index].unitKind == ARG_KIND_SAMPLER && !sampler_index_array.empty())
             {
                 for (unsigned int samplerIndex = 0; samplerIndex < sampler_index_array.size(); samplerIndex++)
                 {
@@ -2018,7 +2018,7 @@ finish:
                 CmSafeMemCopy((void *)arg.surfIndex, surfIndexValue, size/sizeof(int32_t) * sizeof(uint16_t));
             }
 
-            if (m_args[index].unitKind == ARG_KIND_SAMPLER)
+            if (m_args[index].unitKind == ARG_KIND_SAMPLER && !sampler_index_array.empty())
             {
                 for (unsigned int samplerIndex = 0; samplerIndex < sampler_index_array.size(); samplerIndex++)
                 {

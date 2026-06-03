@@ -647,7 +647,11 @@ MOS_STATUS CodechalEncHevcState::SendHwSliceEncodeCommand(
     }
 
     // add HEVC Slice state commands
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_hcpInterface->AddHcpSliceStateCmd(cmdBufferInUse, params));
+    // AddHcpSliceStateCmd does not support batch buffers; skip if only a batch buffer is available.
+    if (cmdBufferInUse != nullptr)
+    {
+        CODECHAL_ENCODE_CHK_STATUS_RETURN(m_hcpInterface->AddHcpSliceStateCmd(cmdBufferInUse, params));
+    }
 
     // add HCP_PAK_INSERT_OBJECTS command
     CODECHAL_ENCODE_CHK_STATUS_RETURN(AddHcpPakInsertNALUs(cmdBufferInUse, batchBufferInUse, params));

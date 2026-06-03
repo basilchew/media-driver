@@ -419,6 +419,7 @@ CM_RT_API int32_t CmQueueRT::Enqueue(
     const CmThreadSpaceRT *threadSpaceRTConst = static_cast<const CmThreadSpaceRT *>(threadSpace);
     PCM_HAL_STATE cmHalState = ((PCM_CONTEXT_DATA)m_device->GetAccelData())->cmHalState;
     CM_CHK_NULL_RETURN_CMERROR(cmHalState);
+    CM_CHK_NULL_RETURN_CMERROR(cmHalState->cmHalInterface);
     if (cmHalState->cmHalInterface->CheckMediaModeAvailability() == false)
     {
         if (threadSpaceRTConst != nullptr)

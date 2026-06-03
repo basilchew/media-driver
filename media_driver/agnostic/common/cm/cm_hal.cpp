@@ -362,6 +362,10 @@ __inline void HalCm_FreeTsResource(
 
     resFreeFlags.AssumeNotInUse = 1;
     osInterface = state->osInterface;
+    if (osInterface == nullptr)
+    {
+        return;
+    }
 
     if (!Mos_ResourceIsNull(&state->renderTimeStampResource.osResource))
     {
@@ -413,6 +417,10 @@ __inline void HalCm_FreeTrackerResources(
 
     resFreeFlags.AssumeNotInUse = 1;
     osInterface = state->osInterface;
+    if (osInterface == nullptr)
+    {
+        return;
+    }
 
     if (!Mos_ResourceIsNull(&state->renderHal->veBoxTrackerRes.osResource))
     {
@@ -522,6 +530,10 @@ __inline void HalCm_FreeCsrResource(
     PMOS_INTERFACE        osInterface  = state->osInterface;
     MOS_GFXRES_FREE_FLAGS resFreeFlags = {0};
 
+    if (osInterface == nullptr)
+    {
+        return;
+    }
     resFreeFlags.AssumeNotInUse = 1;
 
     if (!Mos_ResourceIsNull(&state->csrResource))
@@ -544,6 +556,10 @@ __inline void HalCm_FreeSipResource(
     MOS_STATUS            hr = MOS_STATUS_SUCCESS;
     MOS_GFXRES_FREE_FLAGS resFreeFlags = {0};
 
+    if (osInterface == nullptr)
+    {
+        return;
+    }
     resFreeFlags.AssumeNotInUse = 1;
 
     if (!Mos_ResourceIsNull(&state->sipResource.osResource))

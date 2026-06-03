@@ -433,7 +433,10 @@ int CmSSH::AddScratchSpace(CmScratchSpace *scratch)
 
     // create a surface state for scratch buffer
     CmSurfaceStateBuffer surfState(m_cmhal);
-    surfState.Initialize(scratch->GetResource(), scratch->GetSize());
+    if (surfState.Initialize(scratch->GetResource(), scratch->GetSize()) != CM_SUCCESS)
+    {
+        return -1;
+    }
     surfState.GenerateSurfaceState();
 
     uint8_t *pSS = surfState.GetSurfaceState(0);

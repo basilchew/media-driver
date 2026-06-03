@@ -1455,7 +1455,11 @@ CmSurfaceStateBuffer::CmSurfaceStateBuffer(CM_HAL_STATE *cmhal):
 
 CM_RETURN_CODE CmSurfaceStateBuffer::Initialize(MOS_RESOURCE *resource, uint32_t size)
 {
-    CmSurfaceState::Initialize(resource);
+    CM_RETURN_CODE status = CmSurfaceState::Initialize(resource);
+    if (status != CM_SUCCESS)
+    {
+        return status;
+    }
     m_size = size;
     return CM_SUCCESS;
 }
