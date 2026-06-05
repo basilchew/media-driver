@@ -257,9 +257,11 @@ MOS_STATUS HevcVdencRoi::ExecuteRoi(
         }
     }
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     RoiStrategy *strategy = m_strategyFactory.CreateStrategy(
         m_allocator, m_featureManager, m_osInterface, m_isArbRoi, false, m_isNativeRoi, m_mbQpDataEnabled);
     ENCODE_CHK_NULL_RETURN(strategy);
+    ENCODE_CHK_NULL_RETURN(m_constSettings);
     strategy->SetFeatureSetting(static_cast<HevcVdencFeatureSettings *>(m_constSettings));
     ENCODE_CHK_STATUS_RETURN(
         strategy->PrepareParams(hevcSeqParams, hevcPicParams, hevcSlcParams));
@@ -285,6 +287,7 @@ MOS_STATUS HevcVdencRoi::ExecuteRoiExt(
                                      m_allocator, m_featureManager, m_osInterface);
 
     ENCODE_CHK_NULL_RETURN(strategy);
+    ENCODE_CHK_NULL_RETURN(m_constSettings);
     strategy->SetFeatureSetting(static_cast<HevcVdencFeatureSettings *>(m_constSettings));
     ENCODE_CHK_STATUS_RETURN(
         strategy->PrepareParams(hevcSeqParams, hevcPicParams, hevcSlcParams));
@@ -308,6 +311,7 @@ MOS_STATUS HevcVdencRoi::ExecuteDirtyRoi(
     RoiStrategy *strategy = m_strategyFactory.CreateStrategy(
                                     m_allocator, m_featureManager, m_osInterface, false, true, false);
     ENCODE_CHK_NULL_RETURN(strategy);
+    ENCODE_CHK_NULL_RETURN(m_constSettings);
     strategy->SetFeatureSetting(static_cast<HevcVdencFeatureSettings *>(m_constSettings));
     ENCODE_CHK_STATUS_RETURN(
         strategy->PrepareParams(hevcSeqParams, hevcPicParams, hevcSlcParams));

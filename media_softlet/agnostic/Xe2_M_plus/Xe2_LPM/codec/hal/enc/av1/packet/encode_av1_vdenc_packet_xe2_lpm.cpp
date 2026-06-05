@@ -268,6 +268,7 @@ MOS_STATUS Av1VdencPktXe2_Lpm::AddAqmCommands(PMOS_COMMAND_BUFFER cmdBuffer)
     ENCODE_FUNC_CALL();
     auto eStatus = MOS_STATUS_SUCCESS;
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto aqmFeature = dynamic_cast<Av1EncodeAqm *>(m_featureManager->GetFeature(Av1FeatureIDs::av1Aqm));
     ENCODE_CHK_NULL_RETURN(aqmFeature);
 
@@ -301,6 +302,7 @@ MOS_STATUS Av1VdencPktXe2_Lpm::Completed(void *mfxStatus, void *rcsStatus, void 
     auto eStatus = MOS_STATUS_SUCCESS;
     eStatus = Av1VdencPkt::Completed(mfxStatus, rcsStatus, statusReport);
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto aqmFeature = dynamic_cast<Av1EncodeAqm *>(m_featureManager->GetFeature(Av1FeatureIDs::av1Aqm));
     ENCODE_CHK_NULL_RETURN(aqmFeature);
     if (aqmFeature->IsEnabled())
@@ -349,6 +351,7 @@ MOS_STATUS Av1VdencPktXe2_Lpm::GetAqmPrimitiveCommandsDataSize(uint32_t *command
     ENCODE_CHK_NULL_RETURN(commandsSize);
     ENCODE_CHK_NULL_RETURN(patchListSize);
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto aqmFeature = dynamic_cast<Av1EncodeAqm *>(m_featureManager->GetFeature(Av1FeatureIDs::av1Aqm));
     ENCODE_CHK_NULL_RETURN(aqmFeature);
     if (aqmFeature->IsEnabled())

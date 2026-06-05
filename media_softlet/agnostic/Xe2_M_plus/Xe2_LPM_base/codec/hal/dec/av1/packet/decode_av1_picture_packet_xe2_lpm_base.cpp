@@ -37,6 +37,7 @@ namespace decode
         DECODE_CHK_STATUS(Av1DecodePicPkt::Init());
         DECODE_CHK_STATUS(CalculatePictureStateCommandSize());
 #ifdef _DECODE_PROCESSING_SUPPORTED
+        DECODE_CHK_NULL(m_featureManager);
         m_downSamplingFeature      = dynamic_cast<DecodeDownSamplingFeature *>(m_featureManager->GetFeature(DecodeFeatureIDs::decodeDownSampling));
         DecodeSubPacket *subPacket = m_av1Pipeline->GetSubPacket(DecodePacketId(m_av1Pipeline, downSamplingSubPacketId));
         m_downSamplingPkt          = dynamic_cast<DecodeDownSamplingPkt *>(subPacket);
@@ -101,6 +102,7 @@ namespace decode
         stateCmdSizeParams.bShortFormat    = true;
         stateCmdSizeParams.bHucDummyStream = false;
 #ifdef _DECODE_PROCESSING_SUPPORTED
+        DECODE_CHK_NULL(m_featureManager);
         DecodeDownSamplingFeature *decodeDownSampling =
         dynamic_cast<DecodeDownSamplingFeature *>(m_featureManager->GetFeature(DecodeFeatureIDs::decodeDownSampling));
         stateCmdSizeParams.bSfcInUse = (decodeDownSampling != nullptr);

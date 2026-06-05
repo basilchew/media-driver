@@ -635,11 +635,15 @@ static int
 mos_query_uc_version_xe(struct mos_bufmgr *bufmgr, struct mos_drm_uc_version *version)
 {
     int ret = 0;
+    if (!bufmgr || !version)
+    {
+        return ret;
+    }
     struct mos_xe_bufmgr_gem *bufmgr_gem = (struct mos_xe_bufmgr_gem *)bufmgr;
     int fd = bufmgr_gem->fd;
     struct mos_xe_device *dev = &bufmgr_gem->xe_device;
 
-    if (bufmgr && version && version->uc_type < UC_TYPE_MAX)
+    if (version->uc_type < UC_TYPE_MAX)
     {
         /**
          * Note: query uc version from kmd if no historic data in bufmgr, otherwise using historic data.

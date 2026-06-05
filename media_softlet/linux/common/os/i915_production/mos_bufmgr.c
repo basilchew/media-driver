@@ -2488,6 +2488,10 @@ do_bo_emit_reloc(struct mos_linux_bo *bo, uint32_t offset,
     /* Create a new relocation list if needed */
     if (bo_gem->relocs == nullptr && mos_setup_reloc_list(bo))
         return -ENOMEM;
+    /* Explicit null check after mos_setup_reloc_list()
+     * to verify bo_gem->relocs is non-null before use below. */
+    if (bo_gem->relocs == nullptr)
+        return -ENOMEM;
 
     /* Check overflow */
     assert(bo_gem->reloc_count < bufmgr_gem->max_relocs);

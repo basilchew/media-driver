@@ -1392,8 +1392,6 @@ MOS_STATUS VpRenderHdrKernel::VpHal_HdrColorTransfer3dLut(
 
     VP_PUBLIC_CHK_NULL_RETURN(params);
     VP_PUBLIC_CHK_NULL_RETURN(puOutputX);
-    VP_PUBLIC_CHK_NULL_RETURN(puOutputX);
-    VP_PUBLIC_CHK_NULL_RETURN(puOutputX);
 
     fTempX = (double)fInputX;
     fTempY = (double)fInputY;
@@ -1874,8 +1872,6 @@ MOS_STATUS VpRenderHdrKernel::VpHal_HdrToneMapping3dLut(
     double     fSlope[6] = {};
     double     fIntercept[6] = {};
 
-    VP_PUBLIC_CHK_NULL_RETURN(pfOutputX);
-    VP_PUBLIC_CHK_NULL_RETURN(pfOutputX);
     VP_PUBLIC_CHK_NULL_RETURN(pfOutputX);
 
 #define TONE_MAPPING(Input, Output)                     \

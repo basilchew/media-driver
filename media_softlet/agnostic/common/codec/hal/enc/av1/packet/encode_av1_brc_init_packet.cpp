@@ -72,6 +72,7 @@ namespace encode {
 
         bool firstTaskInPhase = packetPhase & firstPacket;
         bool requestProlog = false;
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto brcFeature = dynamic_cast<Av1Brc*>(m_featureManager->GetFeature(Av1FeatureIDs::av1BrcFeature));
         ENCODE_CHK_NULL_RETURN(brcFeature);
 

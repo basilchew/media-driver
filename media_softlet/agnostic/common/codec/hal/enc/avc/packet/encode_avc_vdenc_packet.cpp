@@ -92,6 +92,7 @@ namespace encode {
 
         ENCODE_CHK_STATUS_RETURN(CmdPacket::Init());
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         m_basicFeature = dynamic_cast<AvcBasicFeature *>(m_featureManager->GetFeature(FeatureIDs::basicFeature));
         ENCODE_CHK_NULL_RETURN(m_basicFeature);
 
@@ -274,6 +275,7 @@ namespace encode {
             m_resMPCRowStoreScratchBuffer       = m_allocator->AllocateResource(allocParamsForBufferLinear, false);
         }
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto brcFeature = dynamic_cast<AvcEncodeBRC*>(m_featureManager->GetFeature(AvcFeatureIDs::avcBrcFeature));
         ENCODE_CHK_NULL_RETURN(brcFeature);
 
@@ -310,12 +312,14 @@ namespace encode {
         // Set flag bIsMdfLoad in remote gaming scenario to boost GPU frequency for low latency
         cmdBuffer.Attributes.bFrequencyBoost = (m_seqParam->ScenarioInfo == ESCENARIO_REMOTEGAMING);
 
+        ENCODE_CHK_NULL_RETURN(m_miItf);
         ENCODE_CHK_STATUS_RETURN(m_miItf->SetWatchdogTimerThreshold(m_basicFeature->m_frameWidth, m_basicFeature->m_frameHeight, true));
 
         SetPerfTag(m_pipeline->IsFirstPass() ? CODECHAL_ENCODE_PERFTAG_CALL_PAK_ENGINE : CODECHAL_ENCODE_PERFTAG_CALL_PAK_ENGINE_SECOND_PASS,
             (uint16_t)m_basicFeature->m_mode,
             m_basicFeature->m_pictureCodingType);
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto brcFeature = dynamic_cast<AvcEncodeBRC*>(m_featureManager->GetFeature(AvcFeatureIDs::avcBrcFeature));
         ENCODE_CHK_NULL_RETURN(brcFeature);
 
@@ -515,6 +519,7 @@ namespace encode {
         ENCODE_CHK_STATUS_RETURN(PrepareHWMetaData(&cmdBuffer));
         ENCODE_CHK_STATUS_RETURN(ReadMfcStatus(cmdBuffer));
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto brcFeature = dynamic_cast<AvcEncodeBRC*>(m_featureManager->GetFeature(AvcFeatureIDs::avcBrcFeature));
         ENCODE_CHK_NULL_RETURN(brcFeature);
 
@@ -1541,6 +1546,7 @@ namespace encode {
     {
         ENCODE_FUNC_CALL();
 
+        ENCODE_CHK_NULL_RETURN(m_vdencItf);
         SETPAR_AND_ADDCMD(VDENC_PIPE_MODE_SELECT, m_vdencItf, &cmdBuffer);
         SETPAR_AND_ADDCMD(VDENC_SRC_SURFACE_STATE, m_vdencItf, &cmdBuffer);
         SETPAR_AND_ADDCMD(VDENC_REF_SURFACE_STATE, m_vdencItf, &cmdBuffer);
@@ -1560,6 +1566,7 @@ namespace encode {
 
         ENCODE_CHK_STATUS_RETURN(AddAllCmds_MFX_AVC_WEIGHTOFFSET_STATE(cmdBuffer));
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto brcFeature = dynamic_cast<AvcEncodeBRC *>(m_featureManager->GetFeature(AvcFeatureIDs::avcBrcFeature));
         ENCODE_CHK_NULL_RETURN(brcFeature);
 
@@ -2415,6 +2422,7 @@ namespace encode {
         auto &params = m_mfxItf->MHW_GETPAR_F(MFX_AVC_WEIGHTOFFSET_STATE)();
         params       = {};
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto wpFeature = dynamic_cast<AvcVdencWeightedPred *>(m_featureManager->GetFeature(AvcFeatureIDs::avcVdencWpFeature));
         ENCODE_CHK_NULL_RETURN(wpFeature);
 
@@ -2473,6 +2481,7 @@ namespace encode {
 
     MHW_SETPAR_DECL_SRC(MFX_AVC_IMG_STATE, AvcVdencPkt)
     {
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto brcFeature = dynamic_cast<AvcEncodeBRC*>(m_featureManager->GetFeature(AvcFeatureIDs::avcBrcFeature));
         ENCODE_CHK_NULL_RETURN(brcFeature);
 
@@ -2549,6 +2558,7 @@ namespace encode {
             "EncodeStatusReport_Buffer"));
 
         // BRC non-native ROI dump as HuC_region8[in], HuC_region9[in] and HuC_region10[out]
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto brcFeature = dynamic_cast<AvcEncodeBRC*>(m_featureManager->GetFeature(AvcFeatureIDs::avcBrcFeature));
         auto streamInFeature = dynamic_cast<AvcVdencStreamInFeature*>(m_featureManager->GetFeature(AvcFeatureIDs::avcVdencStreamInFeature));
         bool isVdencBrcEnabled = brcFeature && brcFeature->IsVdencBrcEnabled();
@@ -2658,6 +2668,7 @@ namespace encode {
 
         std::string SurfName = "Pak_VDEnc_Pass[" + std::to_string(static_cast<uint32_t>(m_pipeline->GetCurrentPass())) + "]";
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto brcFeature = dynamic_cast<AvcEncodeBRC *>(m_featureManager->GetFeature(AvcFeatureIDs::avcBrcFeature));
         ENCODE_CHK_NULL_RETURN(brcFeature);
 

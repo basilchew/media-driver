@@ -81,6 +81,7 @@ namespace encode {
             // Send command buffer header at the beginning (OS dependent)
             requestProlog = true;
         }
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto brcFeature = dynamic_cast<HEVCEncodeBRC*>(m_featureManager->GetFeature(HevcFeatureIDs::hevcBrcFeature));
         ENCODE_CHK_NULL_RETURN(brcFeature);
         ENCODE_CHK_STATUS_RETURN(Execute(commandBuffer, true, requestProlog, BRC_INIT));

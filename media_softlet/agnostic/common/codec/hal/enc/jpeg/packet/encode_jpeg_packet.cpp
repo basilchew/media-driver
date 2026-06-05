@@ -63,6 +63,7 @@ namespace encode {
 
         ENCODE_CHK_STATUS_RETURN(CmdPacket::Init());
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         m_basicFeature = dynamic_cast<JpegBasicFeature *>(m_featureManager->GetFeature(FeatureIDs::basicFeature));
         ENCODE_CHK_NULL_RETURN(m_basicFeature);
 

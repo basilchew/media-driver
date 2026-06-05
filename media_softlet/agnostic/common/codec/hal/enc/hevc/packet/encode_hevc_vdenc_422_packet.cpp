@@ -435,6 +435,7 @@ MHW_SETPAR_DECL_SRC(HCP_PIC_STATE, HevcVdencPkt422)
     ENCODE_CHK_NULL_RETURN(m_basicFeature->m_hevcSeqParams);
     if (m_basicFeature->m_hevcSeqParams->RateControlMethod == RATECONTROL_CBR)
     {
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto brcFeature = dynamic_cast<HEVCEncodeBRC *>(m_featureManager->GetFeature(HevcFeatureIDs::hevcBrcFeature));
         ENCODE_CHK_NULL_RETURN(brcFeature);
 

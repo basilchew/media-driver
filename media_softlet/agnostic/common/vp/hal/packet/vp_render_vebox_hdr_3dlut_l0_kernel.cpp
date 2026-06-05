@@ -574,6 +574,10 @@ void VpRenderHdr3DLutL0Kernel::DumpSurfaces()
     {
         if (arg.eArgKind == ARG_KIND_SURFACE)
         {
+            if (arg.pData == nullptr)
+            {
+                continue;
+            }
             for (uint32_t idx = 0; idx < arg.uSize / (sizeof(SurfaceType) * 2); idx++)
             {
                 uint32_t   *pSurfaceindex = (uint32_t *)(arg.pData) + idx;

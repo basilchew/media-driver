@@ -32,6 +32,7 @@ MediaLibvaCapsNext::MediaLibvaCapsNext(DDI_MEDIA_CONTEXT *mediaCtx)
     DDI_CHK_NULL(mediaCtx,    "Media context is null", );
     m_mediaCtx  = mediaCtx;
 
+    DDI_CHK_NULL(mediaCtx->m_hwInfo, "nullptr m_hwInfo", );
     m_capsTable = MOS_New(MediaCapsTableSpecific, mediaCtx->m_hwInfo->GetDeviceInfo());
     DDI_CHK_NULL(m_capsTable, "Caps table is null", );
 }

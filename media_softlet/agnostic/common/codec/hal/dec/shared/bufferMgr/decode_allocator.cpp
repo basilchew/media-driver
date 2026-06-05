@@ -388,6 +388,7 @@ MOS_STATUS DecodeAllocator::Resize(MOS_BUFFER* &buffer, const uint32_t sizeNew,
     {
         if (clearData)
         {
+            DECODE_CHK_NULL(m_allocator);
             if(m_allocator->OsFillResource(&buffer->OsResource, buffer->size, 0) != MOS_STATUS_SUCCESS)
             {
                 DECODE_ASSERTMESSAGE("Failed to clear buffer data");

@@ -192,6 +192,7 @@ namespace encode{
         ENCODE_CHK_NULL_RETURN(m_statusReport);
         ENCODE_CHK_STATUS_RETURN(CmdPacket::Init());
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         m_basicFeature = dynamic_cast<Av1BasicFeature *>(m_featureManager->GetFeature(Av1FeatureIDs::basicFeature));
         ENCODE_CHK_NULL_RETURN(m_basicFeature);
 
@@ -1875,6 +1876,7 @@ namespace encode{
     {
         ENCODE_FUNC_CALL();
         uint32_t tileNum     = 0;
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto     tileFeature = dynamic_cast<Av1EncodeTile *>(m_featureManager->GetFeature(Av1FeatureIDs::encodeTile));
         ENCODE_CHK_NULL_RETURN(tileFeature);
         ENCODE_CHK_STATUS_RETURN(tileFeature->GetTileNum(tileNum));
@@ -1983,9 +1985,11 @@ namespace encode{
         storeDataParams.pOsResource      = m_basicFeature->m_resMetadataBuffer;
         storeDataParams.dwResourceOffset = resourceOffset.dwEncodeErrorFlags;
         storeDataParams.dwValue          = 0;
+        ENCODE_CHK_NULL_RETURN(m_miItf);
         ENCODE_CHK_STATUS_RETURN(m_miItf->MHW_ADDCMD_F(MI_STORE_DATA_IMM)(cmdBuffer));
 
         uint32_t tileNum     = 0;
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto     tileFeature = dynamic_cast<Av1EncodeTile *>(m_featureManager->GetFeature(Av1FeatureIDs::encodeTile));
         ENCODE_CHK_NULL_RETURN(tileFeature);
         ENCODE_CHK_STATUS_RETURN(tileFeature->GetTileNum(tileNum));

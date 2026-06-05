@@ -559,6 +559,7 @@ MOS_STATUS Vp9DynamicScalPktXe_Lpm_Plus_Base::ReadImageStatus(MOS_COMMAND_BUFFER
     miStoreRegMemParams.dwRegister      = mmioRegisters->mfcImageStatusCtrlRegOffset;
     ENCODE_CHK_STATUS_RETURN(m_miItf->MHW_ADDCMD_F(MI_STORE_REGISTER_MEM)(&cmdBuffer));
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto brcFeature = dynamic_cast<Vp9EncodeBrc *>(m_featureManager->GetFeature(Vp9FeatureIDs::vp9BrcFeature));
     ENCODE_CHK_NULL_RETURN(brcFeature);
 
@@ -663,6 +664,7 @@ MHW_SETPAR_DECL_SRC(HCP_PIPE_MODE_SELECT, Vp9DynamicScalPktXe_Lpm_Plus_Base)
     params.codecStandardSelect = CODEC_STANDARD_SELECT_VP9;
     params.codecSelect         = CODEC_SELECT_ENCODE;
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto brcFeature = dynamic_cast<Vp9EncodeBrc *>(m_featureManager->GetFeature(Vp9FeatureIDs::vp9BrcFeature));
     ENCODE_CHK_NULL_RETURN(brcFeature);
 

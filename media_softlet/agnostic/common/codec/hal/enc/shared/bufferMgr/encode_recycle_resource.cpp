@@ -60,7 +60,10 @@ RecycleResource::~RecycleResource()
     for (auto pair : m_resourceQueues)
     {
         auto que = pair.second;
-        que->DestroyAllResources(m_allocator);
+        if (que && m_allocator)
+        {
+            que->DestroyAllResources(m_allocator);
+        }
         MOS_Delete(que);
     }
     m_resourceQueues.clear();

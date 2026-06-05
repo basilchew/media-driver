@@ -664,6 +664,7 @@ MHW_SETPAR_DECL_SRC(HCP_PIPE_MODE_SELECT, Vp9VdencPktXe_Lpm_Plus_Base)
     params.codecStandardSelect = CODEC_STANDARD_SELECT_VP9;
     params.codecSelect         = CODEC_SELECT_ENCODE;
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto brcFeature = dynamic_cast<Vp9EncodeBrc *>(m_featureManager->GetFeature(Vp9FeatureIDs::vp9BrcFeature));
     ENCODE_CHK_NULL_RETURN(brcFeature);
 

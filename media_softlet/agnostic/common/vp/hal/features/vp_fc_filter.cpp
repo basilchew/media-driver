@@ -278,6 +278,7 @@ MOS_STATUS VpFcFilter::CalculateCompParams(VP_COMPOSITE_PARAMS &compParams)
 
         if (params->isChromaUpSamplingNeeded || params->isChromaDownSamplingNeeded)
         {
+            VP_RENDER_CHK_NULL_RETURN(m_pvpMhwInterface);
             if (!MEDIA_IS_WA(m_pvpMhwInterface->m_waTable, WaEnableDscale)                      ||
                 (MEDIA_IS_WA(m_pvpMhwInterface->m_waTable, WaEnableDscale)                      &&
                  layer->scalingMode == VPHAL_SCALING_BILINEAR  &&

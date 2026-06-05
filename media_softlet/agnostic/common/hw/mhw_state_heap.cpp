@@ -1342,12 +1342,14 @@ MOS_STATUS XMHW_STATE_HEAP_INTERFACE::LockStateHeap(
         return eStatus;
     }
 
+    MHW_CHK_NULL_RETURN(m_pOsInterface);
     pOsInterface = m_pOsInterface;
 
     MOS_ZeroMemory(&LockParams, sizeof(LockParams));
     LockParams.WriteOnly = 1;
     LockParams.NoOverWrite = 1;
     LockParams.Uncached = 1;
+    MHW_CHK_NULL_RETURN(pStateHeap);
     pStateHeap->pvLockedHeap =
         pOsInterface->pfnLockResource(pOsInterface, &pStateHeap->resHeap, &LockParams);
     MHW_CHK_NULL_RETURN(pStateHeap->pvLockedHeap);
@@ -1368,6 +1370,7 @@ MOS_STATUS  XMHW_STATE_HEAP_INTERFACE::UnLockStateHeap(
         return eStatus;
     }
 
+    MHW_CHK_NULL_RETURN(m_pOsInterface);
     MHW_CHK_STATUS_RETURN(m_pOsInterface->pfnUnlockResource(m_pOsInterface, &pStateHeap->resHeap));
 
     pStateHeap->pvLockedHeap = nullptr;

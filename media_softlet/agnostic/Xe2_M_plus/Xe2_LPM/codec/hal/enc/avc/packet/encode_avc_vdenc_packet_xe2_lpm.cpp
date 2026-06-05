@@ -45,6 +45,7 @@ namespace encode
         auto eStatus = MOS_STATUS_SUCCESS;
         eStatus      = AvcVdencPkt::Completed(mfxStatus, rcsStatus, statusReport);
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto aqmFeature = dynamic_cast<AvcEncodeAqm *>(m_featureManager->GetFeature(AvcFeatureIDs::avcAqm));
         ENCODE_CHK_NULL_RETURN(aqmFeature);
         if (aqmFeature->IsEnabled())
@@ -89,6 +90,7 @@ namespace encode
 
         AvcVdencPkt::AddPictureVdencCommands(cmdBuffer);
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto aqmFeature = dynamic_cast<AvcEncodeAqm *>(m_featureManager->GetFeature(AvcFeatureIDs::avcAqm));
         ENCODE_CHK_NULL_RETURN(aqmFeature);
         if (aqmFeature->IsEnabled())
@@ -108,6 +110,7 @@ namespace encode
 
         AvcVdencPkt::SendSlice(cmdBuffer);
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto aqmFeature = dynamic_cast<AvcEncodeAqm *>(m_featureManager->GetFeature(AvcFeatureIDs::avcAqm));
         ENCODE_CHK_NULL_RETURN(aqmFeature);
         if (aqmFeature->IsEnabled())
@@ -122,6 +125,7 @@ namespace encode
     {
         AvcVdencPkt::MHW_SETPAR_F(VD_PIPELINE_FLUSH)(params);
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto aqmFeature = dynamic_cast<AvcEncodeAqm *>(m_featureManager->GetFeature(AvcFeatureIDs::avcAqm));
         ENCODE_CHK_NULL_RETURN(aqmFeature);
         if (aqmFeature->IsEnabled())

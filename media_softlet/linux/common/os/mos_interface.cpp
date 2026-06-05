@@ -654,6 +654,7 @@ MOS_STATUS MosInterface::SetGpuContext(
 {
     MOS_OS_FUNCTION_ENTER;
 
+    MOS_OS_CHK_NULL_RETURN(streamState->osDeviceContext);
     auto gpuContextMgr = streamState->osDeviceContext->GetGpuContextMgr();
     MOS_OS_CHK_NULL_RETURN(gpuContextMgr);
     auto gpuContextPtr = gpuContextMgr->GetGpuContext(gpuContext);

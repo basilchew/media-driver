@@ -2749,6 +2749,7 @@ VAStatus MediaLibvaInterfaceNext::DeriveImage (
             vaimg->offsets[i]           = mediaSurface->pSurfDesc->uiOffsets[i];
         }
     }
+    DDI_CHK_NULL(mediaCtx->m_capsNext, "nullptr m_capsNext", VA_STATUS_ERROR_INVALID_CONTEXT);
     mediaCtx->m_capsNext->PopulateColorMaskInfo(&vaimg->format);
 
     buf = MOS_New(DDI_MEDIA_BUFFER);

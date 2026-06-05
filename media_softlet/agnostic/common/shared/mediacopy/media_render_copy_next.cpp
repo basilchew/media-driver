@@ -301,6 +301,7 @@ MOS_STATUS RenderCopyStateNext::SubmitCMD()
     m_osInterface->pfnResetOsStates(pOsInterface);
 
     // Register the resource of GSH
+    MCPY_CHK_NULL_RETURN(pRenderHal);
     MCPY_CHK_STATUS_RETURN(pRenderHal->pfnReset(pRenderHal));
 
     // Set copy kernel

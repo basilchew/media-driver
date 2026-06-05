@@ -659,6 +659,7 @@ namespace decode
     MOS_STATUS VvcDecodeS2LPkt::SetDmemBuffer()
     {
         DECODE_FUNC_CALL();
+        DECODE_CHK_NULL(m_vvcS2lDmemBufferArray);
         PMOS_BUFFER dmemBuf = m_vvcS2lDmemBufferArray->Peek();
         DECODE_CHK_NULL(dmemBuf);
         ResourceAutoLock resLock(m_allocator, &dmemBuf->OsResource);

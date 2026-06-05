@@ -35,6 +35,7 @@ namespace encode {
     {
         ENCODE_FUNC_CALL();
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         m_basicFeature = dynamic_cast<HevcBasicFeature *>(m_featureManager->GetFeature(HevcFeatureIDs::basicFeature));
         ENCODE_CHK_NULL_RETURN(m_basicFeature);
 
@@ -149,6 +150,7 @@ namespace encode {
         uint16_t perfTag = CODECHAL_ENCODE_PERFTAG_CALL_PAK_KERNEL;
         SetPerfTag(perfTag, (uint16_t)m_basicFeature->m_mode, m_basicFeature->m_pictureCodingType);
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto brcFeature = dynamic_cast<HEVCEncodeBRC *>(m_featureManager->GetFeature(HevcFeatureIDs::hevcBrcFeature));
         ENCODE_CHK_NULL_RETURN(brcFeature);
 
@@ -237,6 +239,7 @@ namespace encode {
     {
         ENCODE_FUNC_CALL();
         ENCODE_CHK_NULL_RETURN(cmdBuffer);
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto brcFeature = dynamic_cast<HEVCEncodeBRC *>(m_featureManager->GetFeature(HevcFeatureIDs::hevcBrcFeature));
         ENCODE_CHK_NULL_RETURN(brcFeature);
         if (m_pipeline->GetPipeNum() <= 1 && m_pipeline->IsSingleTaskPhaseSupported())
@@ -306,6 +309,7 @@ namespace encode {
         params.resImageStatusCtrl    = osResource;
         params.imageStatusCtrlOffset = offset;
 
+        ENCODE_CHK_NULL_RETURN(m_hwInterface);
         ENCODE_CHK_STATUS_RETURN(m_hwInterface->ReadHcpStatus(vdboxIndex, params, &cmdBuffer));
 
         // Slice Size Conformance
@@ -313,6 +317,7 @@ namespace encode {
         {
             RUN_FEATURE_INTERFACE_RETURN(HevcEncodeDss, HevcFeatureIDs::hevcVdencDssFeature, ReadHcpStatus, vdboxIndex, cmdBuffer);
         }
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto brcFeature = dynamic_cast<HEVCEncodeBRC *>(m_featureManager->GetFeature(HevcFeatureIDs::hevcBrcFeature));
         ENCODE_CHK_NULL_RETURN(brcFeature);
         bool vdencHucUsed  = brcFeature->IsVdencHucUsed();
@@ -1092,14 +1097,17 @@ namespace encode {
         //uint32_t baseOffset = (m_encodeStatusBuf.wCurrIndex * m_encodeStatusBuf.dwReportSize) + sizeof(uint32_t) * 2;  // encodeStatus is offset by 2 DWs in the resource
 
         // Write back the HCP image control register for RC6 may clean it out
+        ENCODE_CHK_NULL_RETURN(m_miItf);
         auto &registerMemParams           = m_miItf->MHW_GETPAR_F(MI_LOAD_REGISTER_MEM)();
         registerMemParams                 = {};
         registerMemParams.presStoreBuffer = osResource;
         registerMemParams.dwOffset        = offset;
         registerMemParams.dwRegister      = mmioRegisters->hcpEncImageStatusCtrlRegOffset;
+        ENCODE_CHK_NULL_RETURN(m_miItf);
         ENCODE_CHK_STATUS_RETURN(m_miItf->MHW_ADDCMD_F(MI_LOAD_REGISTER_MEM)(&cmdBuffer));
 
         HevcVdencBrcBuffers *vdencBrcBuffers = nullptr;
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto                 feature         = dynamic_cast<HEVCEncodeBRC *>(m_featureManager->GetFeature(HevcFeatureIDs::hevcBrcFeature));
         ENCODE_CHK_NULL_RETURN(feature);
         vdencBrcBuffers = feature->GetHevcVdencBrcBuffers();

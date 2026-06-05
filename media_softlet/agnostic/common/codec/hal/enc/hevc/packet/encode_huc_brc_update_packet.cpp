@@ -1196,6 +1196,7 @@ namespace encode
 
         auto &params                 = m_hcpItf->MHW_GETPAR_F(HCP_WEIGHTOFFSET_STATE)();
         params                       = {};
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto wpFeature = dynamic_cast<HevcVdencWeightedPred *>(m_featureManager->GetFeature(HevcFeatureIDs::hevcVdencWpFeature));
         ENCODE_CHK_NULL_RETURN(wpFeature);
 

@@ -47,6 +47,7 @@ MOS_STATUS Vp9VdencPkt::Init()
     ENCODE_CHK_NULL_RETURN(m_statusReport);
     ENCODE_CHK_STATUS_RETURN(CmdPacket::Init());
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     m_basicFeature = dynamic_cast<Vp9BasicFeature *>(m_featureManager->GetFeature(Vp9FeatureIDs::basicFeature));
     ENCODE_CHK_NULL_RETURN(m_basicFeature);
 
@@ -1046,6 +1047,7 @@ MOS_STATUS Vp9VdencPkt::SetVdencPipeModeSelectParams(MHW_VDBOX_PIPE_MODE_SELECT_
 {
     ENCODE_FUNC_CALL();
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto brcFeature = dynamic_cast<Vp9EncodeBrc *>(m_featureManager->GetFeature(Vp9FeatureIDs::vp9BrcFeature));
     ENCODE_CHK_NULL_RETURN(brcFeature);
 
@@ -1239,8 +1241,10 @@ MOS_STATUS Vp9VdencPkt::ReadHcpStatus(
     miStoreRegMemParams.presStoreBuffer = params.resBitstreamByteCountPerFrame;
     miStoreRegMemParams.dwOffset        = params.bitstreamByteCountPerFrameOffset;
     miStoreRegMemParams.dwRegister      = mmioRegisters->hcpVp9EncBitstreamBytecountFrameRegOffset;
+    ENCODE_CHK_NULL_RETURN(m_miItf);
     ENCODE_CHK_STATUS_RETURN(m_miItf->MHW_ADDCMD_F(MI_STORE_REGISTER_MEM)(&cmdBuffer));
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto brcFeature = dynamic_cast<Vp9EncodeBrc *>(m_featureManager->GetFeature(Vp9FeatureIDs::vp9BrcFeature));
     ENCODE_CHK_NULL_RETURN(brcFeature);
 
@@ -1768,6 +1772,7 @@ MHW_SETPAR_DECL_SRC(HCP_PIPE_MODE_SELECT, Vp9VdencPkt)
     params.codecStandardSelect = CODEC_STANDARD_SELECT_VP9;
     params.codecSelect         = CODEC_SELECT_ENCODE;
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto brcFeature = dynamic_cast<Vp9EncodeBrc *>(m_featureManager->GetFeature(Vp9FeatureIDs::vp9BrcFeature));
     ENCODE_CHK_NULL_RETURN(brcFeature);
 

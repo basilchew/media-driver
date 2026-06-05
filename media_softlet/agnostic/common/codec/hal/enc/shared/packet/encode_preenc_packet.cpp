@@ -43,6 +43,7 @@ namespace encode
         ENCODE_CHK_NULL_RETURN(m_statusReport);
 
         ENCODE_CHK_STATUS_RETURN(CmdPacket::Init());
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         m_basicFeature = dynamic_cast<PreEncBasicFeature *>(m_featureManager->GetFeature(FeatureIDs::preEncFeature));
         ENCODE_CHK_NULL_RETURN(m_basicFeature);
         ENCODE_CHK_STATUS_RETURN(m_basicFeature->GetEncodeMode(m_encodeMode));

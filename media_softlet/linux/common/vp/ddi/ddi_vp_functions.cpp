@@ -2997,6 +2997,7 @@ VAStatus DdiVpFunctions::SetColorBalanceParams(
         case VAProcColorBalanceAutoContrast:
         if (SURF_IN_PRIMARY == src->SurfType)
         {
+            DDI_VP_CHK_NULL(src->pColorPipeParams, "nullptr src->pColorPipeParams", VA_STATUS_ERROR_INVALID_PARAMETER);
             src->pColorPipeParams->bEnableACE     = true;
             src->pColorPipeParams->dwAceLevel     = ACE_LEVEL_DEFAULT;
             src->pColorPipeParams->dwAceStrength  = ACE_STRENGTH_DEFAULT;
