@@ -259,6 +259,13 @@ VP_SURFACE *VpAllocator::AllocateVpSurface(VPHAL_SURFACE &vphalSurf)
     osSurface.Format                            = vphalSurf.Format;
     osSurface.OsResource                        = vphalSurf.OsResource;
 
+    if (!m_allocator)
+    {
+        VP_RENDER_ASSERTMESSAGE("m_allocator is nullptr");
+        MOS_Delete(surf->osSurface);
+        MOS_Delete(surf);
+        return nullptr;
+    }
     if (MOS_FAILED(m_allocator->GetSurfaceInfo(&osSurface.OsResource, &osSurface)))
     {
         MOS_Delete(surf->osSurface);
@@ -1290,6 +1297,11 @@ bool VpAllocator::IsSyncFreeNeededForMMCSurface(PMOS_SURFACE pOsSurface)
         return false;
     }
 
+    if (!m_allocator)
+    {
+        VP_RENDER_ASSERTMESSAGE("m_allocator is nullptr");
+        return false;
+    }
     return (m_allocator->isSyncFreeNeededForMMCSurface(pOsSurface));
 }
 

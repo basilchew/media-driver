@@ -784,6 +784,7 @@ VAStatus DdiDecodeFunctions::MapBufferInternal(
                     *pbuf = (void *)((uint8_t*)(bufMgr->Codec_Param.Codec_Param_HEVC.pVASliceParaBufBaseHEVC) + buf->uiOffset);
                 else
                 {
+                    DDI_CODEC_CHK_NULL(decCtx->m_ddiDecodeNext, "nullptr m_ddiDecodeNext", VA_STATUS_ERROR_INVALID_CONTEXT);
                     if (!decCtx->m_ddiDecodeNext->IsRextProfile())
                         *pbuf = (void *)((uint8_t*)(bufMgr->Codec_Param.Codec_Param_HEVC.pVASliceParaBufHEVC) + buf->uiOffset);
                     else
@@ -1021,6 +1022,7 @@ VAStatus DdiDecodeFunctions::StatusCheck(
     PDDI_DECODE_CONTEXT decCtx = (decltype(decCtx))surface->pDecCtx;
     MediaLibvaUtilNext_LockGuard guard(&mediaCtx->SurfaceMutex);
 
+    DDI_CODEC_CHK_NULL(decCtx, "nullptr decCtx", VA_STATUS_SUCCESS);
     Codechal *codecHal = decCtx->pCodecHal;
     // return success just avoid vaDestroyContext is ahead of vaSyncSurface
     DDI_CODEC_CHK_NULL(codecHal, "nullptr decCtx->pCodecHal", VA_STATUS_SUCCESS);

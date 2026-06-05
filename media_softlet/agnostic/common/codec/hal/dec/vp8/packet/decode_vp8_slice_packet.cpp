@@ -31,6 +31,7 @@ namespace decode
     {
         DECODE_FUNC_CALL();
 
+        DECODE_CHK_NULL(m_featureManager);
         m_vp8BasicFeature = dynamic_cast<Vp8BasicFeature*>(m_featureManager->GetFeature(FeatureIDs::basicFeature));
         m_allocator = m_pipeline ->GetDecodeAllocator();
         m_decodecp = m_pipeline->GetDecodeCp();

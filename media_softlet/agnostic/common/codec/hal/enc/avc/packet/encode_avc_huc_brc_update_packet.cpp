@@ -495,6 +495,7 @@ MHW_SETPAR_DECL_SRC(MFX_AVC_IMG_STATE, AvcHucBrcUpdatePkt)
 
 MHW_SETPAR_DECL_SRC(HUC_IMEM_STATE, AvcHucBrcUpdatePkt)
 {
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto setting = static_cast<AvcVdencFeatureSettings *>(m_featureManager->GetFeatureSettings()->GetConstSettings());
     ENCODE_CHK_NULL_RETURN(setting);
 

@@ -65,6 +65,7 @@ MOS_STATUS HevcVdencPktXe2_Lpm_Base::AddAQMCommands(
     ENCODE_FUNC_CALL();
     auto eStatus = MOS_STATUS_SUCCESS;
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto aqmFeature = dynamic_cast<HevcEncodeAqm *>(m_featureManager->GetFeature(HevcFeatureIDs::hevcAqm));
     ENCODE_CHK_NULL_RETURN(aqmFeature);
     if (aqmFeature->IsEnabled())
@@ -207,6 +208,7 @@ MOS_STATUS HevcVdencPktXe2_Lpm_Base::SendHwSliceEncodeCommand(const PCODEC_ENCOD
     auto eStatus = MOS_STATUS_SUCCESS;
     eStatus      = HevcVdencPkt::SendHwSliceEncodeCommand(slcData, currSlcIdx, cmdBuffer);
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto aqmFeature = dynamic_cast<HevcEncodeAqm *>(m_featureManager->GetFeature(HevcFeatureIDs::hevcAqm));
     ENCODE_CHK_NULL_RETURN(aqmFeature);
     if (aqmFeature->IsEnabled())
@@ -223,6 +225,7 @@ MOS_STATUS HevcVdencPktXe2_Lpm_Base::Completed(void *mfxStatus, void *rcsStatus,
     auto eStatus = MOS_STATUS_SUCCESS;
     eStatus      = HevcVdencPkt::Completed(mfxStatus, rcsStatus, statusReport);
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto aqmFeature = dynamic_cast<HevcEncodeAqm *>(m_featureManager->GetFeature(HevcFeatureIDs::hevcAqm));
     ENCODE_CHK_NULL_RETURN(aqmFeature);
     if (aqmFeature->IsEnabled())
@@ -257,6 +260,7 @@ MOS_STATUS HevcVdencPktXe2_Lpm_Base::EnsureAllCommandsExecuted(MOS_COMMAND_BUFFE
         // Add PPC fulsh
         flushDwParams.bEnablePPCFlush = true;
     }
+    ENCODE_CHK_NULL_RETURN(m_miItf);
     ENCODE_CHK_STATUS_RETURN(m_miItf->MHW_ADDCMD_F(MI_FLUSH_DW)(&cmdBuffer));
 
     return MOS_STATUS_SUCCESS;
@@ -266,6 +270,7 @@ MHW_SETPAR_DECL_SRC(VD_PIPELINE_FLUSH, HevcVdencPktXe2_Lpm_Base)
 {
     HevcVdencPkt::MHW_SETPAR_F(VD_PIPELINE_FLUSH)(params);
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto aqmFeature = dynamic_cast<HevcEncodeAqm *>(m_featureManager->GetFeature(HevcFeatureIDs::hevcAqm));
     ENCODE_CHK_NULL_RETURN(aqmFeature);
     if (aqmFeature->IsEnabled())

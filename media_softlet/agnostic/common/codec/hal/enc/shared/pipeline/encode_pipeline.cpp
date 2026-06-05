@@ -263,6 +263,7 @@ MOS_STATUS EncodePipeline::WaitForBatchBufferComplete()
 
     const uint32_t completedFrames = m_statusReport->GetCompletedCount();
 
+    ENCODE_CHK_NULL_RETURN(m_hwInterface);
     if (!m_hwInterface->IsSimActive() &&
         m_recycledBufStatusNum[m_currRecycledBufIdx] > completedFrames)
     {

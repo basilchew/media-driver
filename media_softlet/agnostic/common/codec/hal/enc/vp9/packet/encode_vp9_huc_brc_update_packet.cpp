@@ -192,6 +192,7 @@ MOS_STATUS Vp9HucBrcUpdatePkt::SetDmemBuffer() const
 {
     ENCODE_FUNC_CALL();
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto brcFeature = dynamic_cast<Vp9EncodeBrc *>(m_featureManager->GetFeature(Vp9FeatureIDs::vp9BrcFeature));
     ENCODE_CHK_NULL_RETURN(brcFeature);
 
@@ -309,6 +310,7 @@ MHW_SETPAR_DECL_SRC(HUC_VIRTUAL_ADDR_STATE, Vp9HucBrcUpdatePkt)
 
     params.function = BRC_UPDATE;
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto brcFeature = dynamic_cast<Vp9EncodeBrc *>(m_featureManager->GetFeature(Vp9FeatureIDs::vp9BrcFeature));
     ENCODE_CHK_NULL_RETURN(brcFeature);
 

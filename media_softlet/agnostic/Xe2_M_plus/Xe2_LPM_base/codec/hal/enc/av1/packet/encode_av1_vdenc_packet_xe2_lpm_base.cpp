@@ -317,6 +317,7 @@ MOS_STATUS Av1VdencPktXe2_Lpm_Base::RegisterPostCdef()
     allocParamsForBuffer2D.Format   = Format_NV12;
     allocParamsForBuffer2D.dwWidth  = MOS_ALIGN_CEIL(m_basicFeature->m_frameWidth, av1SuperBlockWidth);
     allocParamsForBuffer2D.dwHeight = MOS_ALIGN_CEIL(m_basicFeature->m_frameHeight, av1SuperBlockHeight);
+    ENCODE_CHK_NULL_RETURN(m_mmcState);
     if (m_mmcState->IsMmcEnabled())
     {
         allocParamsForBuffer2D.CompressionMode = MOS_MMC_MC;

@@ -79,6 +79,7 @@ MOS_STATUS VpFeatureManagerNext::CreateHwFilterPipe(SwFilterPipe &swFilterPipe, 
     MOS_STATUS status = MOS_STATUS_SUCCESS;
     pHwFilterPipe = nullptr;
 
+    VP_PUBLIC_CHK_NULL_RETURN(m_policy);
     status = m_vpInterface.GetHwFilterPipeFactory().Create(swFilterPipe, *m_policy, pHwFilterPipe);
 
     VP_PUBLIC_CHK_STATUS_RETURN(status);

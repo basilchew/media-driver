@@ -1259,7 +1259,7 @@ PMHW_STATE_HEAP_MEMORY_BLOCK MHW_BLOCK_MANAGER::AllocateWithScratchSpace(
             {
                 // Search for scratch space at the end of the heap towards the beginning
                 // This model allows for better growth without collision with media state heaps
-                for (pScratch = pStateHeap->pMemoryTail; pScratch != pBlock; pScratch = pScratch->pHeapPrev)
+                for (pScratch = pStateHeap->pMemoryTail; pScratch && pScratch != pBlock; pScratch = pScratch->pHeapPrev)
                 {
                     if (pScratch->BlockState == MHW_BLOCK_STATE_FREE &&
                         pScratch->dwBlockSize >= dwScratchNeeded)
@@ -1668,6 +1668,10 @@ PMHW_STATE_HEAP_MEMORY_BLOCK MHW_BLOCK_MANAGER::AllocateMultiple(
     }
 
     // Loop to try loading all kernels into the same heap
+    if (!pStateHeap)
+    {
+        return nullptr;
+    }
     do {
         if ( (!bHeapAffinity) ||                   // no affinity set -> blocks can be spread across multiple heaps
               pStateHeap->dwFree >= dwTotalSize)   // this heap has enough free space

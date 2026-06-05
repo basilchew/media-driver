@@ -419,6 +419,8 @@ MOS_STATUS Vp9HpuPkt::CalculateCommandSize(uint32_t &commandBufferSize, uint32_t
     uint32_t                       hucPatchListSize = 0;
     MHW_VDBOX_STATE_CMDSIZE_PARAMS stateCmdSizeParams;
 
+    ENCODE_CHK_NULL_RETURN(m_basicFeature);
+    ENCODE_CHK_NULL_RETURN(m_hwInterface);
     ENCODE_CHK_STATUS_RETURN(m_hwInterface->GetHucStateCommandSize(
         m_basicFeature->m_mode, (uint32_t *)&hucCommandsSize, (uint32_t *)&hucPatchListSize, &stateCmdSizeParams));
 
@@ -505,6 +507,7 @@ MOS_STATUS Vp9HpuPkt::SetDmemBuffer() const
     const CODEC_VP9_ENCODE_SEQUENCE_PARAMS *vp9SeqParams     = m_basicFeature->m_vp9SeqParams;
     const CODEC_VP9_ENCODE_SEGMENT_PARAMS * vp9SegmentParams = m_basicFeature->m_vp9SegmentParams;
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto hpuFeature = dynamic_cast<Vp9EncodeHpu *>(m_featureManager->GetFeature(Vp9FeatureIDs::vp9HpuFeature));
     ENCODE_CHK_NULL_RETURN(hpuFeature);
     auto brcFeature = dynamic_cast<Vp9EncodeBrc *>(m_featureManager->GetFeature(Vp9FeatureIDs::vp9BrcFeature));

@@ -1329,7 +1329,7 @@ MOS_STATUS XRenderHal_Platform_Interface_Next::IsOvrdNeeded(
     if (pOsInterface->VEEnable)
     {
 #if !EMUL
-        if (pGenericPrologParamsNext)
+        if (pGenericPrologParamsNext && pAttriVe != nullptr)
 #else
         if (pGenericPrologParamsNext && pAttriVe != nullptr)
 #endif

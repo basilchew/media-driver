@@ -382,6 +382,7 @@ namespace encode
 
         SetPerfTag();
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto feature = dynamic_cast<HEVCEncodeBRC*>(m_featureManager->GetFeature(HevcFeatureIDs::hevcBrcFeature));
         ENCODE_CHK_NULL_RETURN(feature);
         bool firstTaskInPhase = packetPhase & firstPacket;
@@ -441,6 +442,7 @@ namespace encode
             return MOS_STATUS_SUCCESS;
         }
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto feature = dynamic_cast<HEVCEncodeBRC*>(m_featureManager->GetFeature(HevcFeatureIDs::hevcBrcFeature));
         ENCODE_CHK_NULL_RETURN(feature);
         auto vdenc2ndLevelBatchBuffer = feature->GetVdenc2ndLevelBatchBuffer(m_pipeline->m_currRecycledBufIdx);
@@ -1424,11 +1426,13 @@ MOS_STATUS HevcVdencPkt::AddAllCmds_HCP_PAK_INSERT_OBJECT_BRC(PMOS_COMMAND_BUFFE
 
     ENCODE_CHK_NULL_RETURN(cmdBuffer);
 
+    ENCODE_CHK_NULL_RETURN(m_hcpItf);
     auto &params = m_hcpItf->MHW_GETPAR_F(HCP_PAK_INSERT_OBJECT)();
     params       = {};
 
     PCODECHAL_NAL_UNIT_PARAMS *ppNalUnitParams = (CODECHAL_NAL_UNIT_PARAMS **)m_nalUnitParams;
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto brcFeature = dynamic_cast<HEVCEncodeBRC *>(m_featureManager->GetFeature(HevcFeatureIDs::hevcBrcFeature));
     ENCODE_CHK_NULL_RETURN(brcFeature);
 
@@ -1578,6 +1582,7 @@ MOS_STATUS HevcVdencPkt::AddAllCmds_HCP_PAK_INSERT_OBJECT_BRC(PMOS_COMMAND_BUFFE
         ENCODE_CHK_NULL_RETURN(m_statusReport);
 
         ENCODE_CHK_STATUS_RETURN(CmdPacket::Init());
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         m_basicFeature = dynamic_cast<HevcBasicFeature *>(m_featureManager->GetFeature(HevcFeatureIDs::basicFeature));
         ENCODE_CHK_NULL_RETURN(m_basicFeature);
 
@@ -1995,6 +2000,7 @@ MOS_STATUS HevcVdencPkt::AddAllCmds_HCP_PAK_INSERT_OBJECT_BRC(PMOS_COMMAND_BUFFE
             RUN_FEATURE_INTERFACE_RETURN(HevcEncodeDss, HevcFeatureIDs::hevcVdencDssFeature, ReadHcpStatus, vdboxIndex, cmdBuffer);
         }
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto brcFeature = dynamic_cast<HEVCEncodeBRC *>(m_featureManager->GetFeature(HevcFeatureIDs::hevcBrcFeature));
         ENCODE_CHK_NULL_RETURN(brcFeature);
         bool vdencHucUsed  = brcFeature->IsVdencHucUsed();
@@ -2593,6 +2599,7 @@ MOS_STATUS HevcVdencPkt::AddAllCmds_HCP_PAK_INSERT_OBJECT_BRC(PMOS_COMMAND_BUFFE
         storeRegMemParams.presStoreBuffer = m_basicFeature->m_resMetadataBuffer;
         storeRegMemParams.dwOffset        = resourceOffset.dwEncodedBitstreamWrittenBytesCount;
         storeRegMemParams.dwRegister      = mmioRegisters->hcpEncBitstreamBytecountFrameRegOffset;
+        ENCODE_CHK_NULL_RETURN(m_miItf);
         ENCODE_CHK_STATUS_RETURN(m_miItf->MHW_ADDCMD_F(MI_STORE_REGISTER_MEM)(cmdBuffer));
 
         // Statistics
@@ -2605,6 +2612,7 @@ MOS_STATUS HevcVdencPkt::AddAllCmds_HCP_PAK_INSERT_OBJECT_BRC(PMOS_COMMAND_BUFFE
         }
         else
         {
+            ENCODE_CHK_NULL_RETURN(m_featureManager);
             auto brcFeature = dynamic_cast<HEVCEncodeBRC *>(m_featureManager->GetFeature(HevcFeatureIDs::hevcBrcFeature));
             ENCODE_CHK_NULL_RETURN(brcFeature);
 
@@ -2916,6 +2924,7 @@ MOS_STATUS HevcVdencPkt::AddAllCmds_HCP_PAK_INSERT_OBJECT_BRC(PMOS_COMMAND_BUFFE
         ENCODE_FUNC_CALL();
 
         ENCODE_CHK_NULL_RETURN(cmdBuffer);
+        ENCODE_CHK_NULL_RETURN(m_hcpItf);
 
         bool bLastPicInSeq    = m_basicFeature->m_lastPicInSeq;
         bool bLastPicInStream = m_basicFeature->m_lastPicInStream;
@@ -2980,6 +2989,7 @@ MOS_STATUS HevcVdencPkt::AddAllCmds_HCP_PAK_INSERT_OBJECT_BRC(PMOS_COMMAND_BUFFE
         {
             PCODECHAL_NAL_UNIT_PARAMS *ppNalUnitParams = (CODECHAL_NAL_UNIT_PARAMS **)m_nalUnitParams;
 
+            ENCODE_CHK_NULL_RETURN(m_featureManager);
             auto brcFeature = dynamic_cast<HEVCEncodeBRC *>(m_featureManager->GetFeature(HevcFeatureIDs::hevcBrcFeature));
             ENCODE_CHK_NULL_RETURN(brcFeature);
 
@@ -3427,6 +3437,7 @@ MOS_STATUS HevcVdencPkt::AddAllCmds_HCP_PAK_INSERT_OBJECT_BRC(PMOS_COMMAND_BUFFE
     {
         ENCODE_FUNC_CALL();
         ENCODE_CHK_NULL_RETURN(cmdBuffer);
+        ENCODE_CHK_NULL_RETURN(m_hcpItf);
 
         MHW_MI_CHK_NULL(m_hevcIqMatrixParams);
 
@@ -3516,6 +3527,7 @@ MOS_STATUS HevcVdencPkt::AddAllCmds_HCP_PAK_INSERT_OBJECT_BRC(PMOS_COMMAND_BUFFE
     {
         ENCODE_FUNC_CALL();
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto wpFeature = dynamic_cast<HevcVdencWeightedPred *>(m_featureManager->GetFeature(HevcFeatureIDs::hevcVdencWpFeature));
         ENCODE_CHK_NULL_RETURN(wpFeature);
         if (wpFeature->IsEnabled())

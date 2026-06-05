@@ -111,6 +111,7 @@ MOS_STATUS Vp9VdencPipelineXe_Lpm_Plus_Base::GetSystemVdboxNumber()
         "Enable Media Encode Scalability",
         MediaUserSetting::Group::Sequence);
 
+    ENCODE_CHK_NULL_RETURN(m_hwInterface);
     bool disableScalability = m_hwInterface->IsDisableScalability();
     if (statusKey == MOS_STATUS_SUCCESS)
     {

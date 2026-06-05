@@ -254,6 +254,7 @@ MOS_STATUS VpVeboxCmdPacket::SetupVebox3DLutForHDR(mhw::vebox::VEBOX_STATE_PAR &
     veboxStateCmdParams.pVebox1DLookUpTables = &(surface->osSurface->OsResource);
     pVeboxMode->Hdr1K1DLut                   = true;
     pVeboxMode->Hdr1DLutEnable               = true;
+    VP_PUBLIC_CHK_NULL_RETURN(m_veboxItf);
     VP_RENDER_CHK_STATUS_RETURN(m_veboxItf->SetDisableHistogram(&pRenderData->GetIECPParams()));
 
     veboxStateCmdParams.pVebox3DLookUpTables = &surf3DLut->osSurface->OsResource;
@@ -1068,6 +1069,7 @@ MOS_STATUS VpVeboxCmdPacket::UpdateCscParams(FeatureParamCsc &params)
     // Csc only can be apply to SFC path
     if (m_PacketCaps.bSfcCsc)
     {
+        VP_RENDER_CHK_NULL_RETURN(m_sfcRender);
         VP_PUBLIC_CHK_STATUS_RETURN(m_sfcRender->UpdateCscParams(params));
     }
 
@@ -2169,15 +2171,18 @@ MOS_STATUS VpVeboxCmdPacket::AddTileConvertStates(MOS_COMMAND_BUFFER *CmdBuffer,
     //---------------------------------
     // Send CMD: Vebox_Surface_State
     //---------------------------------
+    VP_RENDER_CHK_NULL_RETURN(m_veboxItf);
     VP_RENDER_CHK_STATUS_RETURN(m_veboxItf->AddVeboxSurfaces(
         CmdBuffer,
         &MhwVeboxSurfaceStateCmdParams));
 
+    VP_RENDER_CHK_NULL_RETURN(m_miItf);
     HalOcaInterfaceNext::OnDispatch(*CmdBuffer, *m_osInterface, m_miItf, *m_miItf->GetMmioRegisters());
 
     //---------------------------------
     // Send CMD: Vebox_Tiling_Convert
     //---------------------------------
+    VP_RENDER_CHK_NULL_RETURN(m_veboxItf);
     VP_RENDER_CHK_STATUS_RETURN(m_veboxItf->AddVeboxTilingConvert(CmdBuffer, &MhwVeboxSurfaceStateCmdParams.SurfInput, &MhwVeboxSurfaceStateCmdParams.SurfOutput));
     flushDwParams = {};
     VP_RENDER_CHK_STATUS_RETURN(m_miItf->MHW_ADDCMD_F(MI_FLUSH_DW)(CmdBuffer));

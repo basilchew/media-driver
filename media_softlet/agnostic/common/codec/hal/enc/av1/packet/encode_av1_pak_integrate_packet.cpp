@@ -38,6 +38,7 @@ namespace encode {
     {
         ENCODE_FUNC_CALL();
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         m_basicFeature = dynamic_cast<Av1BasicFeature *>(m_featureManager->GetFeature(Av1FeatureIDs::basicFeature));
         ENCODE_CHK_NULL_RETURN(m_basicFeature);
 
@@ -151,6 +152,7 @@ namespace encode {
         uint16_t perfTag = CODECHAL_ENCODE_PERFTAG_CALL_PAK_KERNEL;
         SetPerfTag(perfTag, (uint16_t)m_basicFeature->m_mode, m_basicFeature->m_pictureCodingType);
 
+        ENCODE_CHK_NULL_RETURN(m_featureManager);
         auto brcFeature = dynamic_cast<Av1Brc *>(m_featureManager->GetFeature(Av1FeatureIDs::av1BrcFeature));
         ENCODE_CHK_NULL_RETURN(brcFeature);
 

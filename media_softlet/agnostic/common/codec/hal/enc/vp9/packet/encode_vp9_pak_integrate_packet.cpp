@@ -37,6 +37,7 @@ MOS_STATUS Vp9PakIntegratePkt::Init()
 {
     ENCODE_FUNC_CALL();
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     m_basicFeature = dynamic_cast<Vp9BasicFeature *>(m_featureManager->GetFeature(Vp9FeatureIDs::basicFeature));
     ENCODE_CHK_NULL_RETURN(m_basicFeature);
 
@@ -423,6 +424,7 @@ MOS_STATUS Vp9PakIntegratePkt::EndStatusReport(uint32_t srType, MOS_COMMAND_BUFF
     ENCODE_FUNC_CALL();
     ENCODE_CHK_NULL_RETURN(cmdBuffer);
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto brcFeature = dynamic_cast<Vp9EncodeBrc *>(m_featureManager->GetFeature(Vp9FeatureIDs::vp9BrcFeature));
     ENCODE_CHK_NULL_RETURN(brcFeature);
 

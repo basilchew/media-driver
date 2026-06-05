@@ -274,6 +274,7 @@ MOS_STATUS HevcVdencPipelineXe2_Lpm_Base::Initialize(void *settings)
     ENCODE_CHK_NULL_RETURN(m_hwInterface);
     ENCODE_CHK_STATUS_RETURN(m_hwInterface->Initialize(codecSettings));
     ENCODE_CHK_STATUS_RETURN(InitMmcState());
+    ENCODE_CHK_NULL_RETURN(m_mmcState);
     codecSettings ->isMmcEnabled = m_mmcState->IsMmcEnabled();
     ENCODE_CHK_STATUS_RETURN(HevcVdencPipeline::Initialize(settings));
 

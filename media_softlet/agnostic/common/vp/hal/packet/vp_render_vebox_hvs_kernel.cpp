@@ -275,6 +275,7 @@ MOS_STATUS VpRenderHVSKernel::GetCurbeState(void *&curbe, uint32_t &curbeLength)
         {
             // Resource need be added.
             uint32_t *pSurfaceindex = static_cast<uint32_t *>(arg.pData);
+            VP_RENDER_CHK_NULL_RETURN(pSurfaceindex);
             auto      bindingMap    = GetSurfaceBindingIndex((SurfaceType)*pSurfaceindex);
             if (bindingMap.empty())
             {

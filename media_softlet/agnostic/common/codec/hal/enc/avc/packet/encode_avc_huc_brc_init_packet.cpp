@@ -95,6 +95,7 @@ MOS_STATUS AvcHucBrcInitPkt::Submit(MOS_COMMAND_BUFFER *commandBuffer, uint8_t p
         requestProlog = true;
     }
 
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto brcFeature = dynamic_cast<AvcEncodeBRC *>(m_featureManager->GetFeature(AvcFeatureIDs::avcBrcFeature));
     ENCODE_CHK_NULL_RETURN(brcFeature);
 
@@ -113,6 +114,7 @@ MOS_STATUS AvcHucBrcInitPkt::AddForceWakeup(MOS_COMMAND_BUFFER &cmdBuffer)
 {
     ENCODE_FUNC_CALL();
 
+    ENCODE_CHK_NULL_RETURN(m_miItf);
     SETPAR_AND_ADDCMD(MI_FORCE_WAKEUP, m_miItf, &cmdBuffer);
 
     return MOS_STATUS_SUCCESS;
@@ -120,6 +122,7 @@ MOS_STATUS AvcHucBrcInitPkt::AddForceWakeup(MOS_COMMAND_BUFFER &cmdBuffer)
 
 MHW_SETPAR_DECL_SRC(HUC_IMEM_STATE, AvcHucBrcInitPkt)
 {
+    ENCODE_CHK_NULL_RETURN(m_featureManager);
     auto setting = static_cast<AvcVdencFeatureSettings *>(m_featureManager->GetFeatureSettings()->GetConstSettings());
     ENCODE_CHK_NULL_RETURN(setting);
 

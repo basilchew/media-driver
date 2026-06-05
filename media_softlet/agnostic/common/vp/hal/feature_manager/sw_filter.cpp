@@ -1358,9 +1358,13 @@ MOS_STATUS SwFilterHdr::Configure(VP_PIPELINE_PARAMS &params, bool isInputSurf, 
                 }
             }
         }
-        else if (surfInput->pHDRParams->EOTF == VPHAL_HDR_EOTF_TRADITIONAL_GAMMA_SDR && surfOutput->pHDRParams->EOTF == VPHAL_HDR_EOTF_SMPTE_ST2084)
+        else if (surfInput->pHDRParams->EOTF == VPHAL_HDR_EOTF_TRADITIONAL_GAMMA_SDR)
         {
-            m_Params.hdrMode = VPHAL_HDR_MODE_INVERSE_TONE_MAPPING;
+            if (surfOutput->pHDRParams &&
+                surfOutput->pHDRParams->EOTF == VPHAL_HDR_EOTF_SMPTE_ST2084)
+            {
+                m_Params.hdrMode = VPHAL_HDR_MODE_INVERSE_TONE_MAPPING;
+            }
         }
     }
 

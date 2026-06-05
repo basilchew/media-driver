@@ -177,6 +177,7 @@ namespace decode
 
         stateCmdSizeParams.bHucDummyStream = false;
 #ifdef _DECODE_PROCESSING_SUPPORTED
+        DECODE_CHK_NULL(m_featureManager);
         DecodeDownSamplingFeature *decodeDownSampling =
             dynamic_cast<DecodeDownSamplingFeature *>(m_featureManager->GetFeature(DecodeFeatureIDs::decodeDownSampling));
         stateCmdSizeParams.bSfcInUse = (decodeDownSampling != nullptr);

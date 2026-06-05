@@ -262,6 +262,7 @@ MOS_STATUS GpuContextSpecificNextXe::PatchCommandBuffer(
     MOS_OS_FUNCTION_ENTER;
 
     auto perStreamParameters = (PMOS_CONTEXT)streamState->perStreamParameters;
+    MOS_OS_CHK_NULL_RETURN(perStreamParameters);
     auto cmd_bo     = cmdBuffer->OsResource.bo;
     std::vector<PMOS_RESOURCE> mappedResList;
 

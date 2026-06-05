@@ -114,6 +114,8 @@ MOS_STATUS VpRenderCmdPacket::LoadKernel()
     // Load kernel to GSH
     INIT_MHW_KERNEL_PARAM(MhwKernelParam, &m_renderData.KernelEntry);
     UpdateKernelConfigParam(KernelParam);
+    VP_RENDER_CHK_NULL_RETURN(m_renderHal);
+    VP_RENDER_CHK_NULL_RETURN(m_kernel);
     iKrnAllocation = m_renderHal->pfnLoadKernel(
         m_renderHal,
         &KernelParam,
