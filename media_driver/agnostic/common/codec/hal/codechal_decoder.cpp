@@ -866,125 +866,131 @@ MOS_STATUS CodechalDecode::SetDummyReference()
 
 CodechalDecode::~CodechalDecode()
 {
-    CODECHAL_DECODE_FUNCTION_ENTER;
+    try
+    {
+        CODECHAL_DECODE_FUNCTION_ENTER;
 
-    if (m_osInterface)
-    {
-        m_osInterface->pfnDeleteSecureDecodeInterface(m_secureDecoder);
-        m_secureDecoder = nullptr;
-    }
-    else
-    {
-        CODECHAL_DECODE_ASSERTMESSAGE("Failed to destroy secureDecoder.");
-    }
-
-    if (m_mmc)
-    {
-        MOS_Delete(m_mmc);
-        m_mmc = nullptr;
-    }
-
-    // Destroy decode histogram
-    if (m_decodeHistogram != nullptr)
-    {
-        MOS_Delete(m_decodeHistogram);
-        m_decodeHistogram = nullptr;
-    }
-    if (m_decodeOutputBuf != nullptr)
-    {
-        MOS_DeleteArray(m_decodeOutputBuf);
-        m_decodeOutputBuf = nullptr;
-    }
-    if (MEDIA_IS_SKU(m_skuTable, FtrVcs2) && (m_videoGpuNode < MOS_GPU_NODE_MAX))
-    {
-        // Destroy decode video node association
         if (m_osInterface)
         {
-            m_osInterface->pfnDestroyVideoNodeAssociation(m_osInterface, m_videoGpuNode);
+            m_osInterface->pfnDeleteSecureDecodeInterface(m_secureDecoder);
+            m_secureDecoder = nullptr;
         }
-    }
-
-    if (m_statusQueryReportingEnabled && m_osInterface)
-    {
-        m_osInterface->pfnUnlockResource(
-            m_osInterface,
-            &(m_decodeStatusBuf.m_statusBuffer));
-
-        m_osInterface->pfnFreeResource(
-            m_osInterface,
-            &(m_decodeStatusBuf.m_statusBuffer));
-
-        if (m_streamOutEnabled)
+        else
         {
-            for (auto i = 0; i < CODECHAL_DECODE_NUM_STREAM_OUT_BUFFERS; i++)
+            CODECHAL_DECODE_ASSERTMESSAGE("Failed to destroy secureDecoder.");
+        }
+
+        if (m_mmc)
+        {
+            MOS_Delete(m_mmc);
+            m_mmc = nullptr;
+        }
+
+        // Destroy decode histogram
+        if (m_decodeHistogram != nullptr)
+        {
+            MOS_Delete(m_decodeHistogram);
+            m_decodeHistogram = nullptr;
+        }
+        if (m_decodeOutputBuf != nullptr)
+        {
+            MOS_DeleteArray(m_decodeOutputBuf);
+            m_decodeOutputBuf = nullptr;
+        }
+        if (MEDIA_IS_SKU(m_skuTable, FtrVcs2) && (m_videoGpuNode < MOS_GPU_NODE_MAX))
+        {
+            // Destroy decode video node association
+            if (m_osInterface)
             {
-                m_osInterface->pfnFreeResource(
-                    m_osInterface,
-                    &(m_streamOutBuffer[i]));
+                m_osInterface->pfnDestroyVideoNodeAssociation(m_osInterface, m_videoGpuNode);
             }
         }
-    }
 
-    if (m_gpuCtxCreatOpt)
-    {
-        MOS_Delete(m_gpuCtxCreatOpt);
-    }
+        if (m_statusQueryReportingEnabled && m_osInterface)
+        {
+            m_osInterface->pfnUnlockResource(
+                m_osInterface,
+                &(m_decodeStatusBuf.m_statusBuffer));
 
-    if (m_osInterface)
-    {
-        m_osInterface->pfnFreeResource(
-            m_osInterface,
-            &m_predicationBuffer);
+            m_osInterface->pfnFreeResource(
+                m_osInterface,
+                &(m_decodeStatusBuf.m_statusBuffer));
 
-        m_osInterface->pfnFreeResource(
-            m_osInterface,
-            &m_frameCountTypeBuf);
+            if (m_streamOutEnabled)
+            {
+                for (auto i = 0; i < CODECHAL_DECODE_NUM_STREAM_OUT_BUFFERS; i++)
+                {
+                    m_osInterface->pfnFreeResource(
+                        m_osInterface,
+                        &(m_streamOutBuffer[i]));
+                }
+            }
+        }
 
-        m_osInterface->pfnFreeResource(
-            m_osInterface,
-            &m_crcBuf);
-    }
+        if (m_gpuCtxCreatOpt)
+        {
+            MOS_Delete(m_gpuCtxCreatOpt);
+        }
 
-    if (m_pCodechalOcaDumper)
-    {
-        MOS_Delete(m_pCodechalOcaDumper);
-    }
+        if (m_osInterface)
+        {
+            m_osInterface->pfnFreeResource(
+                m_osInterface,
+                &m_predicationBuffer);
+
+            m_osInterface->pfnFreeResource(
+                m_osInterface,
+                &m_frameCountTypeBuf);
+
+            m_osInterface->pfnFreeResource(
+                m_osInterface,
+                &m_crcBuf);
+        }
+
+        if (m_pCodechalOcaDumper)
+        {
+            MOS_Delete(m_pCodechalOcaDumper);
+        }
 
 #if (_DEBUG || _RELEASE_INTERNAL) && (!WDDM_LINUX)
-    m_debugInterface->PackGoldenReferences({m_debugInterface->GetCrcGoldenReference()});
-    m_debugInterface->DumpGoldenReference();
+        m_debugInterface->PackGoldenReferences({m_debugInterface->GetCrcGoldenReference()});
+        m_debugInterface->DumpGoldenReference();
 #endif
 
-    DeallocateRefSurfaces();
+        DeallocateRefSurfaces();
 
 #ifdef _DECODE_PROCESSING_SUPPORTED
-    if (CodecHalIsEnableFieldScaling(CODECHAL_FUNCTION_DECODE, m_standard, m_downsamplingHinted))
-    {
-        if (m_fieldScalingInterface != nullptr)
+        if (CodecHalIsEnableFieldScaling(CODECHAL_FUNCTION_DECODE, m_standard, m_downsamplingHinted))
         {
-            MOS_Delete(m_fieldScalingInterface);
-            m_fieldScalingInterface = nullptr;
+            if (m_fieldScalingInterface != nullptr)
+            {
+                MOS_Delete(m_fieldScalingInterface);
+                m_fieldScalingInterface = nullptr;
+            }
         }
-    }
 #endif
 
-    if (m_perfProfiler)
-    {
-        MediaPerfProfiler::Destroy(m_perfProfiler, (void*)this, m_osInterface);
-        m_perfProfiler = nullptr;
-    }
+        if (m_perfProfiler)
+        {
+            MediaPerfProfiler::Destroy(m_perfProfiler, (void*)this, m_osInterface);
+            m_perfProfiler = nullptr;
+        }
 
-    if (m_dummyReferenceStatus == CODECHAL_DUMMY_REFERENCE_ALLOCATED &&
-        !Mos_ResourceIsNull(&m_dummyReference.OsResource) &&
-        m_osInterface)
-    {
-        m_osInterface->pfnFreeResource(m_osInterface, &m_dummyReference.OsResource);
-    }
+        if (m_dummyReferenceStatus == CODECHAL_DUMMY_REFERENCE_ALLOCATED &&
+            !Mos_ResourceIsNull(&m_dummyReference.OsResource) &&
+            m_osInterface)
+        {
+            m_osInterface->pfnFreeResource(m_osInterface, &m_dummyReference.OsResource);
+        }
 
-    if (m_hwInterface)
+        if (m_hwInterface)
+        {
+            MOS_Delete(m_hwInterface);
+            Codechal::m_hwInterface = nullptr;
+        }
+    }
+    catch (...)
     {
-        MOS_Delete(m_hwInterface);
-        Codechal::m_hwInterface = nullptr;
     }
 }
 

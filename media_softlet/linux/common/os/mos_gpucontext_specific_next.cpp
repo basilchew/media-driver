@@ -94,9 +94,15 @@ GpuContextSpecificNext::GpuContextSpecificNext(
 
 GpuContextSpecificNext::~GpuContextSpecificNext()
 {
-    MOS_OS_FUNCTION_ENTER;
+    try
+    {
+        MOS_OS_FUNCTION_ENTER;
 
-    Clear();
+        Clear();
+    }
+    catch (...)
+    {
+    }
 }
 
 GpuContextNext *GpuContextSpecificNext::Create(

@@ -50,10 +50,16 @@ CmDeviceRT::CmDeviceRT(uint32_t options) : CmDeviceRTBase(options)
 //*-----------------------------------------------------------------------------
 CmDeviceRT::~CmDeviceRT()
 {
-    m_mosContext->m_skuTable.reset();
-    m_mosContext->m_waTable.reset();
+    try
+    {
+        m_mosContext->m_skuTable.reset();
+        m_mosContext->m_waTable.reset();
 
-    DestroyAuxDevice();
+        DestroyAuxDevice();
+    }
+    catch (...)
+    {
+    }
 };
 
 //*-----------------------------------------------------------------------------
@@ -187,19 +193,24 @@ finish:
 //| Purpose:    Destory Intel Aux Device : CM device
 //| Returns:    Result of the operation.
 //*-----------------------------------------------------------------------------
-int32_t CmDeviceRT::DestroyAuxDevice()
+int32_t CmDeviceRT::DestroyAuxDevice() noexcept
 {
-    PCM_CONTEXT_DATA  cmData = (PCM_CONTEXT_DATA)m_accelData;
-
-    // Delete VPHAL State
-    if (cmData && cmData->cmHalState)
+    try
     {
-        cmData->mosCtx.m_skuTable.reset();
-        cmData->mosCtx.m_waTable.reset();
-        HalCm_Destroy(cmData->cmHalState);
-        // Delete CM Data itself
-        MOS_Delete(cmData);
+        PCM_CONTEXT_DATA  cmData = (PCM_CONTEXT_DATA)m_accelData;
 
+        // Delete VPHAL State
+        if (cmData && cmData->cmHalState)
+        {
+            cmData->mosCtx.m_skuTable.reset();
+            cmData->mosCtx.m_waTable.reset();
+            HalCm_Destroy(cmData->cmHalState);
+            // Delete CM Data itself
+            MOS_Delete(cmData);
+        }
+    }
+    catch (...)
+    {
     }
 
     return CM_SUCCESS;

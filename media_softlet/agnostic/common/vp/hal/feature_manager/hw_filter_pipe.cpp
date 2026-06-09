@@ -41,7 +41,13 @@ HwFilterPipe::HwFilterPipe(VpInterface &vpInterface) : m_vpInterface(vpInterface
 
 HwFilterPipe::~HwFilterPipe()
 {
-    Clean();
+    try
+    {
+        Clean();
+    }
+    catch (...)
+    {
+    }
 }
 
 MOS_STATUS HwFilterPipe::Initialize(SwFilterPipe &swFilterPipe, Policy &policy)

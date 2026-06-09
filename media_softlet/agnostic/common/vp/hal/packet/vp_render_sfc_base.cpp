@@ -66,18 +66,24 @@ SfcRenderBase::SfcRenderBase(
 
 SfcRenderBase::~SfcRenderBase()
 {
-    DestroyAVSParams(&m_AvsParameters);
-
-    if (m_sfcStateParams)
+    try
     {
-        MOS_FreeMemAndSetNull(m_sfcStateParams);
+        DestroyAVSParams(&m_AvsParameters);
+
+        if (m_sfcStateParams)
+        {
+            MOS_FreeMemAndSetNull(m_sfcStateParams);
+        }
+
+        FreeResources();
+
+        if (m_iefObj)
+        {
+            MOS_Delete(m_iefObj);
+        }
     }
-
-    FreeResources();
-
-    if (m_iefObj)
+    catch (...)
     {
-        MOS_Delete(m_iefObj);
     }
 }
 

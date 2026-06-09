@@ -180,7 +180,13 @@ SwFilterPipe::SwFilterPipe(VpInterface &vpInterface) : m_vpInterface(vpInterface
 
 SwFilterPipe::~SwFilterPipe()
 {
-    Clean();
+    try
+    {
+        Clean();
+    }
+    catch (...)
+    {
+    }
 }
 
 MOS_STATUS SwFilterPipe::Initialize(VP_PIPELINE_PARAMS &params, FeatureRule &featureRule)

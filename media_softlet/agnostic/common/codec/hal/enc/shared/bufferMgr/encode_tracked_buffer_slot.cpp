@@ -37,13 +37,19 @@ BufferSlot::BufferSlot(TrackedBuffer* tracker) :
 
 BufferSlot::~BufferSlot()
 {
-    for (auto iter = m_buffers.begin(); iter != m_buffers.end(); iter++)
+    try
     {
-        std::shared_ptr<BufferQueue> queue = m_bufferQueues[iter->first];
-        queue->ReleaseResource(iter->second);
+        for (auto iter = m_buffers.begin(); iter != m_buffers.end(); iter++)
+        {
+            std::shared_ptr<BufferQueue> queue = m_bufferQueues[iter->first];
+            queue->ReleaseResource(iter->second);
+        }
+        m_buffers.clear();
+        m_bufferQueues.clear();
     }
-    m_buffers.clear();
-    m_bufferQueues.clear();
+    catch (...)
+    {
+    }
 }
 
 MOS_STATUS BufferSlot::Reset()

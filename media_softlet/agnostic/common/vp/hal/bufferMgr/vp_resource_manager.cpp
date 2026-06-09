@@ -160,106 +160,112 @@ VpResourceManager::VpResourceManager(MOS_INTERFACE &osInterface, VpAllocator &al
 
 VpResourceManager::~VpResourceManager()
 {
-    // Clean all intermedia Resource
-    DestoryVeboxOutputSurface();
-    DestoryVeboxDenoiseOutputSurface();
-
-    for (uint32_t i = 0; i < VP_NUM_STMM_SURFACES; i++)
+    try
     {
-        if (m_veboxSTMMSurface[i])
+        // Clean all intermedia Resource
+        DestoryVeboxOutputSurface();
+        DestoryVeboxDenoiseOutputSurface();
+
+        for (uint32_t i = 0; i < VP_NUM_STMM_SURFACES; i++)
         {
-            m_allocator.DestroyVpSurface(m_veboxSTMMSurface[i]);
+            if (m_veboxSTMMSurface[i])
+            {
+                m_allocator.DestroyVpSurface(m_veboxSTMMSurface[i]);
+            }
         }
-    }
 
-    if (m_veboxStatisticsSurface)
-    {
-        m_allocator.DestroyVpSurface(m_veboxStatisticsSurface);
-    }
-
-    if (m_veboxStatisticsSurfacefor1stPassofSfc2Pass)
-    {
-        m_allocator.DestroyVpSurface(m_veboxStatisticsSurfacefor1stPassofSfc2Pass);
-    }
-
-    if (m_veboxRgbHistogram)
-    {
-        m_allocator.DestroyVpSurface(m_veboxRgbHistogram);
-    }
-
-    if (m_veboxDNTempSurface)
-    {
-        m_allocator.DestroyVpSurface(m_veboxDNTempSurface);
-    }
-
-    if (m_veboxDNSpatialConfigSurface)
-    {
-        m_allocator.DestroyVpSurface(m_veboxDNSpatialConfigSurface);
-    }
-
-    if (m_vebox3DLookUpTables)
-    {
-        m_allocator.DestroyVpSurface(m_vebox3DLookUpTables);
-    }
-
-    if (m_vebox3DLookUpTables2D)
-    {
-        m_allocator.DestroyVpSurface(m_vebox3DLookUpTables2D);
-    }
-
-    if (m_3DLutKernelCoefSurface)
-    {
-        m_allocator.DestroyVpSurface(m_3DLutKernelCoefSurface);
-    }
-
-    if (m_veboxDnHVSTables)
-    {
-        m_allocator.DestroyVpSurface(m_veboxDnHVSTables);
-    }
-
-    if (m_vebox1DLookUpTables)
-    {
-        m_allocator.DestroyVpSurface(m_vebox1DLookUpTables);
-    }
-
-    if (m_innerTileConvertInput)
-    {
-        m_allocator.DestroyVpSurface(m_innerTileConvertInput);
-    }
-
-    if (m_temperalInput)
-    {
-        m_allocator.DestroyVpSurface(m_temperalInput);
-    }
-
-    if (m_hdrResourceManager)
-    {
-        MOS_Delete(m_hdrResourceManager);
-    }
-
-    while (!m_intermediaSurfaces.empty())
-    {
-        VP_SURFACE * surf = m_intermediaSurfaces.back();
-        m_allocator.DestroyVpSurface(surf);
-        m_intermediaSurfaces.pop_back();
-    }
-
-    for (int i = 0; i < VP_NUM_FC_INTERMEDIA_SURFACES; ++i)
-    {
-        m_allocator.DestroyVpSurface(m_fcIntermediateSurface[i]);
-    }
-
-    m_allocator.DestroyVpSurface(m_cmfcCoeff);
-    m_allocator.DestroyVpSurface(m_decompressionSyncSurface);
-    for (int i = 0; i < 8; ++i)
-    {
-        if (m_fcIntermediaSurfaceInput[i])
+        if (m_veboxStatisticsSurface)
         {
-            m_allocator.DestroyVpSurface(m_fcIntermediaSurfaceInput[i]);
+            m_allocator.DestroyVpSurface(m_veboxStatisticsSurface);
         }
-    }
 
-    m_allocator.CleanRecycler();
+        if (m_veboxStatisticsSurfacefor1stPassofSfc2Pass)
+        {
+            m_allocator.DestroyVpSurface(m_veboxStatisticsSurfacefor1stPassofSfc2Pass);
+        }
+
+        if (m_veboxRgbHistogram)
+        {
+            m_allocator.DestroyVpSurface(m_veboxRgbHistogram);
+        }
+
+        if (m_veboxDNTempSurface)
+        {
+            m_allocator.DestroyVpSurface(m_veboxDNTempSurface);
+        }
+
+        if (m_veboxDNSpatialConfigSurface)
+        {
+            m_allocator.DestroyVpSurface(m_veboxDNSpatialConfigSurface);
+        }
+
+        if (m_vebox3DLookUpTables)
+        {
+            m_allocator.DestroyVpSurface(m_vebox3DLookUpTables);
+        }
+
+        if (m_vebox3DLookUpTables2D)
+        {
+            m_allocator.DestroyVpSurface(m_vebox3DLookUpTables2D);
+        }
+
+        if (m_3DLutKernelCoefSurface)
+        {
+            m_allocator.DestroyVpSurface(m_3DLutKernelCoefSurface);
+        }
+
+        if (m_veboxDnHVSTables)
+        {
+            m_allocator.DestroyVpSurface(m_veboxDnHVSTables);
+        }
+
+        if (m_vebox1DLookUpTables)
+        {
+            m_allocator.DestroyVpSurface(m_vebox1DLookUpTables);
+        }
+
+        if (m_innerTileConvertInput)
+        {
+            m_allocator.DestroyVpSurface(m_innerTileConvertInput);
+        }
+
+        if (m_temperalInput)
+        {
+            m_allocator.DestroyVpSurface(m_temperalInput);
+        }
+
+        if (m_hdrResourceManager)
+        {
+            MOS_Delete(m_hdrResourceManager);
+        }
+
+        while (!m_intermediaSurfaces.empty())
+        {
+            VP_SURFACE * surf = m_intermediaSurfaces.back();
+            m_allocator.DestroyVpSurface(surf);
+            m_intermediaSurfaces.pop_back();
+        }
+
+        for (int i = 0; i < VP_NUM_FC_INTERMEDIA_SURFACES; ++i)
+        {
+            m_allocator.DestroyVpSurface(m_fcIntermediateSurface[i]);
+        }
+
+        m_allocator.DestroyVpSurface(m_cmfcCoeff);
+        m_allocator.DestroyVpSurface(m_decompressionSyncSurface);
+        for (int i = 0; i < 8; ++i)
+        {
+            if (m_fcIntermediaSurfaceInput[i])
+            {
+                m_allocator.DestroyVpSurface(m_fcIntermediaSurfaceInput[i]);
+            }
+        }
+
+        m_allocator.CleanRecycler();
+    }
+    catch (...)
+    {
+    }
 }
 
 void VpResourceManager::CleanTempSurfaces()

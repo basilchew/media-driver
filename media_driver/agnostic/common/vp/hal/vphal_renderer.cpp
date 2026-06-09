@@ -1563,60 +1563,66 @@ finish:
 //!
 VphalRenderer::~VphalRenderer()
 {
-    VPHAL_RENDER_CHK_NULL_NO_STATUS(m_pOsInterface);
-
-    FreeIntermediateSurfaces();
-
-    MOS_Delete(m_reporting);
-
-    for (int32_t i = 0; i < VPHAL_RENDER_ID_COUNT; i++)
+    try
     {
-        if (pRender[i])
+        VPHAL_RENDER_CHK_NULL_NO_STATUS(m_pOsInterface);
+
+        FreeIntermediateSurfaces();
+
+        MOS_Delete(m_reporting);
+
+        for (int32_t i = 0; i < VPHAL_RENDER_ID_COUNT; i++)
         {
-            pRender[i]->Destroy();
-            MOS_Delete(pRender[i]);
-            pRender[i] = nullptr;
+            if (pRender[i])
+            {
+                pRender[i]->Destroy();
+                MOS_Delete(pRender[i]);
+                pRender[i] = nullptr;
+            }
         }
-    }
 
-    // Destroy Kernel DLL objects (cache, hash table, states)
-    if (pKernelDllState)
-    {
-        KernelDll_ReleaseStates(pKernelDllState);
-    }
+        // Destroy Kernel DLL objects (cache, hash table, states)
+        if (pKernelDllState)
+        {
+            KernelDll_ReleaseStates(pKernelDllState);
+        }
 
-    // Destroy resources allocated for 16 Alignment
-    if (Align16State.pfnDestroy)
-    {
-        Align16State.pfnDestroy(&Align16State);
-    }
+        // Destroy resources allocated for 16 Alignment
+        if (Align16State.pfnDestroy)
+        {
+            Align16State.pfnDestroy(&Align16State);
+        }
 
-    // Destory resources allocated for fast1toN
-    if (Fast1toNState.pfnDestroy)
-    {
-        Fast1toNState.pfnDestroy(&Fast1toNState);
-    }
+        // Destory resources allocated for fast1toN
+        if (Fast1toNState.pfnDestroy)
+        {
+            Fast1toNState.pfnDestroy(&Fast1toNState);
+        }
 
-    // Destroy resources allocated for Hdr
-    if (MEDIA_IS_SKU(m_pSkuTable, FtrHDR) && pHdrState && pHdrState->pfnDestroy)
-    {
-        pHdrState->pfnDestroy(pHdrState);
-        MOS_Delete(pHdrState);
-    }
+        // Destroy resources allocated for Hdr
+        if (MEDIA_IS_SKU(m_pSkuTable, FtrHDR) && pHdrState && pHdrState->pfnDestroy)
+        {
+            pHdrState->pfnDestroy(pHdrState);
+            MOS_Delete(pHdrState);
+        }
 
-    // Destroy surface dumper
-    VPHAL_DBG_SURF_DUMP_DESTORY(m_surfaceDumper);
+        // Destroy surface dumper
+        VPHAL_DBG_SURF_DUMP_DESTORY(m_surfaceDumper);
 
-    // Destroy state dumper
-    VPHAL_DBG_STATE_DUMPPER_DESTORY(m_pRenderHal->pStateDumper);
+        // Destroy state dumper
+        VPHAL_DBG_STATE_DUMPPER_DESTORY(m_pRenderHal->pStateDumper);
 
-    // Destroy vphal parameter dump
-    VPHAL_DBG_PARAMETERS_DUMPPER_DESTORY(m_parameterDumper);
+        // Destroy vphal parameter dump
+        VPHAL_DBG_PARAMETERS_DUMPPER_DESTORY(m_parameterDumper);
 
-    VPHAL_DBG_OCA_DUMPER_DESTORY(m_pRenderHal);
+        VPHAL_DBG_OCA_DUMPER_DESTORY(m_pRenderHal);
 
 finish:
-    return;
+        return;
+    }
+    catch (...)
+    {
+    }
 }
 
 //!

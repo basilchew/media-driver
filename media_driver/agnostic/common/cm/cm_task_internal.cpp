@@ -260,67 +260,72 @@ CmTaskInternal::CmTaskInternal(const uint32_t kernelCount, const uint32_t totalT
 //*-----------------------------------------------------------------------------
 CmTaskInternal::~CmTaskInternal( void )
 {
-
-    //Write Event Infos
-    VtuneWriteEventInfo();
-
-    //Release Profiling Info
-    VtuneReleaseProfilingInfo();
-
-    for( uint32_t i = 0; i < m_kernelCount; i ++ )
+    try
     {
-        CmKernelRT *kernel = (CmKernelRT*)m_kernels.GetElement(i);
-        CmKernelData* kernelData = (CmKernelData*)m_kernelData.GetElement( i );
-        if(kernel && kernelData)
-        {
-           kernel->ReleaseKernelData(kernelData);
-           CmKernel *kernelBase = kernel;
-           m_cmDevice->DestroyKernel(kernelBase);
-        }
-    }
-    m_kernelData.Delete();
-    m_kernels.Delete();
+        //Write Event Infos
+        VtuneWriteEventInfo();
 
-    MosSafeDeleteArray(m_kernelCurbeOffsetArray);
+        //Release Profiling Info
+        VtuneReleaseProfilingInfo();
 
-    if( m_taskEvent )
-    {
-        CmEvent *eventBase = m_taskEvent;
-        CmQueueRT *cmQueue = nullptr;
-        m_taskEvent->GetQueue(cmQueue);
-        if (cmQueue)
+        for( uint32_t i = 0; i < m_kernelCount; i ++ )
         {
-            cmQueue->DestroyEvent(eventBase); // need to update the m_EventArray
-        }
-    }
-
-    if(m_threadCoordinates){
-        for (uint32_t i=0; i<m_kernelCount; i++)
-        {
-            if (m_threadCoordinates[i])
+            CmKernelRT *kernel = (CmKernelRT*)m_kernels.GetElement(i);
+            CmKernelData* kernelData = (CmKernelData*)m_kernelData.GetElement( i );
+            if(kernel && kernelData)
             {
-                MosSafeDeleteArray(m_threadCoordinates[i]);
+               kernel->ReleaseKernelData(kernelData);
+               CmKernel *kernelBase = kernel;
+               m_cmDevice->DestroyKernel(kernelBase);
             }
         }
-        MosSafeDeleteArray( m_threadCoordinates );
-    }
+        m_kernelData.Delete();
+        m_kernels.Delete();
 
-    if( m_dependencyMasks )
-    {
-        for( uint32_t i = 0; i < m_kernelCount; ++i )
+        MosSafeDeleteArray(m_kernelCurbeOffsetArray);
+
+        if( m_taskEvent )
         {
-            MosSafeDeleteArray(m_dependencyMasks[i]);
+            CmEvent *eventBase = m_taskEvent;
+            CmQueueRT *cmQueue = nullptr;
+            m_taskEvent->GetQueue(cmQueue);
+            if (cmQueue)
+            {
+                cmQueue->DestroyEvent(eventBase); // need to update the m_EventArray
+            }
         }
-        MosSafeDeleteArray( m_dependencyMasks );
-    }
 
-    if((m_kernelSurfInfo.kernelNum != 0)&&(m_kernelSurfInfo.surfEntryInfosArray != nullptr))
+        if(m_threadCoordinates){
+            for (uint32_t i=0; i<m_kernelCount; i++)
+            {
+                if (m_threadCoordinates[i])
+                {
+                    MosSafeDeleteArray(m_threadCoordinates[i]);
+                }
+            }
+            MosSafeDeleteArray( m_threadCoordinates );
+        }
+
+        if( m_dependencyMasks )
+        {
+            for( uint32_t i = 0; i < m_kernelCount; ++i )
+            {
+                MosSafeDeleteArray(m_dependencyMasks[i]);
+            }
+            MosSafeDeleteArray( m_dependencyMasks );
+        }
+
+        if((m_kernelSurfInfo.kernelNum != 0)&&(m_kernelSurfInfo.surfEntryInfosArray != nullptr))
+        {
+            ClearKernelSurfInfo();
+        }
+
+        MosSafeDeleteArray(m_surfaceArray);
+
+    }
+    catch (...)
     {
-        ClearKernelSurfInfo();
     }
-
-    MosSafeDeleteArray(m_surfaceArray);
-
 }
 
 //*-----------------------------------------------------------------------------

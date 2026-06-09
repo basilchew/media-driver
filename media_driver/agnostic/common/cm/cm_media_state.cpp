@@ -52,9 +52,15 @@ CmMediaState::CmMediaState(CM_HAL_STATE *cmhal):
 
 CmMediaState::~CmMediaState()
 {
-    if (m_state == _Allocated)
+    try
     {
-        Submit();
+        if (m_state == _Allocated)
+        {
+            Submit();
+        }
+    }
+    catch (...)
+    {
     }
 }
 

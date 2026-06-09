@@ -38,8 +38,14 @@ VphdrResourceManager::VphdrResourceManager(VpAllocator &allocator) : m_allocator
 
 VphdrResourceManager::~VphdrResourceManager()
 {
-    VP_FUNC_CALL();
-    FreeHdrRenderResource();
+    try
+    {
+        VP_FUNC_CALL();
+        FreeHdrRenderResource();
+    }
+    catch (...)
+    {
+    }
 }
 
 MOS_STATUS VphdrResourceManager::AssignRenderResource(VP_EXECUTE_CAPS &caps, std::vector<VP_SURFACE *> &inputSurfaces, VP_SURFACE *outputSurface, RESOURCE_ASSIGNMENT_HINT resHint,

@@ -43,7 +43,13 @@ SfcRenderXe_Xpm_Base::SfcRenderXe_Xpm_Base(
 
 SfcRenderXe_Xpm_Base::~SfcRenderXe_Xpm_Base()
 {
-    FreeResources();
+    try
+    {
+        FreeResources();
+    }
+    catch (...)
+    {
+    }
 }
 
 MOS_STATUS SfcRenderXe_Xpm_Base::InitSfcStateParams()

@@ -44,7 +44,13 @@ HwFilter::HwFilter(VpInterface &vpInterface,EngineType type) : m_vpInterface(vpI
 
 HwFilter::~HwFilter()
 {
-    Clean();
+    try
+    {
+        Clean();
+    }
+    catch (...)
+    {
+    }
 }
 
 MOS_STATUS HwFilter::Initialize(HW_FILTER_PARAMS &param)

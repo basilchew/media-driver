@@ -43,7 +43,13 @@ SfcRenderXe_Lpm_Plus_Base::SfcRenderXe_Lpm_Plus_Base(
 
 SfcRenderXe_Lpm_Plus_Base::~SfcRenderXe_Lpm_Plus_Base()
 {
-    FreeResources();
+    try
+    {
+        FreeResources();
+    }
+    catch (...)
+    {
+    }
 }
 
 MOS_STATUS SfcRenderXe_Lpm_Plus_Base::SetupSfcState(

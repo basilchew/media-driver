@@ -238,61 +238,67 @@ MOS_STATUS CodechalDecodeHevcG12::AllocateHistogramSurface()
 
 CodechalDecodeHevcG12::~CodechalDecodeHevcG12 ()
 {
-    CODECHAL_DECODE_FUNCTION_ENTER;
+    try
+    {
+        CODECHAL_DECODE_FUNCTION_ENTER;
 
-    if (m_sinlgePipeVeState)
-    {
-        MOS_FreeMemAndSetNull(m_sinlgePipeVeState);
-    }
-    if (m_scalabilityState)
-    {
-        CodecHalDecodeScalability_Destroy_G12(m_scalabilityState);
-        MOS_FreeMemAndSetNull(m_scalabilityState);
-    }
-
-    if (!Mos_ResourceIsNull(&m_resRefBeforeLoopFilter.OsResource))
-    {
-        DestroySurface(&m_resRefBeforeLoopFilter);
-    }
-    for (uint32_t i = 0; i < CODEC_HEVC_NUM_SECOND_BB; i++)
-    {
-        if (!Mos_ResourceIsNull(&m_secondLevelBatchBuffer[i].OsResource))
-    {
-            Mhw_FreeBb(m_osInterface, &m_secondLevelBatchBuffer[i], nullptr);
+        if (m_sinlgePipeVeState)
+        {
+            MOS_FreeMemAndSetNull(m_sinlgePipeVeState);
         }
-    }
-    //Note: virtual engine interface destroy is done in MOS layer
+        if (m_scalabilityState)
+        {
+            CodecHalDecodeScalability_Destroy_G12(m_scalabilityState);
+            MOS_FreeMemAndSetNull(m_scalabilityState);
+        }
+
+        if (!Mos_ResourceIsNull(&m_resRefBeforeLoopFilter.OsResource))
+        {
+            DestroySurface(&m_resRefBeforeLoopFilter);
+        }
+        for (uint32_t i = 0; i < CODEC_HEVC_NUM_SECOND_BB; i++)
+        {
+            if (!Mos_ResourceIsNull(&m_secondLevelBatchBuffer[i].OsResource))
+            {
+                Mhw_FreeBb(m_osInterface, &m_secondLevelBatchBuffer[i], nullptr);
+            }
+        }
+        //Note: virtual engine interface destroy is done in MOS layer
 #if (_DEBUG || _RELEASE_INTERNAL)
-    // Report real tile frame count and virtual tile frame count
-    MOS_USER_FEATURE_VALUE_WRITE_DATA   userFeatureWriteData = __NULL_USER_FEATURE_VALUE_WRITE_DATA__;
+        // Report real tile frame count and virtual tile frame count
+        MOS_USER_FEATURE_VALUE_WRITE_DATA   userFeatureWriteData = __NULL_USER_FEATURE_VALUE_WRITE_DATA__;
 
-    userFeatureWriteData.Value.i32Data = m_rtFrameCount;
-    userFeatureWriteData.ValueID = __MEDIA_USER_FEATURE_VALUE_ENABLE_HEVC_DECODE_RT_FRAME_COUNT_ID;
-    MOS_UserFeature_WriteValues_ID(nullptr, &userFeatureWriteData, 1, m_osInterface->pOsContext);
+        userFeatureWriteData.Value.i32Data = m_rtFrameCount;
+        userFeatureWriteData.ValueID = __MEDIA_USER_FEATURE_VALUE_ENABLE_HEVC_DECODE_RT_FRAME_COUNT_ID;
+        MOS_UserFeature_WriteValues_ID(nullptr, &userFeatureWriteData, 1, m_osInterface->pOsContext);
 
-    userFeatureWriteData.Value.i32Data = m_vtFrameCount;
-    userFeatureWriteData.ValueID = __MEDIA_USER_FEATURE_VALUE_ENABLE_HEVC_DECODE_VT_FRAME_COUNT_ID;
-    MOS_UserFeature_WriteValues_ID(nullptr, &userFeatureWriteData, 1, m_osInterface->pOsContext);
+        userFeatureWriteData.Value.i32Data = m_vtFrameCount;
+        userFeatureWriteData.ValueID = __MEDIA_USER_FEATURE_VALUE_ENABLE_HEVC_DECODE_VT_FRAME_COUNT_ID;
+        MOS_UserFeature_WriteValues_ID(nullptr, &userFeatureWriteData, 1, m_osInterface->pOsContext);
 
-    userFeatureWriteData.Value.i32Data = m_spFrameCount;
-    userFeatureWriteData.ValueID = __MEDIA_USER_FEATURE_VALUE_ENABLE_HEVC_DECODE_SP_FRAME_COUNT_ID;
-    MOS_UserFeature_WriteValues_ID(nullptr, &userFeatureWriteData, 1, m_osInterface->pOsContext);
+        userFeatureWriteData.Value.i32Data = m_spFrameCount;
+        userFeatureWriteData.ValueID = __MEDIA_USER_FEATURE_VALUE_ENABLE_HEVC_DECODE_SP_FRAME_COUNT_ID;
+        MOS_UserFeature_WriteValues_ID(nullptr, &userFeatureWriteData, 1, m_osInterface->pOsContext);
 
 #endif
 
-    if (m_histogramSurface)
-    {
-        if (!Mos_ResourceIsNull(&m_histogramSurface->OsResource))
+        if (m_histogramSurface)
         {
-            m_osInterface->pfnFreeResource(
-                m_osInterface,
-                &m_histogramSurface->OsResource);
+            if (!Mos_ResourceIsNull(&m_histogramSurface->OsResource))
+            {
+                m_osInterface->pfnFreeResource(
+                    m_osInterface,
+                    &m_histogramSurface->OsResource);
+            }
+            MOS_FreeMemory(m_histogramSurface);
+            m_histogramSurface = nullptr;
         }
-        MOS_FreeMemory(m_histogramSurface);
-        m_histogramSurface = nullptr;
-    }
 
-    return;
+        return;
+    }
+    catch (...)
+    {
+    }
 }
 
 MOS_STATUS CodechalDecodeHevcG12::CheckLCUSize()

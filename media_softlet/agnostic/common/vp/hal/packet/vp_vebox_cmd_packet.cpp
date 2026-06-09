@@ -2903,16 +2903,22 @@ VpVeboxCmdPacket::VpVeboxCmdPacket(
 
 VpVeboxCmdPacket:: ~VpVeboxCmdPacket()
 {
-    VP_FUNC_CALL();
+    try
+    {
+        VP_FUNC_CALL();
 
-    MOS_Delete(m_sfcRender);
-    MOS_Delete(m_lastExecRenderData);
-    MOS_Delete(m_surfMemCacheCtl);
+        MOS_Delete(m_sfcRender);
+        MOS_Delete(m_lastExecRenderData);
+        MOS_Delete(m_surfMemCacheCtl);
 
-    m_allocator->DestroyVpSurface(m_currentSurface);
-    m_allocator->DestroyVpSurface(m_previousSurface);
-    m_allocator->DestroyVpSurface(m_renderTarget);
-    m_allocator->DestroyVpSurface(m_originalOutput);
+        m_allocator->DestroyVpSurface(m_currentSurface);
+        m_allocator->DestroyVpSurface(m_previousSurface);
+        m_allocator->DestroyVpSurface(m_renderTarget);
+        m_allocator->DestroyVpSurface(m_originalOutput);
+    }
+    catch (...)
+    {
+    }
 }
 
 //!

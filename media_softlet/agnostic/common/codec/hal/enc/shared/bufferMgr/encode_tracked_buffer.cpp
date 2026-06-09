@@ -50,15 +50,21 @@ TrackedBuffer::TrackedBuffer(EncodeAllocator *allocator, uint8_t maxRefCnt, uint
 
 TrackedBuffer::~TrackedBuffer()
 {
-    for (auto it = m_bufferSlots.begin(); it != m_bufferSlots.end(); it++)
+    try
     {
-        (*it)->Reset();
-        MOS_Delete(*it);
-    }
-    m_bufferQueue.clear();
-    m_oldQueue.clear();
+        for (auto it = m_bufferSlots.begin(); it != m_bufferSlots.end(); it++)
+        {
+            (*it)->Reset();
+            MOS_Delete(*it);
+        }
+        m_bufferQueue.clear();
+        m_oldQueue.clear();
 
-    MosUtilities::MosDestroyMutex(m_mutex);
+        MosUtilities::MosDestroyMutex(m_mutex);
+    }
+    catch (...)
+    {
+    }
 }
 
 MOS_STATUS TrackedBuffer::RegisterParam(BufferType type, MOS_ALLOC_GFXRES_PARAMS param)

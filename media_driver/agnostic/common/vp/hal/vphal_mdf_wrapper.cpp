@@ -395,7 +395,13 @@ void CmContext::Destroy()
 
 CmContext::~CmContext()
 {
-    Destroy();
+    try
+    {
+        Destroy();
+    }
+    catch (...)
+    {
+    }
 }
 
 VPCmRenderer::VPCmRenderer(const std::string &name, CmContext *cmContext) :

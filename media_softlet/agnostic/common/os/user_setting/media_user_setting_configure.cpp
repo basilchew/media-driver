@@ -62,7 +62,13 @@ Configure::Configure()
 
 Configure::~Configure()
 {
-    MosUtilities::MosUninitializeReg(m_regBufferMap);
+    try
+    {
+        MosUtilities::MosUninitializeReg(m_regBufferMap);
+    }
+    catch (...)
+    {
+    }
 }
 
 MOS_STATUS Configure::Register(

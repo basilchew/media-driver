@@ -106,7 +106,7 @@ protected:
 
     int32_t CreateAuxDevice(MOS_CONTEXT *mosContext);
 
-    int32_t DestroyAuxDevice();
+    int32_t DestroyAuxDevice() noexcept;
 
     CM_RETURN_CODE GetCapsInternalOSSpecific(PCM_QUERY_CAPS queryCaps);
 

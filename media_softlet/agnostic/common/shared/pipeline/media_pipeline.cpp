@@ -60,27 +60,33 @@ MediaPipeline::MediaPipeline(PMOS_INTERFACE osInterface) : m_osInterface(osInter
 
 MediaPipeline::~MediaPipeline()
 {
-    DeletePackets();
-    DeleteTasks();
+    try
+    {
+        DeletePackets();
+        DeleteTasks();
 
-    MOS_Delete(m_mediaCopyWrapper);
+        MOS_Delete(m_mediaCopyWrapper);
 #if !EMUL
-    MEDIA_DEBUG_TOOL(MOS_Delete(m_debugInterface));
+        MEDIA_DEBUG_TOOL(MOS_Delete(m_debugInterface));
 #endif
-    MediaPerfProfiler *perfProfiler = MediaPerfProfiler::Instance();
+        MediaPerfProfiler *perfProfiler = MediaPerfProfiler::Instance();
 
-    if (!perfProfiler)
-    {
-        MOS_OS_ASSERTMESSAGE("Destroy MediaPerfProfiler failed!");
-    }
-    else
-    {
-        MediaPerfProfiler::Destroy(perfProfiler, (void *)this, m_osInterface);
-    }
+        if (!perfProfiler)
+        {
+            MOS_OS_ASSERTMESSAGE("Destroy MediaPerfProfiler failed!");
+        }
+        else
+        {
+            MediaPerfProfiler::Destroy(perfProfiler, (void *)this, m_osInterface);
+        }
 
 #if MHW_HWCMDPARSER_ENABLED
-    mhw::HwcmdParser::DestroyInstance();
+        mhw::HwcmdParser::DestroyInstance();
 #endif
+    }
+    catch (...)
+    {
+    }
 }
 
 MOS_STATUS MediaPipeline::DeletePackets()

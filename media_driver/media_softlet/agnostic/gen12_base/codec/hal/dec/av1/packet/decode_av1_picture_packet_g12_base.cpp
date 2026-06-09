@@ -31,7 +31,13 @@
 namespace decode{
     Av1DecodePicPkt_G12_Base::~Av1DecodePicPkt_G12_Base()
     {
-        FreeResources();
+        try
+        {
+            FreeResources();
+        }
+        catch (...)
+        {
+        }
     }
 
     MOS_STATUS Av1DecodePicPkt_G12_Base::FreeResources()

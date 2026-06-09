@@ -161,7 +161,13 @@ PacketPipe::PacketPipe(PacketFactory &packetFactory) : m_PacketFactory(packetFac
 
 PacketPipe::~PacketPipe()
 {
-    Clean();
+    try
+    {
+        Clean();
+    }
+    catch (...)
+    {
+    }
 }
 
 MOS_STATUS PacketPipe::Clean()

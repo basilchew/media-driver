@@ -890,24 +890,30 @@ Av1DecodeFilmGrainG12::Av1DecodeFilmGrainG12(
 
 Av1DecodeFilmGrainG12::~Av1DecodeFilmGrainG12()
 {
-    m_allocator->Destroy(m_gaussianSequenceSurface);
-    m_allocator->Destroy(m_yRandomValuesSurface);
-    m_allocator->Destroy(m_uRandomValuesSurface);
-    m_allocator->Destroy(m_vRandomValuesSurface);
-    m_allocator->Destroy(m_yDitheringTempSurface);
+    try
+    {
+        m_allocator->Destroy(m_gaussianSequenceSurface);
+        m_allocator->Destroy(m_yRandomValuesSurface);
+        m_allocator->Destroy(m_uRandomValuesSurface);
+        m_allocator->Destroy(m_vRandomValuesSurface);
+        m_allocator->Destroy(m_yDitheringTempSurface);
 
-    m_allocator->Destroy(m_coordinatesRandomValuesSurfaceArray);
-    m_allocator->Destroy(m_yCoefficientsSurfaceArray);
-    m_allocator->Destroy(m_yDitheringSurfaceArray);
-    m_allocator->Destroy(m_uDitheringSurfaceArray);
-    m_allocator->Destroy(m_vDitheringSurfaceArray);
-    m_allocator->Destroy(m_yCoeffSurfaceArray);
-    m_allocator->Destroy(m_uCoeffSurfaceArray);
-    m_allocator->Destroy(m_vCoeffSurfaceArray);
-    m_allocator->Destroy(m_yGammaLUTSurfaceArray);
-    m_allocator->Destroy(m_uGammaLUTSurfaceArray);
-    m_allocator->Destroy(m_vGammaLUTSurfaceArray);
-    m_allocator->Destroy(m_coordinatesRandomValuesSurfaceArray);
+        m_allocator->Destroy(m_coordinatesRandomValuesSurfaceArray);
+        m_allocator->Destroy(m_yCoefficientsSurfaceArray);
+        m_allocator->Destroy(m_yDitheringSurfaceArray);
+        m_allocator->Destroy(m_uDitheringSurfaceArray);
+        m_allocator->Destroy(m_vDitheringSurfaceArray);
+        m_allocator->Destroy(m_yCoeffSurfaceArray);
+        m_allocator->Destroy(m_uCoeffSurfaceArray);
+        m_allocator->Destroy(m_vCoeffSurfaceArray);
+        m_allocator->Destroy(m_yGammaLUTSurfaceArray);
+        m_allocator->Destroy(m_uGammaLUTSurfaceArray);
+        m_allocator->Destroy(m_vGammaLUTSurfaceArray);
+        m_allocator->Destroy(m_coordinatesRandomValuesSurfaceArray);
+    }
+    catch (...)
+    {
+    }
 }
 
 MOS_STATUS Av1DecodeFilmGrainG12::Init(void *settings)

@@ -5282,26 +5282,32 @@ CodechalEncoderState::CodechalEncoderState(
 
 CodechalEncoderState::~CodechalEncoderState()
 {
-    if (m_gpuCtxCreatOpt)
+    try
     {
-        MOS_Delete(m_gpuCtxCreatOpt);
-        m_gpuCtxCreatOpt = nullptr;
+        if (m_gpuCtxCreatOpt)
+        {
+            MOS_Delete(m_gpuCtxCreatOpt);
+            m_gpuCtxCreatOpt = nullptr;
+        }
+
+        DestroyMDFResources();
+
+        if (m_perfProfiler)
+        {
+            MediaPerfProfiler::Destroy(m_perfProfiler, (void*)this, m_osInterface);
+            m_perfProfiler = nullptr;
+        }
+
+        // Destroy HW interface objects (GSH, SSH, etc)
+        if (m_hwInterface != nullptr)
+        {
+            MOS_Delete(m_hwInterface);
+            m_hwInterface = nullptr;
+            Codechal::m_hwInterface = nullptr;
+        }
     }
-
-    DestroyMDFResources();
-
-    if (m_perfProfiler)
+    catch (...)
     {
-        MediaPerfProfiler::Destroy(m_perfProfiler, (void*)this, m_osInterface);
-        m_perfProfiler = nullptr;
-    }
-
-    // Destroy HW interface objects (GSH, SSH, etc)
-    if (m_hwInterface != nullptr)
-    {
-        MOS_Delete(m_hwInterface);
-        m_hwInterface = nullptr;
-        Codechal::m_hwInterface = nullptr;
     }
 }
 

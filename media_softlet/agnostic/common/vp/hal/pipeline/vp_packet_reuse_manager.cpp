@@ -713,29 +713,35 @@ VpPacketReuseManager::VpPacketReuseManager(PacketPipeFactory &packetPipeFactory,
 
 VpPacketReuseManager::~VpPacketReuseManager()
 {
-    for (uint32_t index = 0; index < m_pipeReused_TeamsPacket.size(); index++)
+    try
     {
-        auto pipeReuseHandle = m_pipeReused_TeamsPacket.find(index);
-        if (pipeReuseHandle != m_pipeReused_TeamsPacket.end() &&
-            pipeReuseHandle->second != m_pipeReused)
+        for (uint32_t index = 0; index < m_pipeReused_TeamsPacket.size(); index++)
         {
-            m_packetPipeFactory.ReturnPacketPipe(pipeReuseHandle->second);
+            auto pipeReuseHandle = m_pipeReused_TeamsPacket.find(index);
+            if (pipeReuseHandle != m_pipeReused_TeamsPacket.end() &&
+                pipeReuseHandle->second != m_pipeReused)
+            {
+                m_packetPipeFactory.ReturnPacketPipe(pipeReuseHandle->second);
+            }
         }
-    }
-    m_pipeReused_TeamsPacket.clear();
+        m_pipeReused_TeamsPacket.clear();
 
-    if (m_pipeReused)
-    {
-        m_packetPipeFactory.ReturnPacketPipe(m_pipeReused);
-    }
-    for (auto &it : m_features)
-    {
-        if (it.second)
+        if (m_pipeReused)
         {
-            MOS_Delete(it.second);
+            m_packetPipeFactory.ReturnPacketPipe(m_pipeReused);
         }
+        for (auto &it : m_features)
+        {
+            if (it.second)
+            {
+                MOS_Delete(it.second);
+            }
+        }
+        m_features.clear();
     }
-    m_features.clear();
+    catch (...)
+    {
+    }
 }
 
 MOS_STATUS VpPacketReuseManager::RegisterFeatures()

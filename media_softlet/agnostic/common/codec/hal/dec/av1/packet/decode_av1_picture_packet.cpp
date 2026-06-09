@@ -29,7 +29,13 @@
 namespace decode{
     Av1DecodePicPkt::~Av1DecodePicPkt()
     {
-        FreeResources();
+        try
+        {
+            FreeResources();
+        }
+        catch (...)
+        {
+        }
     }
 
     MOS_STATUS Av1DecodePicPkt::FreeResources()

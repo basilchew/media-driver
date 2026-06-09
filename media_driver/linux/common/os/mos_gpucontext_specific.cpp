@@ -79,9 +79,15 @@ GpuContextSpecific::GpuContextSpecific(
 
 GpuContextSpecific::~GpuContextSpecific()
 {
-    MOS_OS_FUNCTION_ENTER;
+    try
+    {
+        MOS_OS_FUNCTION_ENTER;
 
-    Clear();
+        Clear();
+    }
+    catch (...)
+    {
+    }
 }
 
 MOS_STATUS GpuContextSpecific::Init(OsContext *osContext,
