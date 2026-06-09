@@ -2403,7 +2403,7 @@ void CodechalEncodeHevcBase::SetHcpSrcSurfaceParams(MHW_VDBOX_SURFACE_PARAMS& sr
     srcSurfaceParams.bSrc8Pak10Mode         = false; //No usage for 8->10 bit encode
     srcSurfaceParams.dwActualHeight = ((m_hevcSeqParams->wFrameHeightInMinCbMinus1 + 1) << (m_hevcSeqParams->log2_min_coding_block_size_minus3 + 3));
 #ifdef _MMC_SUPPORTED
-    m_mmcState->SetSurfaceState(&srcSurfaceParams);
+    (void)m_mmcState->SetSurfaceState(&srcSurfaceParams);
 #endif
 }
 
@@ -2419,7 +2419,7 @@ void CodechalEncodeHevcBase::SetHcpReconSurfaceParams(MHW_VDBOX_SURFACE_PARAMS& 
     reconSurfaceParams.dwActualHeight         = ((m_hevcSeqParams->wFrameHeightInMinCbMinus1 + 1) << (m_hevcSeqParams->log2_min_coding_block_size_minus3 + 3));
     reconSurfaceParams.dwReconSurfHeight = m_rawSurfaceToPak->dwHeight;
 #ifdef _MMC_SUPPORTED
-    m_mmcState->SetSurfaceState(&reconSurfaceParams);
+    (void)m_mmcState->SetSurfaceState(&reconSurfaceParams);
 #endif
 }
 
@@ -2435,7 +2435,7 @@ void CodechalEncodeHevcBase::SetHcpRefSurfaceParams(MHW_VDBOX_SURFACE_PARAMS &re
     refSurfaceParams.dwActualHeight           = ((m_hevcSeqParams->wFrameHeightInMinCbMinus1 + 1) << (m_hevcSeqParams->log2_min_coding_block_size_minus3 + 3));
     refSurfaceParams.dwReconSurfHeight        = m_rawSurfaceToPak->dwHeight;
 #ifdef _MMC_SUPPORTED
-    m_mmcState->SetSurfaceState(&refSurfaceParams);
+    (void)m_mmcState->SetSurfaceState(&refSurfaceParams);
 #endif
 }
 

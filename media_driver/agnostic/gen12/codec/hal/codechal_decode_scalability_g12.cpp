@@ -724,7 +724,7 @@ MOS_STATUS CodecHalDecodeScalability_FEBESync_G12(
         (CodecHalDecodeScalabilityIsFirstRealTilePhase(pScalabilityState)))
     {
         // Stop Watchdog before BEs wait
-        pMiInterface->AddWatchdogTimerStopCmd(pCmdBufferInUse);
+        CODECHAL_DECODE_CHK_STATUS(pMiInterface->AddWatchdogTimerStopCmd(pCmdBufferInUse));
 
         //HW Semaphore for BEs Starting at the same time
         CODECHAL_DECODE_CHK_STATUS(pScalabilityState->pHwInterface->SendMiAtomicDwordCmd(&pScalabilityState->resSemaMemBEs, 1, MHW_MI_ATOMIC_INC, pCmdBufferInUse));

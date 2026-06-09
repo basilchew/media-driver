@@ -229,7 +229,7 @@ void CMRTKernelBase::DestroySurfResources()
     {
         if (m_cmSurface2D[i])
         {
-            m_cmDev->DestroySurface(m_cmSurface2D[i]);
+            (void)m_cmDev->DestroySurface(m_cmSurface2D[i]);
             m_cmSurface2D[i] = nullptr;
         }
     }
@@ -264,7 +264,7 @@ void CMRTKernelBase::DestroySurfResources()
     {
         if (m_cmVmeSurf[i])
         {
-            m_cmDev->DestroyVmeSurfaceG7_5(m_cmVmeSurf[i]);
+            (void)m_cmDev->DestroyVmeSurfaceG7_5(m_cmVmeSurf[i]);
             m_cmVmeSurf[i] = nullptr;
         }
     }

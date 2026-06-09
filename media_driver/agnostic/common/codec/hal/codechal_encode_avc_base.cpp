@@ -1998,7 +1998,7 @@ CodechalEncodeAvcBase::~CodechalEncodeAvcBase()
 
     for (uint8_t i = 0; i < CODECHAL_ENCODE_RECYCLED_BUFFER_NUM; i++)
     {
-        ReleaseBatchBufferForPakSlices(i);
+        (void)ReleaseBatchBufferForPakSlices(i);
     }
 
     m_osInterface->pfnFreeResource(m_osInterface, &m_intraRowStoreScratchBuffer);

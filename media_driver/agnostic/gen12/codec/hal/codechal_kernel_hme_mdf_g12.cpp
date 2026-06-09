@@ -87,13 +87,13 @@ MOS_STATUS CodechalKernelHmeMdfG12::ReleaseResources()
 
     if (m_VdencStreamInBuffer)
     {
-        cmDev->DestroySurface(m_VdencStreamInBuffer);
+        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmDev->DestroySurface(m_VdencStreamInBuffer));
         m_VdencStreamInBuffer = nullptr;
     }
 
     if (m_SumMvandDistortionBuffer)
     {
-        cmDev->DestroySurface(m_SumMvandDistortionBuffer);
+        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmDev->DestroySurface(m_SumMvandDistortionBuffer));
         m_SumMvandDistortionBuffer = nullptr;
     }
 

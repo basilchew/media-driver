@@ -1752,7 +1752,7 @@ MOS_STATUS CodecHalDecodeScalability_FEBESync(
         }
         else
         {
-            pMiInterface->AddWatchdogTimerStopCmd(pCmdBufferInUse);
+            CODECHAL_DECODE_CHK_STATUS_RETURN(pMiInterface->AddWatchdogTimerStopCmd(pCmdBufferInUse));
 
             CODECHAL_DECODE_CHK_STATUS_RETURN(pScalabilityState->pHwInterface->SendHwSemaphoreWaitCmd(&pScalabilityState->resSemaMemFEBE, 1, MHW_MI_SAD_EQUAL_SDD, pCmdBufferInUse));
             //reset semaphore. mi atomic decrease 1
@@ -1763,7 +1763,7 @@ MOS_STATUS CodecHalDecodeScalability_FEBESync(
     if (CodecHalDecodeScalabilityIsBEPhase(pScalabilityState))
     {
         // Stop Watchdog before BEs wait
-        pMiInterface->AddWatchdogTimerStopCmd(pCmdBufferInUse);
+        CODECHAL_DECODE_CHK_STATUS_RETURN(pMiInterface->AddWatchdogTimerStopCmd(pCmdBufferInUse));
 
         //HW Semaphore for BEs Starting at the same time
         CODECHAL_DECODE_CHK_STATUS_RETURN(pScalabilityState->pHwInterface->SendMiAtomicDwordCmd(&pScalabilityState->resSemaMemBEs, 1, MHW_MI_ATOMIC_INC, pCmdBufferInUse));

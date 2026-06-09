@@ -3187,8 +3187,7 @@ int32_t CmDeviceRTBase::GetPrintBufferMem(unsigned char * &printBufferMem) const
 //*-----------------------------------------------------------------------------
 int32_t CmDeviceRTBase::GetPrintBufferIndex(SurfaceIndex *& index) const
 {
-    m_printBufferUPs.back()->GetIndex(index);
-    return CM_SUCCESS;
+    return m_printBufferUPs.back()->GetIndex(index);
 }
 
 //*-----------------------------------------------------------------------------

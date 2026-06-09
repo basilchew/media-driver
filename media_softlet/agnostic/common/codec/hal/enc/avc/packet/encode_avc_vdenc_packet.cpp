@@ -554,7 +554,7 @@ namespace encode {
         if (m_pipeline->IsLastPass() && m_pipeline->IsFirstPipe())
         {
             // increment dwStoreData conditionaly
-            MediaPacket::UpdateStatusReportNext(statusReportGlobalCount, &cmdBuffer);
+            ENCODE_CHK_STATUS_RETURN(MediaPacket::UpdateStatusReportNext(statusReportGlobalCount, &cmdBuffer));
 
             CODECHAL_DEBUG_TOOL(m_mmcState->UpdateUserFeatureKey(&(m_basicFeature->m_reconSurface)));
         }

@@ -250,8 +250,7 @@ MOS_STATUS CmMediaState::LoadCurbe(uint8_t *curbe, uint32_t size, int index)
         return MOS_STATUS_UNKNOWN;
     }
 
-    m_memoryBlock.AddData(curbe, m_curbeOffsetInternal+m_curbeOffsets[index], size);
-    return MOS_STATUS_SUCCESS;
+    return m_memoryBlock.AddData(curbe, m_curbeOffsetInternal+m_curbeOffsets[index], size);
 }
 
 MOS_STATUS CmMediaState::LoadMediaID(CmKernelEx *kernel, int index, uint32_t btOffset, CmThreadGroupSpace *threadGroupSpace)

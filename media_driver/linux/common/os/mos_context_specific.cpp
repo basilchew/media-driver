@@ -558,7 +558,10 @@ MOS_STATUS OsContextSpecific::Init(PMOS_CONTEXT pOsDriverContext)
     
         // Init reset count for the context
         uint32_t dwResetCount       = 0;
-        mos_get_reset_stats(m_intelContext, &dwResetCount, nullptr, nullptr);
+        if (mos_get_reset_stats(m_intelContext, &dwResetCount, nullptr, nullptr) != 0)
+        {
+            MOS_OS_NORMALMESSAGE("Failed to get GPU reset stats, reset count will default to 0.");
+        }
         m_gpuResetCount             = dwResetCount;
         m_gpuActiveBatch            = 0;
         m_gpuPendingBatch           = 0;

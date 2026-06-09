@@ -59,7 +59,7 @@ SwFilter::SwFilter(VpInterface &vpInterface, FeatureType type) : m_vpInterface(v
 
 SwFilter::~SwFilter()
 {
-    Clean();
+    (void)Clean();
 }
 
 MOS_STATUS SwFilter::SetFeatureType(FeatureType type)
