@@ -750,7 +750,7 @@ MOS_STATUS Mhw_CalcPolyphaseTablesY(
                 fHPSum = 0.0F;
                 for (k = -1; k <= 1; k++)
                 {
-                    if ((((long)j + k) >= 0) && (j + k < dwNumEntries))
+                    if ((((long)j + k) >= 0) && (j + k < dwNumEntries) && ((uint32_t)(j + k) < NUM_POLYPHASE_Y_ENTRIES))
                     {
                         fHPSum += fPhaseCoefsCopy[(int32_t)j+k] * fHPFilter[k+1];
                     }

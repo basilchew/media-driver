@@ -826,6 +826,10 @@ VAStatus DdiDecodeVC1::SetDecodeParams()
     memset(&m_deblockSurface, 0, sizeof(MOS_SURFACE));
     if (m_olpNeeded)
     {
+        if (m_deblockPicIdx == DDI_CODEC_INVALID_FRAME_INDEX)
+        {
+            return VA_STATUS_ERROR_INVALID_PARAMETER;
+        }
         memset(&m_deblockSurface, 0, sizeof(MOS_SURFACE));
         m_deblockSurface.Format   = Format_NV12;
         m_deblockSurface.dwOffset = 0;

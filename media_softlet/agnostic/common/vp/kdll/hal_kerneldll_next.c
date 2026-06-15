@@ -3976,7 +3976,10 @@ bool KernelDll_BuildKernel_CmFc(Kdll_State *pState, Kdll_SearchState *pSearchSta
 
         if (*pKernelID == IDR_VP_EOT)
         {
-            dwTotalKernelCount--;
+            if (dwTotalKernelCount > 0)
+            {
+                dwTotalKernelCount--;
+            }
         }
 
         if (!res)

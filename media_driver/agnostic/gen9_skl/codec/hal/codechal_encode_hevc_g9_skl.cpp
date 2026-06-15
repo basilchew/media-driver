@@ -128,15 +128,28 @@ MOS_STATUS CodechalEncHevcStateG9Skl::GetKernelHeaderAndSize(
         switch (krnStateIdx)
         {
         case CODECHAL_HEVC_MBENC_2xSCALING:
-        case CODECHAL_HEVC_MBENC_32x32MD:
-        case CODECHAL_HEVC_MBENC_16x16SAD:
-        case CODECHAL_HEVC_MBENC_16x16MD:
-        case CODECHAL_HEVC_MBENC_8x8PU:
-        case CODECHAL_HEVC_MBENC_8x8FMODE:
-        case CODECHAL_HEVC_MBENC_32x32INTRACHECK:
-        case CODECHAL_HEVC_MBENC_BENC:
             currKrnHeader = &kernelHeaderTable->Hevc_LCUEnc_I_2xDownSampling_Kernel;
-            currKrnHeader += krnStateIdx;
+            break;
+        case CODECHAL_HEVC_MBENC_32x32MD:
+            currKrnHeader = &kernelHeaderTable->Hevc_LCUEnc_I_32x32_PU_ModeDecision_Kernel;
+            break;
+        case CODECHAL_HEVC_MBENC_16x16SAD:
+            currKrnHeader = &kernelHeaderTable->Hevc_LCUEnc_I_16x16_PU_SADComputation_Kernel;
+            break;
+        case CODECHAL_HEVC_MBENC_16x16MD:
+            currKrnHeader = &kernelHeaderTable->Hevc_LCUEnc_I_16x16_PU_ModeDecision_Kernel;
+            break;
+        case CODECHAL_HEVC_MBENC_8x8PU:
+            currKrnHeader = &kernelHeaderTable->Hevc_LCUEnc_I_8x8_PU_Kernel;
+            break;
+        case CODECHAL_HEVC_MBENC_8x8FMODE:
+            currKrnHeader = &kernelHeaderTable->Hevc_LCUEnc_I_8x8_PU_FMode_Kernel;
+            break;
+        case CODECHAL_HEVC_MBENC_32x32INTRACHECK:
+            currKrnHeader = &kernelHeaderTable->Hevc_LCUEnc_PB_32x32_PU_IntraCheck;
+            break;
+        case CODECHAL_HEVC_MBENC_BENC:
+            currKrnHeader = &kernelHeaderTable->HEVC_LCUEnc_PB_MB;
             break;
 
         case CODECHAL_HEVC_MBENC_BPAK:
@@ -173,10 +186,16 @@ MOS_STATUS CodechalEncHevcStateG9Skl::GetKernelHeaderAndSize(
         return eStatus;
     }
 
+    PCODECHAL_KERNEL_HEADER invalidEntry = &kernelHeaderTable->Hevc_LCUEnc_P_Adv + 1;
+    if (currKrnHeader >= invalidEntry)
+    {
+        CODECHAL_ENCODE_ASSERTMESSAGE("Kernel header pointer out of range");
+        eStatus = MOS_STATUS_INVALID_PARAMETER;
+        return eStatus;
+    }
     *((PCODECHAL_KERNEL_HEADER)krnHeader) = *currKrnHeader;
 
     PCODECHAL_KERNEL_HEADER nextKrnHeader = (currKrnHeader + 1);
-    PCODECHAL_KERNEL_HEADER invalidEntry = (PCODECHAL_KERNEL_HEADER)(((uint8_t*)binary) + sizeof(*kernelHeaderTable));
     uint32_t nextKrnOffset = *krnSize;
 
     if (nextKrnHeader < invalidEntry)

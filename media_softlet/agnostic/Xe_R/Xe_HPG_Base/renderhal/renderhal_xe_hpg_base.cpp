@@ -143,6 +143,7 @@ MOS_STATUS XRenderHal_Interface_Xe_Hpg_Base::SetupSurfaceState(
     if (!(index >= 0 && index < 8))
     {
         MHW_RENDERHAL_ASSERTMESSAGE("Invalid Rotation");
+        return MOS_STATUS_INVALID_PARAMETER;
     }
 
     dwSurfaceSize = pRenderHal->pHwSizes->dwSizeSurfaceState;
