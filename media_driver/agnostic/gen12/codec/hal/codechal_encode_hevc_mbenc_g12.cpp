@@ -110,11 +110,11 @@ MOS_STATUS CodecHalHevcMbencG12::AllocateEncResources()
     if (!m_intermediateCuRecordLcu32)
     {
         //MOS_CODEC_RESOURCE_USAGE_PAK_OBJECT_ENCODE
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmDev->CreateSurface2D(
+        CODECHAL_ENCODE_CHK_COND_RETURN((m_cmDev->CreateSurface2D(
             m_widthAlignedLcu32,
             m_heightAlignedLcu32 >> 1,
             Format_A8,
-            m_intermediateCuRecordLcu32));
+            m_intermediateCuRecordLcu32) != CM_SUCCESS), "CreateSurface2D failed.");
     }
 
     // Scratch Surface
@@ -138,9 +138,9 @@ MOS_STATUS CodecHalHevcMbencG12::AllocateEncResources()
     // Load Balance surface size
     if (!m_loadBalance)
     {
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmDev->CreateBuffer(
+        CODECHAL_ENCODE_CHK_COND_RETURN((m_cmDev->CreateBuffer(
             m_threadMapSize,
-            m_loadBalance));
+            m_loadBalance) != CM_SUCCESS), "CreateBuffer failed.");
     }
 
     //Debug surface
@@ -166,11 +166,11 @@ MOS_STATUS CodecHalHevcMbencG12::AllocateMeResources()
             uint32_t width = MOS_ALIGN_CEIL((m_downscaledWidthInMb4x << 3), 64);
             uint32_t height = MOS_ALIGN_CEIL((m_downscaledHeightInMb4x << 2), 8) << 1;
 
-            CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmDev->CreateSurface2D(
+            CODECHAL_ENCODE_CHK_COND_RETURN((m_cmDev->CreateSurface2D(
                 width,
                 height,
                 Format_A8,
-                m_brcBuffers.meBrcDistortionSurface));
+                m_brcBuffers.meBrcDistortionSurface) != CM_SUCCESS), "CreateSurface2D failed.");
         }
 
         // MV and Distortion Summation Surface
@@ -333,13 +333,13 @@ MOS_STATUS CodecHalHevcMbencG12::FreeEncResources()
         if (m_surfRefArray[idx])
         {
             m_surfRefArray[idx]->NotifyUmdResourceChanged(nullptr);
-            CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmDev->DestroySurface(m_surfRefArray[idx]));
+            CODECHAL_ENCODE_CHK_COND_RETURN((m_cmDev->DestroySurface(m_surfRefArray[idx]) != CM_SUCCESS), "DestroySurface failed.");
             m_surfRefArray[idx] = nullptr;
         }
         if (m_surf2XArray[idx])
         {
             m_surf2XArray[idx]->NotifyUmdResourceChanged(nullptr);
-            CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmDev->DestroySurface(m_surf2XArray[idx]));
+            CODECHAL_ENCODE_CHK_COND_RETURN((m_cmDev->DestroySurface(m_surf2XArray[idx]) != CM_SUCCESS), "DestroySurface failed.");
             m_surf2XArray[idx] = nullptr;
         }
     }
@@ -537,10 +537,10 @@ MOS_STATUS CodecHalHevcMbencG12::InitKernelState()
     m_hmeKernel = MOS_New(CodechalKernelHmeMdfG12, this);
     CODECHAL_ENCODE_CHK_NULL_RETURN(m_hmeKernel)
 
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmDev->LoadProgram((void *)GEN12_HEVC_B_LCU32,
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmDev->LoadProgram((void *)GEN12_HEVC_B_LCU32,
         GEN12_HEVC_B_LCU32_SIZE,
         m_cmProgramB,
-        "-nojitter"));
+        "-nojitter") != CM_SUCCESS), "LoadProgram failed.");
 
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmDev->CreateKernel(m_cmProgramB,
         "Gen12_HEVC_Enc_B",
@@ -678,66 +678,66 @@ MOS_STATUS CodecHalHevcMbencG12::SetupKernelArgsB()
         //Setup first combined 1D surface
         int idx = 0;
         int commonIdx = 0;
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])));
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])) != CM_SUCCESS), "SetKernelArg failed.");
 
         //Setup second combined 1D surface
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])));
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])) != CM_SUCCESS), "SetKernelArg failed.");
 
         //VME Surface
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])));
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])) != CM_SUCCESS), "SetKernelArg failed.");
 
         //Curr Pic
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])));
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])) != CM_SUCCESS), "SetKernelArg failed.");
 
         //Recon surface with populated boundary pixels.
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])));
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])) != CM_SUCCESS), "SetKernelArg failed.");
 
         //Intermediate CU Record Surface for I and B kernel
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])));
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])) != CM_SUCCESS), "SetKernelArg failed.");
 
         // PAK object command surface
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])));
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])) != CM_SUCCESS), "SetKernelArg failed.");
 
         // CU packet for PAK surface
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])));
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])) != CM_SUCCESS), "SetKernelArg failed.");
 
         //Software Scoreboard surface
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])));
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])) != CM_SUCCESS), "SetKernelArg failed.");
 
         // CU 16x16 QP data input surface
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])));
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])) != CM_SUCCESS), "SetKernelArg failed.");
 
         // Lcu level data input
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])));
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])) != CM_SUCCESS), "SetKernelArg failed.");
 
         //ColocatedCUMVDataSurface
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])));
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])) != CM_SUCCESS), "SetKernelArg failed.");
 
         //HMEMotionPredDataSurface
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])));
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])) != CM_SUCCESS), "SetKernelArg failed.");
 
         if (m_isMaxLcu64)
         {
-            CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])));
+            CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])) != CM_SUCCESS), "SetKernelArg failed.");
         }
 
         //Enc const table
         CODECHAL_ENCODE_CHK_STATUS_RETURN(m_constTableB->GetIndex(surfIndex));
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex), surfIndex));
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex), surfIndex) != CM_SUCCESS), "SetKernelArg failed.");
 
         //load Balance surface
         CODECHAL_ENCODE_CHK_STATUS_RETURN(m_loadBalance->GetIndex(surfIndex));
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex), surfIndex));
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex), surfIndex) != CM_SUCCESS), "SetKernelArg failed.");
 
         //reserved entries
         if (!m_isMaxLcu64)
         {
-            CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex), surfIndex));
-            CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex), surfIndex));
+            CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex), surfIndex) != CM_SUCCESS), "SetKernelArg failed.");
+            CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex), surfIndex) != CM_SUCCESS), "SetKernelArg failed.");
         }
 
         // Kernel debug surface
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])));
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmKrn->SetKernelArg(idx++, sizeof(SurfaceIndex) * m_maxMultiFrames, &((*m_surfIndexArray)[commonIdx++][0])) != CM_SUCCESS), "SetKernelArg failed.");
     }
 
     return eStatus;

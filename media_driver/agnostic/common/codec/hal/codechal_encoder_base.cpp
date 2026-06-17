@@ -156,24 +156,24 @@ MOS_STATUS CodechalEncoderState::CreateGpuContexts()
                             // If this context is also invalid, return an error as no context for the video engine
                             // is available, so PAK cannot occur
                             gpuContext = MOS_GPU_CONTEXT_VIDEO2;
-                            CODECHAL_ENCODE_CHK_STATUS_RETURN(m_osInterface->pfnIsGpuContextValid(m_osInterface, gpuContext));
+                            CODECHAL_ENCODE_CHK_COND_RETURN((m_osInterface->pfnIsGpuContextValid(m_osInterface, gpuContext) != MOS_STATUS_SUCCESS), "No valid GPU context available.");
                         }
                     }
 
                     // When using existing VDBOX1, UMD needs to notify KMD to increase the VDBOX1 counter
                     setVideoNode = true;
                     videoGpuNode = MOS_GPU_NODE_VIDEO;
-                    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_osInterface->pfnCreateVideoNodeAssociation(
+                    CODECHAL_ENCODE_CHK_COND_RETURN((m_osInterface->pfnCreateVideoNodeAssociation(
                         m_osInterface,
                         setVideoNode,
-                        &videoGpuNode));
+                        &videoGpuNode) != MOS_STATUS_SUCCESS), "pfnCreateVideoNodeAssociation failed.");
                     m_videoNodeAssociationCreated = true;
                 }
                 else // videoGpuNode == MOS_GPU_NODE_VIDEO
                 {
                     // We won't check GPU contexts on VDBox2 if there is no valid GPU context on VDBox1
                     // since VDBox2 is not full featured.
-                    CODECHAL_ENCODE_CHK_STATUS_RETURN(eStatus);
+                    CODECHAL_ENCODE_CHK_COND_RETURN((eStatus != MOS_STATUS_SUCCESS), "No valid GPU context on VDBox1.");
                 }
             }
 
@@ -1277,7 +1277,7 @@ MOS_STATUS  CodechalEncoderState::FreeMDFKernelSurfaces(
     {
         if (resource->ppCmVmeSurf[i] != nullptr && resource->ppCmVmeSurf[i] != (SurfaceIndex *)CM_NULL_SURFACE)
         {
-            CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmDev->DestroyVmeSurfaceG7_5(resource->ppCmVmeSurf[i]));
+            CODECHAL_ENCODE_CHK_COND_RETURN((m_cmDev->DestroyVmeSurfaceG7_5(resource->ppCmVmeSurf[i]) != CM_SUCCESS), "DestroyVmeSurfaceG7_5 failed.");
             resource->ppCmVmeSurf[i] = nullptr;
         }
     }
@@ -1285,7 +1285,7 @@ MOS_STATUS  CodechalEncoderState::FreeMDFKernelSurfaces(
     {
         if (resource->ppCmBuf[i] != nullptr)
         {
-            CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmDev->DestroySurface(resource->ppCmBuf[i]));
+            CODECHAL_ENCODE_CHK_COND_RETURN((m_cmDev->DestroySurface(resource->ppCmBuf[i]) != CM_SUCCESS), "DestroySurface failed.");
             resource->ppCmBuf[i] = nullptr;
         }
     }
@@ -1293,7 +1293,7 @@ MOS_STATUS  CodechalEncoderState::FreeMDFKernelSurfaces(
     {
         if (resource->ppCmSurf[i] != nullptr)
         {
-            CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmDev->DestroySurface(resource->ppCmSurf[i]));
+            CODECHAL_ENCODE_CHK_COND_RETURN((m_cmDev->DestroySurface(resource->ppCmSurf[i]) != CM_SUCCESS), "DestroySurface failed.");
             resource->ppCmSurf[i] = nullptr;
         }
     }

@@ -352,7 +352,7 @@ MOS_STATUS MhwVeboxInterfaceG8::AddVeboxState(
     ResourceParams.pdwCmd             = & (cmd.DW4.Value);
     ResourceParams.dwLocationInCmd    = 4;
     ResourceParams.HwCommandType      = MOS_VEBOX_STATE;
-    ResourceParams.dwSharedMocsOffset = 1 - ResourceParams.dwLocationInCmd;
+    ResourceParams.dwSharedMocsOffset = (uint32_t)(1 - (int32_t)ResourceParams.dwLocationInCmd);
 
     MHW_CHK_STATUS(pfnAddResourceToCmd(
         pOsInterface,
@@ -373,7 +373,7 @@ MOS_STATUS MhwVeboxInterfaceG8::AddVeboxState(
     ResourceParams.pdwCmd             = & (cmd.DW6.Value);
     ResourceParams.dwLocationInCmd    = 6;
     ResourceParams.HwCommandType      = MOS_VEBOX_STATE;
-    ResourceParams.dwSharedMocsOffset = 1 - ResourceParams.dwLocationInCmd;
+    ResourceParams.dwSharedMocsOffset = (uint32_t)(1 - (int32_t)ResourceParams.dwLocationInCmd);
 
     MHW_CHK_STATUS(pfnAddResourceToCmd(
         pOsInterface,
@@ -394,7 +394,7 @@ MOS_STATUS MhwVeboxInterfaceG8::AddVeboxState(
     ResourceParams.pdwCmd             = & (cmd.DW8.Value);
     ResourceParams.dwLocationInCmd    = 8;
     ResourceParams.HwCommandType      = MOS_VEBOX_STATE;
-    ResourceParams.dwSharedMocsOffset = 1 - ResourceParams.dwLocationInCmd;
+    ResourceParams.dwSharedMocsOffset = (uint32_t)(1 - (int32_t)ResourceParams.dwLocationInCmd);
 
     MHW_CHK_STATUS(pfnAddResourceToCmd(
         pOsInterface,
@@ -415,7 +415,7 @@ MOS_STATUS MhwVeboxInterfaceG8::AddVeboxState(
     ResourceParams.pdwCmd             = & (cmd.DW10.Value);
     ResourceParams.dwLocationInCmd    = 10;
     ResourceParams.HwCommandType      = MOS_VEBOX_STATE;
-    ResourceParams.dwSharedMocsOffset = 1 - ResourceParams.dwLocationInCmd;
+    ResourceParams.dwSharedMocsOffset = (uint32_t)(1 - (int32_t)ResourceParams.dwLocationInCmd);
 
     MHW_CHK_STATUS(pfnAddResourceToCmd(
         pOsInterface,
@@ -625,8 +625,8 @@ void MhwVeboxInterfaceG8::SetVeboxSurfaces(
     pVeboxSurfaceState->DW0.DwordLength = 4;
 
     pVeboxSurfaceState->DW1.SurfaceIdentification = bIsOutputSurface;
-    pVeboxSurfaceState->DW2.Width                 = dwSurfaceWidth - 1;
-    pVeboxSurfaceState->DW2.Height                = dwSurfaceHeight - 1;
+    pVeboxSurfaceState->DW2.Width                 = (dwSurfaceWidth > 0) ? (dwSurfaceWidth - 1) : 0;
+    pVeboxSurfaceState->DW2.Height                = (dwSurfaceHeight > 0) ? (dwSurfaceHeight - 1) : 0;
     pVeboxSurfaceState->DW3.HalfPitchForChroma    = bHalfPitchForChroma;
     pVeboxSurfaceState->DW3.InterleaveChroma      = bInterleaveChroma;
     pVeboxSurfaceState->DW3.SurfaceFormat         = dwFormat;

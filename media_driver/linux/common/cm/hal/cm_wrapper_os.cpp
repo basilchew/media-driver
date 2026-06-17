@@ -467,7 +467,7 @@ int32_t CmThinExecute(VADriverContextP vaDriverCtx,
                                              pitch, physicalsize);
             cmGet2DinfoParam->pitch = pitch;
             cmGet2DinfoParam->physicalSize = physicalsize;
-            cmGet2DinfoParam->returnValue = cmRet;
+            cmGet2DinfoParam->returnValue = (uint32_t)cmRet;
             break;
 
         default:

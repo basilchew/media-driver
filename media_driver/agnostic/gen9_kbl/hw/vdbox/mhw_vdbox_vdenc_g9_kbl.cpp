@@ -91,7 +91,7 @@ MOS_STATUS MhwVdboxVdencInterfaceG9Kbl::AddVdencSrcSurfaceStateCmd(
 
     if (cmd.Dwords25.DW1.TiledSurface)
     {
-        cmd.Dwords25.DW1.TileWalk = (params->psSurface->TileType);
+        cmd.Dwords25.DW1.TileWalk = (params->psSurface->TileType == MOS_TILE_X) ? 0 : 1;
     }
     cmd.Dwords25.DW1.SurfaceFormat            = MosFormatToVdencSurfaceFormat(params->psSurface->Format);
     cmd.Dwords25.DW0.SurfaceFormatByteSwizzle = params->bDisplayFormatSwizzle;

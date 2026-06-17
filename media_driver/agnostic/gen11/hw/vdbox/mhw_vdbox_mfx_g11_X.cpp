@@ -714,7 +714,7 @@ MOS_STATUS MhwVdboxMfxInterfaceG11::AddMfxPipeModeSelectCmd(
         cmd.DW1.DecoderShortFormatMode = !params->bShortFormatInUse;  // This bit is set to be long format in order for HW to not change next slice X and Y position in encoder mode
     }
 
-    cmd.DW1.StandardSelect = CodecHal_GetStandardFromMode(params->Mode);
+    cmd.DW1.StandardSelect = CodecHal_GetStandardFromMode(params->Mode) & 0xF;
 
     if (params->bVdencEnabled)
     {
@@ -776,7 +776,7 @@ MOS_STATUS MhwVdboxMfxInterfaceG11::AddMfxSurfaceCmd(
 
     if (cmd.DW3.TiledSurface)
     {
-        cmd.DW3.TileWalk = (params->psSurface->TileType);
+        cmd.DW3.TileWalk = (params->psSurface->TileType == MOS_TILE_X) ? 0 : 1;
     }
 
     if (params->psSurface->Format == Format_P8) // monochrome format

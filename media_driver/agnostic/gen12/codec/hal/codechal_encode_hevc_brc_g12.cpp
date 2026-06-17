@@ -172,10 +172,10 @@ MOS_STATUS CodecHalHevcBrcG12::InitBrcKernelState()
 
     CODECHAL_ENCODE_FUNCTION_ENTER;
 
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(encoderBrc->m_cmDev->LoadProgram((void *)HEVC_BRC_INIT_GENX,
+    CODECHAL_ENCODE_CHK_COND_RETURN((encoderBrc->m_cmDev->LoadProgram((void *)HEVC_BRC_INIT_GENX,
         HEVC_BRC_INIT_GENX_SIZE,
         m_cmProgramBrcInit,
-        "-nojitter"));
+        "-nojitter") != CM_SUCCESS), "LoadProgram failed.");
 
     CODECHAL_ENCODE_CHK_STATUS_RETURN(encoderBrc->m_cmDev->CreateKernel(m_cmProgramBrcInit,
         "HEVC_brc_init",
@@ -217,17 +217,17 @@ MOS_STATUS CodecHalHevcBrcG12::SetupKernelArgsBrcInit()
     //Setup surfaces
 
     int idx = 0;
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrc->SetKernelArg(idx++, sizeof(encoderBrc->curbe), &encoderBrc->curbe));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrc->SetKernelArg(idx++, sizeof(encoderBrc->curbe), &encoderBrc->curbe) != CM_SUCCESS), "SetKernelArg failed.");
 
     SurfaceIndex *pIndex0 = nullptr;
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_histBufferBrc->GetIndex(pIndex0));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrc->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrc->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0) != CM_SUCCESS), "SetKernelArg failed.");
 
     //Setup Distortion 2D surface
     CmSurface2D *brcDistortion = (encoderBrc->m_pictureCodingType == I_TYPE) ? encoderBrc->m_brcBuffers.brcIntraDistortionSurface
                                                                              : encoderBrc->m_brcBuffers.meBrcDistortionSurface;
     CODECHAL_ENCODE_CHK_STATUS_RETURN(brcDistortion->GetIndex(pIndex0));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrc->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrc->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0) != CM_SUCCESS), "SetKernelArg failed.");
 
     return eStatus;
 }
@@ -786,38 +786,38 @@ MOS_STATUS CodecHalHevcBrcG12::SetupKernelArgsBrcUpdate()
     MOS_STATUS eStatus = MOS_STATUS_SUCCESS;
 
     int idx = 0;
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(encoderBrc->m_brcUpdateCurbeInit), &encoderBrc->curbeBrcUpdate));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(encoderBrc->m_brcUpdateCurbeInit), &encoderBrc->curbeBrcUpdate) != CM_SUCCESS), "SetKernelArg failed.");
 
     SurfaceIndex *pIndex0 = nullptr;
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_histBufferBrc->GetIndex(pIndex0));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0) != CM_SUCCESS), "SetKernelArg failed.");
 
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_PAKStatsBufferBrc->GetIndex(pIndex0));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0) != CM_SUCCESS), "SetKernelArg failed.");
 
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_PICStateInBufferBrc->GetIndex(pIndex0));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0) != CM_SUCCESS), "SetKernelArg failed.");
 
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_PICStateOutBufferBrc->GetIndex(pIndex0));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0) != CM_SUCCESS), "SetKernelArg failed.");
 
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_CombinedEncBufferBrc->GetIndex(pIndex0));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0) != CM_SUCCESS), "SetKernelArg failed.");
 
     //Setup Distortion 2D surface
     CmSurface2D *brcDistortion = (encoderBrc->m_pictureCodingType == I_TYPE) ? encoderBrc->m_brcBuffers.brcIntraDistortionSurface
                                                                              : encoderBrc->m_brcBuffers.meBrcDistortionSurface;
     CODECHAL_ENCODE_CHK_STATUS_RETURN(brcDistortion->GetIndex(pIndex0));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0) != CM_SUCCESS), "SetKernelArg failed.");
 
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_ConstDataBufferBRC->GetIndex(pIndex0));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0) != CM_SUCCESS), "SetKernelArg failed.");
 
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_PixelMBStatsBufferBrc->GetIndex(pIndex0));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0) != CM_SUCCESS), "SetKernelArg failed.");
 
     CODECHAL_ENCODE_CHK_STATUS_RETURN(encoderBrc->m_brcBuffers.mvAndDistortionSumSurface->GetIndex(pIndex0));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrcUpdate->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0) != CM_SUCCESS), "SetKernelArg failed.");
 
     return eStatus;
 }
@@ -917,27 +917,27 @@ MOS_STATUS CodecHalHevcBrcG12::SetupKernelArgsBrcLcuQp()
     MOS_STATUS eStatus = MOS_STATUS_SUCCESS;
 
     int idx = 0;
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrcLCUQP->SetKernelArg(idx++, sizeof(encoderBrc->m_brcUpdateCurbeInit), &encoderBrc->curbeBrcUpdate));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrcLCUQP->SetKernelArg(idx++, sizeof(encoderBrc->m_brcUpdateCurbeInit), &encoderBrc->curbeBrcUpdate) != CM_SUCCESS), "SetKernelArg failed.");
 
     SurfaceIndex *pIndex0 = nullptr;
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_histBufferBrc->GetIndex(pIndex0));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrcLCUQP->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrcLCUQP->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0) != CM_SUCCESS), "SetKernelArg failed.");
 
     //Setup Distortion 2D surface
     CmSurface2D *brcDistortion = (encoderBrc->m_pictureCodingType == I_TYPE) ? encoderBrc->m_brcBuffers.brcIntraDistortionSurface
                                                                              : encoderBrc->m_brcBuffers.meBrcDistortionSurface;
     CODECHAL_ENCODE_CHK_STATUS_RETURN(brcDistortion->GetIndex(pIndex0));
 
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrcLCUQP->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrcLCUQP->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0) != CM_SUCCESS), "SetKernelArg failed.");
 
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_PixelMBStatsBufferBrc->GetIndex(pIndex0));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrcLCUQP->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrcLCUQP->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0) != CM_SUCCESS), "SetKernelArg failed.");
 
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_BrcMbQp->GetIndex(pIndex0));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrcLCUQP->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrcLCUQP->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0) != CM_SUCCESS), "SetKernelArg failed.");
 
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_BrcROISurf->GetIndex(pIndex0));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnBrcLCUQP->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnBrcLCUQP->SetKernelArg(idx++, sizeof(SurfaceIndex), pIndex0) != CM_SUCCESS), "SetKernelArg failed.");
     return eStatus;
 }
 

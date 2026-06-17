@@ -330,8 +330,8 @@ MOS_STATUS MhwSfcInterfaceXe_Xpm::AddSfcState(
     //Change SFC outputcentering scaling X/Yphaseshift value and limition limitione with 19bit following Fuslim setting.
     if (m_outputCenteringEnable)
     {
-        cmd.DW36.Xphaseshift = MOS_CLAMP_MIN_MAX(MOS_F_ROUND((((double)cmd.DW15.ScaleFactorWidth / 524288.0F - 1.0) / 2.0) * 524288.0F), -(1 << (4 + 19)), ((1 << (4 + 19)) - 1));
-        cmd.DW37.Yphaseshift = MOS_CLAMP_MIN_MAX(MOS_F_ROUND((((double)cmd.DW14.ScalingFactorHeight / 524288.0F - 1.0) / 2.0) * 524288.0F), -(1 << (4 + 19)), ((1 << (4 + 19)) - 1));
+        cmd.DW36.Xphaseshift = (uint32_t)MOS_CLAMP_MIN_MAX(MOS_F_ROUND((((double)cmd.DW15.ScaleFactorWidth / 524288.0F - 1.0) / 2.0) * 524288.0F), -(1 << (4 + 19)), ((1 << (4 + 19)) - 1)) & 0x00FFFFFF;
+        cmd.DW37.Yphaseshift = (uint32_t)MOS_CLAMP_MIN_MAX(MOS_F_ROUND((((double)cmd.DW14.ScalingFactorHeight / 524288.0F - 1.0) / 2.0) * 524288.0F), -(1 << (4 + 19)), ((1 << (4 + 19)) - 1)) & 0x00FFFFFF;
     }
 
     if (pSfcStateparamsXe_Xpm->pOsResOutputSurface)
@@ -669,7 +669,7 @@ MOS_STATUS MhwSfcInterfaceXe_Xpm::AddSfcState(
 
                 if (Xlandingpoint >= (double)(tile_endX - Xoffset))
                 {
-                    dest_endX[i] = dest_cntX - 1;
+                    dest_endX[i] = (dest_cntX > 0) ? dest_cntX - 1 : 0;
                     break;
                 }
                 else

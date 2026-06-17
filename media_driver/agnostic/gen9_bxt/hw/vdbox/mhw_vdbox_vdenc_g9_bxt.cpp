@@ -46,7 +46,7 @@ MOS_STATUS MhwVdboxVdencInterfaceG9Bxt::AddVdencSrcSurfaceStateCmd(
 
     if (cmd.Dwords25.DW1.TiledSurface)
     {
-        cmd.Dwords25.DW1.TileWalk = (params->psSurface->TileType);
+        cmd.Dwords25.DW1.TileWalk = (params->psSurface->TileType == MOS_TILE_X) ? 0 : 1;
     }
     cmd.Dwords25.DW1.SurfaceFormat    = MosToMediaStateFormat(params->psSurface->Format); //dwSurfaceFormat;  should be 4
     cmd.Dwords25.DW1.InterleaveChroma = 1;

@@ -117,7 +117,7 @@ int32_t CmQueueRT::Destroy(CmQueueRT* &queue )
         return CM_FAILURE;
     }
 
-    uint32_t result = queue->CleanQueue();
+    int32_t result = queue->CleanQueue();
 
     queue->DestroyComputeGpuContext();
 

@@ -375,8 +375,8 @@ void MhwVeboxInterfaceG9::SetVeboxSurfaces(
     dwSurfacePitch = (pSurfaceParam->TileType == MOS_TILE_LINEAR) ? MOS_ALIGN_CEIL(pSurfaceParam->dwPitch, MHW_VEBOX_LINEAR_PITCH) : pSurfaceParam->dwPitch;
 
     pVeboxSurfaceState->DW1.SurfaceIdentification = bIsOutputSurface;
-    pVeboxSurfaceState->DW2.Width                 = dwSurfaceWidth - 1;
-    pVeboxSurfaceState->DW2.Height                = dwSurfaceHeight - 1;
+    pVeboxSurfaceState->DW2.Width                 = (dwSurfaceWidth > 0) ? dwSurfaceWidth - 1 : 0;
+    pVeboxSurfaceState->DW2.Height                = (dwSurfaceHeight > 0) ? dwSurfaceHeight - 1 : 0;
     pVeboxSurfaceState->DW3.HalfPitchForChroma    = bHalfPitchForChroma;
     pVeboxSurfaceState->DW3.InterleaveChroma      = bInterleaveChroma;
     pVeboxSurfaceState->DW3.SurfaceFormat         = dwFormat;
@@ -511,7 +511,7 @@ MOS_STATUS MhwVeboxInterfaceG9::AddVeboxState(
         ResourceParams.pdwCmd             = & (cmd.DW4.Value);
         ResourceParams.dwLocationInCmd    = 4;
         ResourceParams.HwCommandType      = MOS_VEBOX_STATE;
-        ResourceParams.dwSharedMocsOffset = 1 - ResourceParams.dwLocationInCmd;
+        ResourceParams.dwSharedMocsOffset = (uint32_t)(1 - (int32_t)ResourceParams.dwLocationInCmd);
 
         MHW_CHK_STATUS(pfnAddResourceToCmd(
             pOsInterface,
@@ -535,7 +535,7 @@ MOS_STATUS MhwVeboxInterfaceG9::AddVeboxState(
         ResourceParams.pdwCmd             = & (cmd.DW6.Value);
         ResourceParams.dwLocationInCmd    = 6;
         ResourceParams.HwCommandType      = MOS_VEBOX_STATE;
-        ResourceParams.dwSharedMocsOffset = 1 - ResourceParams.dwLocationInCmd;
+        ResourceParams.dwSharedMocsOffset = (uint32_t)(1 - (int32_t)ResourceParams.dwLocationInCmd);
 
         MHW_CHK_STATUS(pfnAddResourceToCmd(
             pOsInterface,
@@ -558,7 +558,7 @@ MOS_STATUS MhwVeboxInterfaceG9::AddVeboxState(
         ResourceParams.pdwCmd             = & (cmd.DW8.Value);
         ResourceParams.dwLocationInCmd    = 8;
         ResourceParams.HwCommandType      = MOS_VEBOX_STATE;
-        ResourceParams.dwSharedMocsOffset = 1 - ResourceParams.dwLocationInCmd;
+        ResourceParams.dwSharedMocsOffset = (uint32_t)(1 - (int32_t)ResourceParams.dwLocationInCmd);
 
         MHW_CHK_STATUS(pfnAddResourceToCmd(
             pOsInterface,
@@ -581,7 +581,7 @@ MOS_STATUS MhwVeboxInterfaceG9::AddVeboxState(
         ResourceParams.pdwCmd             = & (cmd.DW10.Value);
         ResourceParams.dwLocationInCmd    = 10;
         ResourceParams.HwCommandType      = MOS_VEBOX_STATE;
-        ResourceParams.dwSharedMocsOffset = 1 - ResourceParams.dwLocationInCmd;
+        ResourceParams.dwSharedMocsOffset = (uint32_t)(1 - (int32_t)ResourceParams.dwLocationInCmd);
 
         MHW_CHK_STATUS(pfnAddResourceToCmd(
             pOsInterface,
@@ -598,7 +598,7 @@ MOS_STATUS MhwVeboxInterfaceG9::AddVeboxState(
             ResourceParams.pdwCmd             = & (cmd.DW12.Value);
             ResourceParams.dwLocationInCmd    = 12;
             ResourceParams.HwCommandType      = MOS_VEBOX_STATE;
-            ResourceParams.dwSharedMocsOffset = 1 - ResourceParams.dwLocationInCmd;
+            ResourceParams.dwSharedMocsOffset = (uint32_t)(1 - (int32_t)ResourceParams.dwLocationInCmd);
 
             MHW_CHK_STATUS(pfnAddResourceToCmd(
                 pOsInterface,
@@ -620,7 +620,7 @@ MOS_STATUS MhwVeboxInterfaceG9::AddVeboxState(
         ResourceParams.pdwCmd             = & (cmd.DW14_15.Value[0]);
         ResourceParams.dwLocationInCmd    = 14;
         ResourceParams.HwCommandType      = MOS_VEBOX_STATE;
-        ResourceParams.dwSharedMocsOffset = 1 - ResourceParams.dwLocationInCmd;
+        ResourceParams.dwSharedMocsOffset = (uint32_t)(1 - (int32_t)ResourceParams.dwLocationInCmd);
 
         MHW_CHK_STATUS(pfnAddResourceToCmd(
             pOsInterface,
@@ -654,7 +654,7 @@ MOS_STATUS MhwVeboxInterfaceG9::AddVeboxState(
         ResourceParams.pdwCmd =  &(cmd.DW4.Value);
         ResourceParams.dwLocationInCmd = 4;
         ResourceParams.HwCommandType = MOS_VEBOX_STATE;
-        ResourceParams.dwSharedMocsOffset = 1 - ResourceParams.dwLocationInCmd;
+        ResourceParams.dwSharedMocsOffset = (uint32_t)(1 - (int32_t)ResourceParams.dwLocationInCmd);
 
         MHW_CHK_STATUS(pfnAddResourceToCmd(
             pOsInterface,

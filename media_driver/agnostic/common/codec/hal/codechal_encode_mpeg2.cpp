@@ -3049,7 +3049,7 @@ MOS_STATUS CodechalEncodeMpeg2::SetCurbeBrcInitReset()
     }
     else // This else clause will only be taken when interlaced field support is added to MPEG-2.
     {
-        cmd.m_curbeData.DW6.m_frameRateM = scaledFrameRateValue * 2;
+        cmd.m_curbeData.DW6.m_frameRateM = (uint32_t)((uint64_t)scaledFrameRateValue * 2);
     }
 
     cmd.m_curbeData.DW7.m_frameRateD = m_frameRateDenom;

@@ -1007,7 +1007,7 @@ int32_t CmThreadSpaceRT::Wavefront45Sequence()
             {
                 m_boardOrderList[m_indexInList ++] = linearOffset;
                 m_boardFlag[linearOffset] = BLACK;
-                tempCoordinate.x = x - 1;
+                tempCoordinate.x = (int32_t)x - 1;
                 tempCoordinate.y = y + 1;
                 while ((tempCoordinate.x >= 0) && (tempCoordinate.y >= 0) &&
                     (tempCoordinate.x < (int32_t)m_width) && (tempCoordinate.y < (int32_t)m_height))
@@ -1051,7 +1051,7 @@ int32_t CmThreadSpaceRT::Wavefront26Sequence()
             {
                 m_boardOrderList[m_indexInList ++] = linearOffset;
                 m_boardFlag[linearOffset] = BLACK;
-                tempCoordinate.x = x - 2;
+                tempCoordinate.x = (int32_t)x - 2;
                 tempCoordinate.y = y + 1;
                 while ((tempCoordinate.x >= 0) && (tempCoordinate.y >= 0) &&
                     (tempCoordinate.x < (int32_t)m_width) && (tempCoordinate.y < (int32_t)m_height))

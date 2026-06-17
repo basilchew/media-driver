@@ -396,7 +396,7 @@ MOS_STATUS DecodeScalabilityMultiPipe::ReturnCmdBuffer(PMOS_COMMAND_BUFFER cmdBu
     SCALABILITY_CHK_NULL_RETURN(m_phase);
 
     uint32_t bufIdx = m_phase->GetCmdBufIndex();
-    SCALABILITY_ASSERT(bufIdx >= DecodePhase::m_secondaryCmdBufIdxBase);
+    SCALABILITY_COND_CHECK(bufIdx < DecodePhase::m_secondaryCmdBufIdxBase, " bufIdx(%d) is less than m_secondaryCmdBufIdxBase(%d), invalid !", bufIdx, DecodePhase::m_secondaryCmdBufIdxBase);
     uint32_t secondaryIdx = bufIdx - DecodePhase::m_secondaryCmdBufIdxBase;
     SCALABILITY_ASSERT(secondaryIdx < m_secondaryCmdBuffers.size());
 

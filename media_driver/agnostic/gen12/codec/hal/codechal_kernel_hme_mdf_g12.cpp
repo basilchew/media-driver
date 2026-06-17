@@ -390,10 +390,10 @@ MOS_STATUS CodechalKernelHmeMdfG12::InitKernelState(void *kernelIsa, uint32_t ke
 
     if (!m_cmProgramME)
     {
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(m_encoder->m_cmDev->LoadProgram(kernelIsa,
+        CODECHAL_ENCODE_CHK_COND_RETURN((m_encoder->m_cmDev->LoadProgram(kernelIsa,
             kernelIsaSize,
             m_cmProgramME,
-            "-nojitter"));
+            "-nojitter") != CM_SUCCESS), "LoadProgram failed.");
 
         if (m_vdencEnabled)
         {

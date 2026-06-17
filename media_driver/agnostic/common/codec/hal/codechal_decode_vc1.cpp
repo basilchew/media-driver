@@ -849,7 +849,7 @@ void CodechalDecodeVc1::PackMotionVectors(
                 }
 
                 // Derive unadjusted chroma
-                packedChromaMv[0] = CODECHAL_DECODE_VC1_CHROMA_MV(packedLumaMvs[i - 1]);
+                packedChromaMv[0] = CODECHAL_DECODE_VC1_CHROMA_MV(packedLumaMvs[(i > 0) ? i - 1 : 0]);
                 packedChromaMv[1] = CODECHAL_DECODE_VC1_CHROMA_MV(packedLumaMvs[i]);
             }
         }
@@ -4129,7 +4129,7 @@ MOS_STATUS CodechalDecodeVc1::DecodePrimitiveLevelIT()
     m_fieldPolarity = vc1MbState.bFieldPolarity;
 
     // skipped MBs at the end
-    uint16_t skippedMBs = m_picWidthInMb * frameFieldHeightInMb - mb[mbCount - 1].mb_address - 1;
+    uint16_t skippedMBs = m_picWidthInMb * frameFieldHeightInMb - mb[(mbCount > 0) ? mbCount - 1 : 0].mb_address - 1;
 
     while (skippedMBs--)
     {

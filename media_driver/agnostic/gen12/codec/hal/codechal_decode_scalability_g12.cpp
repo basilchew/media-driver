@@ -1328,7 +1328,7 @@ MOS_STATUS CodecHalDecodeScalability_SetSfcState(
     if (tileColumnIndex == 0)
     {
         scalabilityState->fistValidTileIndex = 0;
-        scalabilityState->lastValidTileIndex = tileColumnCount - 1;
+        scalabilityState->lastValidTileIndex = (tileColumnCount > 0) ? tileColumnCount - 1 : 0;
         scalabilityState->dstXLandingCount = 0;
     }
 
@@ -1379,7 +1379,7 @@ MOS_STATUS CodecHalDecodeScalability_SetSfcState(
 
         if (xLandingPoint >= (double)(tileEndX - xOffset))
         {
-            dstEndX = scalabilityState->dstXLandingCount - 1;
+            dstEndX = (scalabilityState->dstXLandingCount > 0) ? scalabilityState->dstXLandingCount - 1 : 0;
             break;
         }
         else

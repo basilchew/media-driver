@@ -1715,7 +1715,8 @@ MOS_STATUS VpHal_RndrUpdateStatusTableAfterSubmit(
     pStatusEntry                    = &pStatusTable->aTableEntries[pStatusTable->uiCurrent];
     pStatusEntry->StatusFeedBackID  = dwStatusFeedBackID;
     pStatusEntry->GpuContextOrdinal = eMosGpuContext;
-    dwLastTag                       = pOsInterface->pfnGetGpuStatusTag(pOsInterface, eMosGpuContext) - 1;
+    dwLastTag                       = pOsInterface->pfnGetGpuStatusTag(pOsInterface, eMosGpuContext);
+    dwLastTag                       = (dwLastTag > 0) ? dwLastTag - 1 : 0;
     pStatusEntry->dwTag             = dwLastTag;
     pStatusEntry->dwStatus          = (eLastStatus == MOS_STATUS_SUCCESS)? VPREP_NOTREADY : VPREP_ERROR;
     pStatusTable->uiCurrent         = (pStatusTable->uiCurrent + 1) & (VPHAL_STATUS_TABLE_MAX_SIZE - 1);

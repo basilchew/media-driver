@@ -34,18 +34,18 @@ MOS_STATUS CodechalEncodeWPMdfG12::InitKernelStateIsa(void *kernelIsa, uint32_t 
     CODECHAL_ENCODE_FUNCTION_ENTER;
     if (!m_cmProgram)
     {
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(m_encoder->m_cmDev->LoadProgram(kernelIsa,
+        CODECHAL_ENCODE_CHK_COND_RETURN((m_encoder->m_cmDev->LoadProgram(kernelIsa,
             kernelIsaSize,
             m_cmProgram,
-            "-nojitter"));
+            "-nojitter") != CM_SUCCESS), "LoadProgram failed.");
     }
     for (uint8_t i = 0; i < CODEC_NUM_WP_FRAME; i++)
     {
         if (m_cmKrn[i] == nullptr)
         {
-            CODECHAL_ENCODE_CHK_STATUS_RETURN(m_encoder->m_cmDev->CreateKernel(m_cmProgram,
+            CODECHAL_ENCODE_CHK_COND_RETURN((m_encoder->m_cmDev->CreateKernel(m_cmProgram,
                 "Scale_frame",
-                m_cmKrn[i]));
+                m_cmKrn[i]) != CM_SUCCESS), "CreateKernel failed.");
         }
     }
 
@@ -219,7 +219,7 @@ MOS_STATUS CodechalEncodeWPMdfG12::SetupKernelArgs(uint8_t wpKrnIdx)
     CODECHAL_ENCODE_CHK_NULL_RETURN(m_wpOutputSurface[wpKrnIdx]);
 
     // SetKernelArg will copy curbe data
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrn[wpKrnIdx]->SetKernelArg(idx++, sizeof(curbe), &curbe));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrn[wpKrnIdx]->SetKernelArg(idx++, sizeof(curbe), &curbe) != CM_SUCCESS), "SetKernelArg failed.");
     CODECHAL_DEBUG_TOOL(
         CODECHAL_ENCODE_CHK_STATUS_RETURN(m_debugInterface->DumpMDFCurbe(
             CODECHAL_MEDIA_STATE_ENC_WP,
@@ -227,10 +227,10 @@ MOS_STATUS CodechalEncodeWPMdfG12::SetupKernelArgs(uint8_t wpKrnIdx)
             sizeof(curbe)));)
 
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_wpInputSurface[wpKrnIdx]->GetIndex(pSurfIndex));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrn[wpKrnIdx]->SetKernelArg(idx++, sizeof(SurfaceIndex), pSurfIndex));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrn[wpKrnIdx]->SetKernelArg(idx++, sizeof(SurfaceIndex), pSurfIndex) != CM_SUCCESS), "SetKernelArg failed.");
 
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_wpOutputSurface[wpKrnIdx]->GetIndex(pSurfIndex));
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrn[wpKrnIdx]->SetKernelArg(idx++, sizeof(SurfaceIndex), pSurfIndex));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrn[wpKrnIdx]->SetKernelArg(idx++, sizeof(SurfaceIndex), pSurfIndex) != CM_SUCCESS), "SetKernelArg failed.");
 
     return MOS_STATUS_SUCCESS;
 }
@@ -262,19 +262,19 @@ MOS_STATUS CodechalEncodeWPMdfG12::ReleaseResources()
     {
         if (m_wpInputSurface[i])
         {
-            CODECHAL_ENCODE_CHK_STATUS_RETURN(m_encoder->m_cmDev->DestroySurface(m_wpInputSurface[i]));
+            CODECHAL_ENCODE_CHK_COND_RETURN((m_encoder->m_cmDev->DestroySurface(m_wpInputSurface[i]) != CM_SUCCESS), "DestroySurface failed.");
             m_wpInputSurface[i] = nullptr;
         }
 
         if (m_wpOutputSurface[i])
         {
-            CODECHAL_ENCODE_CHK_STATUS_RETURN(m_encoder->m_cmDev->DestroySurface(m_wpOutputSurface[i]));
+            CODECHAL_ENCODE_CHK_COND_RETURN((m_encoder->m_cmDev->DestroySurface(m_wpOutputSurface[i]) != CM_SUCCESS), "DestroySurface failed.");
             m_wpOutputSurface[i] = nullptr;
         }
 
         if (m_cmKrn[i])
         {
-            CODECHAL_ENCODE_CHK_STATUS_RETURN(m_encoder->m_cmDev->DestroyKernel(m_cmKrn[i]));
+            CODECHAL_ENCODE_CHK_COND_RETURN((m_encoder->m_cmDev->DestroyKernel(m_cmKrn[i]) != CM_SUCCESS), "DestroyKernel failed.");
             m_cmKrn[i] = nullptr;
         }
     }

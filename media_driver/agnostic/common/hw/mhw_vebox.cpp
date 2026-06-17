@@ -60,7 +60,7 @@ void MhwVeboxInterface::RefreshVeboxSync()
     {
         dwCurrentTag = pVeboxHeap->pSync[0];
     }
-    pVeboxHeap->dwSyncTag = dwCurrentTag - 1;
+    pVeboxHeap->dwSyncTag = (dwCurrentTag > 0) ? dwCurrentTag - 1 : 0;
 
     NullRenderingFlags  = m_osInterface->pfnGetNullHWRenderFlags(
         m_osInterface);

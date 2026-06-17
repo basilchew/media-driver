@@ -793,7 +793,7 @@ int32_t CmThinExecuteInternal(CmDevice *device,
             cmRet = ConvertToOperatingSystemAbstractionLayerFormat(
                 getCapParam->capValue, CM_MAX_SURFACE3D_FORMAT_COUNT);
         }
-        getCapParam->returnValue = cmRet;
+        getCapParam->returnValue = (uint32_t)cmRet;
         break;
 
     case CM_FN_CMDEVICE_SETCAPS:

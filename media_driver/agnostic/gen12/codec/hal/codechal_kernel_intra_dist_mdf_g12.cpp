@@ -85,10 +85,10 @@ MOS_STATUS CodechalKernelIntraDistMdfG12::InitializeKernelIsa(void *kernelIsa, u
 
     if (!m_cmProgram)
     {
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(m_encoder->m_cmDev->LoadProgram(kernelIsa,
+        CODECHAL_ENCODE_CHK_COND_RETURN((m_encoder->m_cmDev->LoadProgram(kernelIsa,
             kernelIsaSize,
             m_cmProgram,
-            "-nojitter"));
+            "-nojitter") != CM_SUCCESS), "LoadProgram failed.");
     }
     if (!m_cmKrn)
     {
@@ -237,10 +237,10 @@ MOS_STATUS CodechalKernelIntraDistMdfG12::Execute(CurbeParam &curbeParam, Surfac
 
     if (m_threadSpace == nullptr)
     {
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(cmDev->CreateThreadSpace(
+        CODECHAL_ENCODE_CHK_COND_RETURN((cmDev->CreateThreadSpace(
             m_curbeParam.downScaledWidthInMb4x,
             m_curbeParam.downScaledHeightInMb4x,
-            m_threadSpace));
+            m_threadSpace) != CM_SUCCESS), "CreateThreadSpace failed.");
         if (m_groupIdSelectSupported)
         {
             m_threadSpace->SetMediaWalkerGroupSelect((CM_MW_GROUP_SELECT)m_groupId);
@@ -248,7 +248,7 @@ MOS_STATUS CodechalKernelIntraDistMdfG12::Execute(CurbeParam &curbeParam, Surfac
     }
 
     uint32_t threadCount = m_curbeParam.downScaledWidthInMb4x * m_curbeParam.downScaledHeightInMb4x;
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrn->SetThreadCount(threadCount));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrn->SetThreadCount(threadCount) != CM_SUCCESS), "SetThreadCount failed.");
 
     CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrn->AssociateThreadSpace(m_threadSpace));
     CODECHAL_ENCODE_CHK_STATUS_RETURN(SetupKernelArgs());

@@ -219,7 +219,7 @@ VAStatus DdiDecodeVC1::ParsePicParams(
         codecPicParam->DeblockedPicIdx = GetRenderTargetID(&(m_ddiDecodeCtx->RTtbl), m_ddiDecodeCtx->RTtbl.pCurrentRT);
         DDI_CHK_RET(RegisterRTSurfaces(&m_ddiDecodeCtx->RTtbl, DdiMedia_GetSurfaceFromVASurfaceID(mediaCtx, picParam->inloop_decoded_picture)), "RegisterRTSurfaces failed!");
 
-        codecPicParam->CurrPic.FrameIdx = (uint16_t)GetRenderTargetID(&(m_ddiDecodeCtx->RTtbl),
+        codecPicParam->CurrPic.FrameIdx = (uint8_t)GetRenderTargetID(&(m_ddiDecodeCtx->RTtbl),
             DdiMedia_GetSurfaceFromVASurfaceID(mediaCtx, picParam->inloop_decoded_picture));
         m_deblockPicIdx                 = codecPicParam->DeblockedPicIdx;
         m_currPicIdx                    = codecPicParam->CurrPic.FrameIdx;

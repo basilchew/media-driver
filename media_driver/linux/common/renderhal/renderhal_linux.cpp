@@ -257,7 +257,7 @@ MOS_STATUS RenderHal_SetSurfaceStateToken(
     // Initialize Token State
     *pTokenState = g_cInit_SURFACE_STATE_TOKEN_COMMON;
 
-    pTokenState->DW1.SurfaceAllocationIndex = iAllocationIndex;
+    pTokenState->DW1.SurfaceAllocationIndex = (uint32_t)iAllocationIndex;
     MHW_ASSERT(pTokenState->DW1.SurfaceAllocationIndex != MOS_INVALID_ALLOC_INDEX);
     pTokenState->DW3.RenderTargetEnable = pParams->bRenderTarget;
     pTokenState->DW3.YUVPlane = pParams->YUVPlane;

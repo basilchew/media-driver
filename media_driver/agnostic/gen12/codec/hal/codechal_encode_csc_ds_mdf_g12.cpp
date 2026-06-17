@@ -407,10 +407,10 @@ MOS_STATUS CodechalEncodeCscDsMdfG12::InitKernelStateCsc(KernelParams* pParams)
     CODECHAL_ENCODE_FUNCTION_ENTER;
     CmDevice* &cmDev = m_encoder->m_cmDev;
 
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(cmDev->LoadProgram((void *)GEN12LP_DS_CONVERT_GENX,
+    CODECHAL_ENCODE_CHK_COND_RETURN((cmDev->LoadProgram((void *)GEN12LP_DS_CONVERT_GENX,
         GEN12LP_DS_CONVERT_GENX_SIZE,
         m_cmProgramCSCDS,
-        "-nojitter"));
+        "-nojitter") != CM_SUCCESS), "LoadProgram failed.");
 
     if (!m_cmKrnCSCDS4x)
     {
@@ -488,7 +488,7 @@ MOS_STATUS CodechalEncodeCscDsMdfG12::CscKernel(
     {
         // MDf surface states
         CODECHAL_ENCODE_CHK_STATUS_RETURN(SetupSurfacesCSC(m_cmSurfParamsCscDs16x));
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnCSCDS16x->SetThreadCount(threadCount));
+        CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnCSCDS16x->SetThreadCount(threadCount) != CM_SUCCESS), "SetThreadCount failed.");
         if(m_encoder->m_resolutionChanged && m_threadSpace16x != nullptr)
         {
             CODECHAL_ENCODE_CHK_STATUS_RETURN(m_encoder->m_cmDev->DestroyThreadSpace(m_threadSpace16x));
@@ -508,7 +508,7 @@ MOS_STATUS CodechalEncodeCscDsMdfG12::CscKernel(
     else if(pParams->stageDsConversion == dsStage32x)
     {
         CODECHAL_ENCODE_CHK_STATUS_RETURN(SetupSurfacesCSC(m_cmSurfParamsCscDs32x));
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnCSCDS32x->SetThreadCount(threadCount));
+        CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnCSCDS32x->SetThreadCount(threadCount) != CM_SUCCESS), "SetThreadCount failed.");
         if(m_encoder->m_resolutionChanged && m_threadSpace32x != nullptr)
         {
             CODECHAL_ENCODE_CHK_STATUS_RETURN(m_encoder->m_cmDev->DestroyThreadSpace(m_threadSpace32x));
@@ -528,7 +528,7 @@ MOS_STATUS CodechalEncodeCscDsMdfG12::CscKernel(
     else
     {
         CODECHAL_ENCODE_CHK_STATUS_RETURN(SetupSurfacesCSC(m_cmSurfParamsCscDs4x));
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrnCSCDS4x->SetThreadCount(threadCount));
+        CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrnCSCDS4x->SetThreadCount(threadCount) != CM_SUCCESS), "SetThreadCount failed.");
 
         if(m_encoder->m_resolutionChanged && m_threadSpace4x != nullptr)
         {

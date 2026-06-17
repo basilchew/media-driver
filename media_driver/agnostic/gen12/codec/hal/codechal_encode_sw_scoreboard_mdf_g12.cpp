@@ -38,10 +38,10 @@ MOS_STATUS CodechalEncodeSwScoreboardMdfG12::InitKernelState()
     CODECHAL_ENCODE_FUNCTION_ENTER;
     if (!m_cmProgram)
     {
-        CODECHAL_ENCODE_CHK_STATUS_RETURN(m_encoder->m_cmDev->LoadProgram((void *)GEN12LP_INIT_SCOREBOARD_GENX,
+        CODECHAL_ENCODE_CHK_COND_RETURN((m_encoder->m_cmDev->LoadProgram((void *)GEN12LP_INIT_SCOREBOARD_GENX,
             GEN12LP_INIT_SCOREBOARD_GENX_SIZE,
             m_cmProgram,
-            "-nojitter"));
+            "-nojitter") != CM_SUCCESS), "LoadProgram failed.");
     }
     if (!m_cmKrn)
     {
@@ -106,7 +106,7 @@ MOS_STATUS CodechalEncodeSwScoreboardMdfG12::Execute(KernelParams *params)
     uint32_t dwResolutionY = (uint32_t)(ceil)((m_curbeParams.scoreboardHeight) / 4.0);
 
     uint32_t threadCount = dwResolutionX * dwResolutionY;
-    CODECHAL_ENCODE_CHK_STATUS_RETURN(m_cmKrn->SetThreadCount(threadCount));
+    CODECHAL_ENCODE_CHK_COND_RETURN((m_cmKrn->SetThreadCount(threadCount) != CM_SUCCESS), "SetThreadCount failed.");
 
     if(m_encoder->m_resolutionChanged && m_threadSpace != nullptr)
     {

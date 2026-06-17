@@ -838,8 +838,8 @@ void MhwVeboxInterfaceXe_Xpm::SetVeboxSurfaces(
     dwSurfacePitch = (pSurfaceParam->TileType == MOS_TILE_LINEAR) ? MOS_ALIGN_CEIL(pSurfaceParam->dwPitch, MHW_VEBOX_LINEAR_PITCH) : pSurfaceParam->dwPitch;
 
     pVeboxSurfaceState->DW1.SurfaceIdentification = bIsOutputSurface;
-    pVeboxSurfaceState->DW2.Width = dwSurfaceWidth - 1;
-    pVeboxSurfaceState->DW2.Height = dwSurfaceHeight - 1;
+    pVeboxSurfaceState->DW2.Width = (dwSurfaceWidth > 0) ? dwSurfaceWidth - 1 : 0;
+    pVeboxSurfaceState->DW2.Height = (dwSurfaceHeight > 0) ? dwSurfaceHeight - 1 : 0;
 
     pVeboxSurfaceState->DW3.HalfPitchForChroma = bHalfPitchForChroma;
     pVeboxSurfaceState->DW3.InterleaveChroma = bInterleaveChroma;
