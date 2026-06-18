@@ -295,7 +295,7 @@ MHW_SETPAR_DECL_SRC(HCP_PIPE_MODE_SELECT, Vp9DecodePicPkt)
     DECODE_FUNC_CALL();
 
     params.codecSelect         = 0; // CODEC_SELECT_DECODE
-    params.codecStandardSelect = CodecHal_GetStandardFromMode(m_vp9BasicFeature->m_mode) - CODECHAL_HCP_BASE;
+    params.codecStandardSelect = (uint8_t)((int32_t)CodecHal_GetStandardFromMode(m_vp9BasicFeature->m_mode) - (int32_t)CODECHAL_HCP_BASE);
     params.bStreamOutEnabled   = false;
 
     auto cpInterface           = m_hwInterface->GetCpInterface();

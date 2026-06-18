@@ -972,7 +972,7 @@ MOS_STATUS EncodePreEncConstSettings::SetVdencCmd2Settings()
                 data[32] |= (tmp1 << 16);
                 data[32] |= (tmp1 << 20);
                 data[32] |= (tmp0 << 24);
-                data[32] |= (tmp0 << 28);
+                data[32] |= ((uint32_t)tmp0 << 28);
 
                 data[33] |= tmp1;
                 data[33] |= (tmp1 << 4);
@@ -981,7 +981,7 @@ MOS_STATUS EncodePreEncConstSettings::SetVdencCmd2Settings()
                 data[33] |= (tmp0 << 16);
                 data[33] |= (tmp0 << 20);
                 data[33] |= (tmp1 << 24);
-                data[33] |= (tmp1 << 28);
+                data[33] |= ((uint32_t)tmp1 << 28);
 
                 data[34] |= tmp1;
                 data[34] |= (tmp1 << 4);

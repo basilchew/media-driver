@@ -580,7 +580,7 @@ MOS_STATUS EncodeHevcVdencConstSettingsXe_Lpm_Plus_Base::SetVdencCmd2Settings()
                     data[32] |= (tmp1 << 16);
                     data[32] |= (tmp1 << 20);
                     data[32] |= (tmp0 << 24);
-                    data[32] |= (tmp0 << 28);
+                    data[32] |= ((uint32_t)tmp0 << 28);
 
                     data[33] |= tmp1;
                     data[33] |= (tmp1 << 4);

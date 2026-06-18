@@ -1062,7 +1062,7 @@ MOS_STATUS EncodeHevcVdencConstSettings::SetVdencCmd1Settings()
                 }
             }
 
-            double doubleNum1 = doubleNum0 * ConstTable2[qp - 1];
+            double doubleNum1 = doubleNum0 * ConstTable2[(qp > 0) ? (qp - 1) : 0];
             par.vdencCmd1Par0 = (uint16_t)(MOS_MIN(65535, doubleNum1 * 4 + 0.5));
 
             doubleNum1 = sqrt(doubleNum1);
@@ -1433,7 +1433,7 @@ MOS_STATUS EncodeHevcVdencConstSettings::SetVdencLaCmd1Settings()
                 }
             }
 
-            double doubleNum1 = doubleNum0 * ConstTable2[qp - 1];
+            double doubleNum1 = doubleNum0 * ConstTable2[(qp > 0) ? (qp - 1) : 0];
             par.vdencCmd1Par0 = (uint16_t)(MOS_MIN(65535, doubleNum1 * 4 + 0.5));
 
             doubleNum1 = sqrt(doubleNum1);
@@ -1958,7 +1958,7 @@ MOS_STATUS EncodeHevcVdencConstSettings::SetVdencLaCmd2Settings()
                     data[32] |= (tmp1 << 16);
                     data[32] |= (tmp1 << 20);
                     data[32] |= (tmp0 << 24);
-                    data[32] |= (tmp0 << 28);
+                    data[32] |= ((uint32_t)tmp0 << 28);
 
                     data[33] |= tmp1;
                     data[33] |= (tmp1 << 4);

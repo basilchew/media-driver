@@ -1048,7 +1048,7 @@ MHW_SETPAR_DECL_SRC(VDENC_CMD2, HevcBasicFeature)
         uint32_t rollingILimit = (m_hevcPicParams->bEnableRollingIntraRefresh == ROLLING_I_ROW) ? MOS_ROUNDUP_DIVIDE(params.height, 32) : MOS_ROUNDUP_DIVIDE(params.width, 32);
 
         params.intraRefresh                = 1;
-        params.qpAdjustmentForRollingI     = MOS_CLAMP_MIN_MAX(m_hevcPicParams->QpDeltaForInsertedIntra, -8, 7);
+        params.qpAdjustmentForRollingI     = (uint8_t)(int8_t)MOS_CLAMP_MIN_MAX(m_hevcPicParams->QpDeltaForInsertedIntra, -8, 7);
         params.intraRefreshMode            = (m_hevcPicParams->bEnableRollingIntraRefresh == ROLLING_I_ROW) ? 0 : 1;
         params.intraRefreshMbSizeMinus1    = m_hevcPicParams->IntraInsertionSize - 1;
         params.intraRefreshPos            = m_hevcPicParams->IntraInsertionLocation;

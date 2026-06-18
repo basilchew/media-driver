@@ -591,8 +591,8 @@ VAStatus DdiEncodeVp9::ParsePicParams(DDI_MEDIA_CONTEXT *mediaCtx, void *ptr)
     vp9PicParam->PicFlags.fields.seg_id_block_size            = picParam->seg_id_block_size;
 #endif
 
-    vp9PicParam->SrcFrameWidthMinus1          = picParam->frame_width_src - 1;
-    vp9PicParam->SrcFrameHeightMinus1         = picParam->frame_height_src - 1;
+    vp9PicParam->SrcFrameWidthMinus1          = (picParam->frame_width_src > 0) ? (picParam->frame_width_src - 1) : 0;
+    vp9PicParam->SrcFrameHeightMinus1         = (picParam->frame_height_src > 0) ? (picParam->frame_height_src - 1) : 0;
 
     vp9PicParam->DstFrameWidthMinus1          = picParam->frame_width_dst - 1;
     vp9PicParam->DstFrameHeightMinus1         = picParam->frame_height_dst - 1;

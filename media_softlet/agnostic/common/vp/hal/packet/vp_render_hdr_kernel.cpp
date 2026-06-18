@@ -4119,6 +4119,13 @@ MOS_STATUS VpRenderHdrKernel::GetCurbeState(void *&curbe, uint32_t &curbeLength)
     }
 
     FormatDescriptor = GetFormatDescriptor(targetSurf->osSurface->Format);
+
+    if (FormatDescriptor == VPHAL_HDR_FORMAT_DESCRIPTOR_UNKNOW)
+    {
+        VP_RENDER_VERBOSEMESSAGE("Unsupported hdr output format");
+        return MOS_STATUS_INVALID_PARAMETER;
+    }
+
     ChromaSiting     = GetHdrChromaSiting(targetSurf->ChromaSiting);
 
     if (targetSurf->osSurface->Format == Format_B10G10R10A2 ||
@@ -4146,7 +4153,7 @@ MOS_STATUS VpRenderHdrKernel::GetCurbeState(void *&curbe, uint32_t &curbeLength)
         m_hdrCurbe.DW58.TwoLayerOperationLayer0          = VPHAL_HDR_TWO_LAYER_OPTION_COMP;
     }
 
-    m_hdrCurbe.DW63.FormatDescriptorDestination        = FormatDescriptor;
+    m_hdrCurbe.DW63.FormatDescriptorDestination        = (uint32_t)FormatDescriptor;
     m_hdrCurbe.DW63.ChromaSittingLocationDestination   = ChromaSiting;
     m_hdrCurbe.DW63.ChannelSwapEnablingFlagDestination = bChannelSwap;
 

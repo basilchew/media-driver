@@ -125,7 +125,7 @@ MOS_STATUS VpRotMirFilter::SetRotationAndMirrowParams(
     else if (Rotation <= VPHAL_MIRROR_VERTICAL)
     {
         // Mirror only
-        m_sfcRotMirParams->mirrorType    = GetRotationParam(Rotation) - 4;
+        m_sfcRotMirParams->mirrorType    = GetRotationParam(Rotation) & 0x1;
         m_sfcRotMirParams->rotationMode  = VPHAL_ROTATION_IDENTITY;
         m_sfcRotMirParams->bMirrorEnable = true;
     }

@@ -2844,7 +2844,7 @@ MOS_STATUS HevcVdencPkt::AddAllCmds_HCP_PAK_INSERT_OBJECT_BRC(PMOS_COMMAND_BUFFE
 
     MHW_SETPAR_DECL_SRC(HCP_PIPE_MODE_SELECT, HevcVdencPkt)
     {
-        params.codecStandardSelect = CodecHal_GetStandardFromMode(m_basicFeature->m_mode) - CODECHAL_HCP_BASE;
+        params.codecStandardSelect = (uint8_t)((int32_t)CodecHal_GetStandardFromMode(m_basicFeature->m_mode) - (int32_t)CODECHAL_HCP_BASE);
         params.bStreamOutEnabled   = true;
         params.bVdencEnabled       = true;
         params.codecSelect         = 1;

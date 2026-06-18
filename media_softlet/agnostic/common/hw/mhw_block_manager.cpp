@@ -1376,7 +1376,7 @@ PMHW_STATE_HEAP_MEMORY_BLOCK MHW_BLOCK_MANAGER::AllocateBlock(
     // Block was found, adjust the allocation size to account for
     // heap granularity and block alignment
     dwAdjust    = MOS_ALIGN_OFFSET(pBlock->dwOffsetInStateHeap, dwAlignment);                 // Increase in size to align data
-    dwAllocSize = MOS_ALIGN_CEIL(dwSize + dwAdjust, m_Params.dwHeapGranularity); // Account for heap granularity (avoid odd addresses in heap)
+    dwAllocSize = (m_Params.dwHeapGranularity > 0) ? MOS_ALIGN_CEIL(dwSize + dwAdjust, m_Params.dwHeapGranularity) : (dwSize + dwAdjust); // Account for heap granularity (avoid odd addresses in heap)
     dwAllocSize = MOS_MAX(dwAllocSize, m_Params.dwHeapBlockMinSize);
 
     // Just a precaution - sanity check - in case of last block in heap, and total heap size is not a multiple of granularity

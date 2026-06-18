@@ -313,7 +313,7 @@ namespace decode
         DECODE_FUNC_CALL();
 
         params.codecSelect         = 0; // CODEC_SELECT_DECODE
-        params.codecStandardSelect = CodecHal_GetStandardFromMode(m_hevcBasicFeature->m_mode) - CODECHAL_HCP_BASE;
+        params.codecStandardSelect = (uint8_t)((int32_t)CodecHal_GetStandardFromMode(m_hevcBasicFeature->m_mode) - (int32_t)CODECHAL_HCP_BASE);
         params.bStreamOutEnabled   = false;
 
         auto cpInterface = m_hwInterface->GetCpInterface();
