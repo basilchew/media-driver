@@ -2131,7 +2131,7 @@ CodechalEncodeAvcEncFeiG9::CodechalEncodeAvcEncFeiG9(
 #endif
     m_cmSurfIdx = MOS_New(struct CodechalEncodeAvcSurfaceIdx);
 
-    this->pfnGetKernelHeaderAndSize = this->EncodeGetKernelHeaderAndSize;
+    this->pfnGetKernelHeaderAndSize = EncodeGetKernelHeaderAndSize;
     m_feiEnable = true;
 
     //FEI output Stats which is a superset of MbStats buffer, so no need for MbStats

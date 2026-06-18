@@ -3978,7 +3978,7 @@ CodechalEncodeAvcEncG11::CodechalEncodeAvcEncG11(
     m_kernelBase = nullptr;
 #endif
 
-    this->pfnGetKernelHeaderAndSize = this->GetKernelHeaderAndSize;
+    this->pfnGetKernelHeaderAndSize = GetKernelHeaderAndSize;
 
     m_vdboxOneDefaultUsed = true;
 

@@ -3651,7 +3651,7 @@ CodechalEncodeAvcEncFeiG8::CodechalEncodeAvcEncFeiG8(
     m_avcCmSurfIdx = nullptr;
     m_avcCmSurfIdx = MOS_New(CODECHAL_ENCODE_AVC_SURFACE_IDX);
 #endif
-    this->pfnGetKernelHeaderAndSize = this->EncodeGetKernelHeaderAndSize;
+    this->pfnGetKernelHeaderAndSize = EncodeGetKernelHeaderAndSize;
     m_feiEnable = true;
 
     if (m_codecFunction == CODECHAL_FUNCTION_FEI_PRE_ENC)

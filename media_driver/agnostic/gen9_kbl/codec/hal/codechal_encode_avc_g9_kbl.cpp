@@ -3332,7 +3332,7 @@ CodechalEncodeAvcEncG9Kbl::CodechalEncodeAvcEncG9Kbl(
     bDecoupleMbEncCurbeFromBRC = true;
     bHighTextureModeCostEnable = true;
 
-    this->pfnGetKernelHeaderAndSize         = this->GetKernelHeaderAndSize;
+    this->pfnGetKernelHeaderAndSize         = GetKernelHeaderAndSize;
 
     m_kernelBase = (uint8_t *)IGCODECKRN_G9_KBL;
     AddIshSize(m_kuid, m_kernelBase);

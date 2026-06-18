@@ -3495,7 +3495,7 @@ CodechalEncodeAvcEncG8::CodechalEncodeAvcEncG8(
     bHighTextureModeCostEnable = false;
     m_feiEnable                = CodecHalIsFeiEncode(m_codecFunction);
 
-    this->pfnGetKernelHeaderAndSize = this->GetKernelHeaderAndSize;
+    this->pfnGetKernelHeaderAndSize = GetKernelHeaderAndSize;
 
     m_needCheckCpEnabled = true;
 }

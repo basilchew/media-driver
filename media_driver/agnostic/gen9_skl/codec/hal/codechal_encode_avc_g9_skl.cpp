@@ -2907,7 +2907,7 @@ CodechalEncodeAvcEncG9Skl::CodechalEncodeAvcEncG9Skl(
     bBrcRoiSupported = true;
     bHighTextureModeCostEnable = true;
 
-    this->pfnGetKernelHeaderAndSize = this->GetKernelHeaderAndSize;
+    this->pfnGetKernelHeaderAndSize = GetKernelHeaderAndSize;
 
     m_mbStatsSupported = true; //Starting from GEN9
     m_kernelBase = (uint8_t *)IGCODECKRN_G9;

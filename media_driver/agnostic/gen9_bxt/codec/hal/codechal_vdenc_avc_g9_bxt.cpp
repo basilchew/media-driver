@@ -285,7 +285,7 @@ CodechalVdencAvcStateG9Bxt::CodechalVdencAvcStateG9Bxt(
 {
     CODECHAL_ENCODE_FUNCTION_ENTER;
 
-    this->pfnGetKernelHeaderAndSize = this->EncodeGetKernelHeaderAndSize;
+    this->pfnGetKernelHeaderAndSize = EncodeGetKernelHeaderAndSize;
     m_vdencBrcInitDmemBufferSize    = sizeof(CODECHAL_VDENC_AVC_BRC_INIT_DMEM_G9_BXT);
     m_vdencBrcUpdateDmemBufferSize  = sizeof(CODECHAL_VDENC_AVC_BRC_UPDATE_DMEM_G9_BXT);
 }
